@@ -20,15 +20,9 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route path="/:idRistorante/cassa/">
-            <Admin />
-          </Route>
-          <Route path="/:idRistorante/comande/">
-            <Comande />
-          </Route>
-          <Route path="/:idRistorante/:idTavolo/">
-            <Menu />
-          </Route>
+          <Route path="/:idRistorante/cassa/"  component={Admin}/>
+          <Route path="/:idRistorante/comande/"  component={Comande}/>
+          <Route path="/:idRistorante/:idTavolo/" component={Menu}/>
           <Route path="/">
             <NotFound />
           </Route>
