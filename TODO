@@ -1,0 +1,8 @@
+ROUTING
+
+MENU /id_ristorante/id_tavolo/
+ADMIN /id_ristorante/cassa/
+CUCINA /id_ristorante/comande/
+
+
+1. react-router-dom
