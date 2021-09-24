@@ -76,6 +76,10 @@ class Admin extends Component {
                   <inline className="m-1">
                     {this.handleIngredients(order)}
                   </inline>
+                  <inline>
+                    <i className="fas fa-check-circle" />
+                    <i className="fas fa-times-circle" />
+                  </inline>
                 </div>
               ))}
             </div>
