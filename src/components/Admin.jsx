@@ -74,10 +74,13 @@ class Admin extends Component {
             CUSTOM <inline className="yellow"> BURGER ORDERS</inline>
           </inline>
         </div>
+        <div className="admin-container">
         {this.state.tables.map((table) => (
           <div className="menu-section">
-            <div className="menu-section-element">
+            <div className="orders-section">
+              <div className="order-section-title">
               Tavolo {table.number}
+              </div>
               {table.orders.map((order) => (
                 <div className="row order-section-element">
                   <div className="col-auto col-md-3 col-lg-2 order-section-title">
@@ -95,6 +98,7 @@ class Admin extends Component {
             </div>
           </div>
         ))}
+        </div>
       </div>
     );
   }
