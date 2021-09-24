@@ -149,7 +149,7 @@ class Menu extends Component {
     }
 
     async postOrder() {
-        const response = await axios.post(baseUrl + `${this.props?.match?.params?.idRistorante}/menu`, this.state.order);
+        const response = await axios.post(baseUrl + `${this.props?.match?.params?.idRistorante}/${this.props?.match?.params?.idTavolo}`, this.state.order);
             console.log(response.data);
             this.setState({
                 order: [],
