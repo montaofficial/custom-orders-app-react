@@ -18,7 +18,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div>
+      <div className="container">
         <Switch>
           <Route path="/:idRistorante/cassa/"  component={Admin}/>
           <Route path="/:idRistorante/comande/"  component={Comande}/>

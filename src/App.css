@@ -20,13 +20,12 @@ body {
 
 .menu-section-list {
   margin-top: .6rem;
-  color: #ffffff;
 }
 
 .menu-section-element {
   margin-bottom: .5rem;
   position: relative;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .menu-section-element::after {
@@ -40,4 +39,27 @@ body {
   width: 100%;
   background: #F0DD31;
 
+}
+
+.menu-section-element .element-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.menu-section-element .element-name .element-description {
+  font-size: .8rem;
+  color: #F0DD31;
+}
+
+.menu-section-element .element-vegan {
+  margin-left: 6px;
+  color: #82c91e;
+}
+
+.menu-cliente {
+  margin-top: 60px;
+}
+
+.navbar-home {
+  
 }
