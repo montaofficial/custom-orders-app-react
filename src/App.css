@@ -7,6 +7,7 @@ body {
   color: #f0dd31;
   padding: 10px 16px;
   margin: 12px 0;
+  position: relative;
 }
 .order-section-element::after {
   position: absolute;
@@ -35,13 +36,7 @@ body {
   color: #f0dd31;
   padding: 10px 16px;
   margin: 12px 0;
-}
-
-.menu-section {
-  background-color: #000000;
-  color: #f0dd31;
-  padding: 10px 16px;
-  margin: 12px 0;
+  position: relative;
 }
 
 .menu-section-title {
