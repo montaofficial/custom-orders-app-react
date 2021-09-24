@@ -57,9 +57,43 @@ body {
 }
 
 .menu-cliente {
-  margin-top: 60px;
+  margin-top: 70px;
+  margin-bottom: 70px;
 }
 
 .navbar-home {
-  
+  background-color: #000000;
+  height: 56px;
+}
+
+.navbar-home .img img {
+  margin-top: 4px;
+  margin-left: 8px;
+  height: 60px;
+}
+
+.navbar-home .title {
+  padding-left: 14px;
+  font-size: 1.6rem;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.yellow {
+  color: #F0DD31;
+}
+
+.submit-order {
+  background-color: #F0DD31;
+  color: #000000;
+  margin-bottom: 10px;
+  margin-left: 8px;
+  margin-right: 8px;
+  height: 46px;
+  line-height: 46px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  box-shadow: 0px 0px 16px #000000;
 }
