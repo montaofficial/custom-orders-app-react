@@ -2,7 +2,6 @@ body {
   background-color: #161616;
 }
 
-
 .order-section-element {
   background-color: #1d1d1d;
   color: #f0dd31;
@@ -25,6 +24,10 @@ body {
   font-size: 1.4rem;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.admin-button {
+  font-size: 1.8rem;
 }
 
 .menu-section {
@@ -111,11 +114,11 @@ body {
 }
 
 .yellow {
-  color: #F0DD31;
+  color: #f0dd31;
 }
 
 .submit-order {
-  background-color: #F0DD31;
+  background-color: #f0dd31;
   color: #000000;
   margin-bottom: 10px;
   margin-left: 8px;

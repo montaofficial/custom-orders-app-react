@@ -66,20 +66,30 @@ class Admin extends Component {
   render() {
     return (
       <div>
+        <div className="fixed-top navbar-home">
+          <inline className="img">
+            <img src="/logo-sham.png" alt="logo sham" />
+          </inline>
+          <inline className="title">
+            CUSTOM <inline className="yellow"> BURGER ORDERS</inline>
+          </inline>
+        </div>
         {this.state.tables.map((table) => (
           <div className="menu-section">
             <div className="menu-section-element">
               Tavolo {table.number}
               {table.orders.map((order) => (
-                <div className="order-section-element">
-                  <inline className="order-section-title">{order.type}</inline>
-                  <inline className="m-1">
-                    {this.handleIngredients(order)}
-                  </inline>
-                  <inline>
-                    <i className="fas fa-check-circle" />
+                <div className="row order-section-element">
+                  <div className="col-auto col-md-3 col-lg-2 order-section-title">
+                    {order.type}
+                  </div>
+                  <div className="col">{this.handleIngredients(order)}</div>
+                  <div className="col-auto admin-button">
+                    <i className="fas fa-check-circle " />
+                  </div>
+                  <div className="col-auto admin-button">
                     <i className="fas fa-times-circle" />
-                  </inline>
+                  </div>
                 </div>
               ))}
             </div>
