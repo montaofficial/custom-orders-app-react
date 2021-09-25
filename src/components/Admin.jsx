@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Order from "./common/order";
 
 class Admin extends Component {
   constructor(props) {
@@ -9,14 +10,23 @@ class Admin extends Component {
           number: 30,
           orders: [
             {
+              _id: "11111111",
+              currentState: "Waiting confirmation",
+              inPreparation: false,
               type: "Burger",
-              ingredients: ["carne", "foglie", "spazzatura", "sangue", "petri"],
+              ingredients: ["carne", "foglie", "spazzatura", "sangue", "canca"],
             },
             {
+              _id: "22222222",
+              currentState: "Waiting confirmation",
+              inPreparation: true,
               type: "Burger",
               ingredients: ["cane", "pane", "sale", "rame", "fame"],
             },
             {
+              _id: "33333333",
+              currentState: "Waiting confirmation",
+              inPreparation: false,
               type: "Appetizer",
               ingredients: ["Nuggets"],
             },
@@ -26,6 +36,9 @@ class Admin extends Component {
           number: 13,
           orders: [
             {
+              _id: "44444444",
+              currentState: "Waiting confirmation",
+              inPreparation: false,
               type: "Burger",
               ingredients: [
                 "salamandra",
@@ -36,10 +49,16 @@ class Admin extends Component {
               ],
             },
             {
+              _id: "55555555",
+              currentState: "Waiting confirmation",
+              inPreparation: false,
               type: "Burger",
               ingredients: ["scusa", "mamma", "non", "torno", "stanotte"],
             },
             {
+              _id: "66666666",
+              currentState: "Waiting confirmation",
+              inPreparation: false,
               type: "Appetizer",
               ingredients: ["Onion rings"],
             },
@@ -49,6 +68,9 @@ class Admin extends Component {
           number: 10,
           orders: [
             {
+              _id: "77777777",
+              currentState: "Deleted",
+              inPreparation: false,
               type: "Burger",
               ingredients: ["mangio", "da", "solo", "cazzo", "piango"],
             },
@@ -63,6 +85,71 @@ class Admin extends Component {
     return elements;
   };
 
+  handleFiltering = (tables, filter) => {
+    let filtered = [];
+    let orders = [];
+    let table = {
+      number: 0,
+      orders: [],
+    };
+    for (let i = 0; i < tables.length; i++) {
+      table = {
+        number: 0,
+        orders: [],
+      };
+      orders = tables[i].orders;
+      orders = orders.filter((order) => order.currentState === filter);
+      table.number = tables[i].number;
+      table.orders = orders;
+      filtered.push(table);
+    }
+    //removing empty table
+    filtered = filtered.filter((table) => table.orders.length > 0);
+    return filtered;
+  };
+
+  handleAction = (order, table, action) => {
+    //Removing current table from all tables
+    let tables = this.state.tables.filter((t) => t.number !== table.number);
+    //Extracting current table from all tables
+    let newTable = this.state.tables.filter((t) => t.number === table.number);
+    //Removing current order from current table
+    let newOrders = newTable[0].orders.filter((o) => o._id !== order._id);
+
+    let newOrder = order;
+    if (
+      newOrder.currentState === "Waiting confirmation" &&
+      action === "confirm"
+    ) {
+      newOrder.currentState = "Confirmed";
+    }
+    if (
+      newOrder.currentState === "Waiting confirmation" &&
+      action === "delete"
+    ) {
+      newOrder.currentState = "Deleted";
+    }
+    if (newOrder.currentState === "Confirmed" && action === "delete") {
+      newOrder.currentState = "Deleted";
+    }
+    if (newOrder.currentState === "Deleted" && action === "confirm") {
+      newOrder.currentState = "Waiting confirmation";
+    }
+
+    newOrders.push(newOrder);
+    newTable[0].orders = newOrders;
+    tables.push(newTable[0]);
+    this.setState({ tables });
+  };
+
+  handleReject = (id) => {
+    console.log(id);
+  };
+
+  handleTitleRendering = (title, numberOfItems) => {
+    if (numberOfItems > 0) return title;
+  };
+
   render() {
     return (
       <div>
@@ -74,30 +161,48 @@ class Admin extends Component {
             CUSTOM <inline className="yellow"> BURGER ORDERS</inline>
           </inline>
         </div>
+
         <div className="admin-container">
-        {this.state.tables.map((table) => (
-          <div className="menu-section">
-            <div className="orders-section">
-              <div className="order-section-title">
-              Tavolo {table.number}
-              </div>
-              {table.orders.map((order) => (
-                <div className="row order-section-element">
-                  <div className="col-auto col-md-3 col-lg-2 order-section-title">
-                    {order.type}
-                  </div>
-                  <div className="col">{this.handleIngredients(order)}</div>
-                  <div className="col-auto admin-button">
-                    <i className="fas fa-check-circle " />
-                  </div>
-                  <div className="col-auto admin-button">
-                    <i className="fas fa-times-circle" />
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div>
+            <h1 className="white">
+              {this.handleTitleRendering(
+                "Waiting confirmation",
+                this.handleFiltering(this.state.tables, "Waiting confirmation")
+                  .length
+              )}
+            </h1>
+            <Order
+              onAction={this.handleAction}
+              tables={this.handleFiltering(
+                this.state.tables,
+                "Waiting confirmation"
+              )}
+            />
           </div>
-        ))}
+          <div>
+            <h1 className="white">
+              {this.handleTitleRendering(
+                "Confirmed",
+                this.handleFiltering(this.state.tables, "Confirmed").length
+              )}
+            </h1>
+            <Order
+              onAction={this.handleAction}
+              tables={this.handleFiltering(this.state.tables, "Confirmed")}
+            />
+          </div>
+          <div>
+            <h1 className="white">
+              {this.handleTitleRendering(
+                "Deleted",
+                this.handleFiltering(this.state.tables, "Deleted").length
+              )}
+            </h1>
+            <Order
+              onAction={this.handleAction}
+              tables={this.handleFiltering(this.state.tables, "Deleted")}
+            />
+          </div>
         </div>
       </div>
     );

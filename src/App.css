@@ -31,6 +31,11 @@ body {
   font-weight: 600;
 }
 
+.fa-disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
 .admin-button {
   font-size: 1.8rem;
 }
@@ -114,6 +119,9 @@ body {
 
 .yellow {
   color: #f0dd31;
+}
+.white {
+  color: #ffffff;
 }
 
 .submit-order {
