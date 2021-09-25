@@ -47,11 +47,13 @@ class Order extends Component {
               <div className="order-section-title">Tavolo {table.number}</div>
               {table.orders.map((order, key2) => (
                 <div className="row order-section-element" key={key2}>
-                  <div className="col-auto col-md-3 col-lg-2 order-section-title">
+                  <div className="col-auto col-md-3  order-section-title">
                     <i className={this.handleIcon(order.type)} />
                     {order.type}
                   </div>
-                  <div className="col">{this.handleIngredients(order)}</div>
+                  <div className="col white">
+                    {this.handleIngredients(order)}
+                  </div>
                   <div className="col-auto">
                     {this.handleInPreparation(order)}
                   </div>
