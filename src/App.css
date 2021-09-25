@@ -116,6 +116,14 @@ body {
   color: #ffffff;
   font-weight: 700;
 }
+.allign-right-title {
+  padding-right: 1rem;
+  padding-top: 0.4rem;
+  font-size: 1.6rem;
+  color: #ffffff;
+  font-weight: 700;
+  text-align: right;
+}
 
 .yellow {
   color: #f0dd31;
