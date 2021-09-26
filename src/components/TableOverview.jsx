@@ -43,7 +43,7 @@ class TableOverview extends Component {
       <div>
         {
             this.state.popup? <>
-            <div id='dialog_base'></div>
+            <div id='dialog_base' onClick={()=>this.setState({popup: null})}></div>
             <div id='dialog_content'>
             <div className="card alert-box">
                 <div className="alert-text">
@@ -90,6 +90,7 @@ class TableOverview extends Component {
             .filter((t) => t.state === "active")
             .map((table, key) => (
               <div className="table-container"
+              key={key}
               onClick={()=>this.setState({popup: table})}>{table.name}</div>
             ))}
           <h1 className="white">Tavoli Chiusi</h1>
@@ -97,6 +98,7 @@ class TableOverview extends Component {
             .filter((t) => t.state === "closed")
             .map((table, key) => (
               <div className="table-container"
+              key={key}
               onClick={()=>this.setState({popup: table})}>{table.name}</div>
             ))}
         </div>
