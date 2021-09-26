@@ -162,6 +162,22 @@ class Admin extends Component {
               tables={this.handleFiltering(this.props.tables, "Deleted")}
             />
           </div>
+          <div>
+            <div className="row">
+              <div className="col-auto">
+                <h1 className="white">Done</h1>
+              </div>
+              <div className="col-auto">
+                <i className="fas fa-sort-up sort-icon-up cursor-pointer"></i>
+              </div>
+            </div>
+
+            <Order
+              page="cassa"
+              onAction={this.handleButtons}
+              tables={this.handleFiltering(this.props.tables, "Done")}
+            />
+          </div>
         </div>
       </div>
     );
