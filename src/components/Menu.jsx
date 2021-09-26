@@ -18,9 +18,8 @@ class Menu extends Component {
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `${this.props?.match?.params?.idRistorante}/menu`
+        baseUrl + `${this.props.idRistorante}/menu`
       );
-      console.log(response.data);
       this.setState({ options: response.data });
     } catch (error) {
       console.error(error);
@@ -42,7 +41,13 @@ class Menu extends Component {
             </div>
             <div className="col">
               <div className="allign-right-title">
-                <i className="fas fa-clipboard-list m-2" />
+                <div>
+                  <i
+                    className="fas fa-clipboard-list m-2"
+                    onClick={() => this.props.onPageChange("table")}
+                  />
+                </div>
+                <div>HELLO</div>
               </div>
             </div>
           </div>
@@ -195,8 +200,7 @@ class Menu extends Component {
 
   async postOrder() {
     const response = await axios.post(
-      baseUrl +
-        `${this.props?.match?.params?.idRistorante}/${this.props?.match?.params?.idTavolo}`,
+      baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
       this.state.order
     );
     console.log(response.data);

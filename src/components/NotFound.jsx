@@ -11,18 +11,12 @@ class NotFound extends Component {
         <h1>Pagina non trovata!</h1>
         <p>Assicurati di scansionare correttamente il QR e non fare scherzi!</p>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="http://192.168.1.84:3000/614d9fb7db2d0588b88a006b/gestione"
-          >
+          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/gestione">
             Gestione
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="http://192.168.1.84:3000/614d9fb7db2d0588b88a006b/34"
-          >
+          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/tavolo">
             Table
           </a>
         </li>

@@ -7,6 +7,7 @@ import Gestione from "./components/Gestione";
 
 import logo from "./logo.svg";
 import "./App.css";
+import Table from "./components/Table";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <div className="container">
         <Switch>
           <Route path="/:idRistorante/gestione" component={Gestione} />
-          <Route path="/:idRistorante/:idTavolo/" component={Menu} />
+          <Route path="/:idRistorante/:idTavolo/" component={Table} />
           <Route path="/">
             <NotFound />
           </Route>
