@@ -38,6 +38,27 @@ class TableOverview extends Component {
       );
   };
 
+  async editOrders(id, state) {
+    try {
+      const response = await axios.post(
+        baseUrl + `tables/${id}`,
+        { state }
+      );
+      console.log(response.data);
+      try {
+        const response = await axios.get(
+          baseUrl + `${this.props.idRistorante}/tables`
+        );
+        console.log(response.data);
+        this.setState({ tables: response.data });
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -48,6 +69,13 @@ class TableOverview extends Component {
             <div className="card alert-box">
                 <div className="alert-text">
                 <h4>{this.state.popup.name}</h4>
+                <div className="alert-button button-small"
+                onClick={()=>{
+                  this.setState({popup: null});
+                  this.editOrders(this.state.popup._id, this.state.popup.state == "active"? "closed": "active");
+                }}>
+                  {this.state.popup.state == "active"? "CHIUDI": "RIATTIVA"} ORDINI
+                </div>
                 {this.img(this.state.popup._id)}
                 </div>
                 <div className="row justify-content-center mt-4">
