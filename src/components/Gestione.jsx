@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Comande from "./Comande";
 import Admin from "./Admin";
 import MrQR from "./MrQR";
+import axios from "axios";
 
 class Gestione extends Component {
   constructor(props) {
@@ -170,7 +171,12 @@ class Gestione extends Component {
         />
       );
     if (this.state.page === "qr")
-      return <MrQR onPageChange={this.handlePageChange} />;
+      return (
+        <MrQR
+          onPageChange={this.handlePageChange}
+          idRistorante={this.props?.match?.params?.idRistorante}
+        />
+      );
   }
 }
 

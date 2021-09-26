@@ -1,17 +1,38 @@
 import React, { Component } from "react";
+import axios from "axios";
+const baseUrl = "https://custom-orders.smontanari.com/api/";
+const frontBaseUrl = "http://192.168.1.84:3000/";
 
 class MrQR extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newTableName: "sganca",
+      newTableName: "",
       newTableId: "",
+      tables: [],
     };
   }
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        baseUrl + `${this.props.idRistorante}/tables`
+      );
+      this.setState({ tables: response.data });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-  handleSubmit = () => {
-    const newTableId = this.state.newTableName;
-    this.setState({ newTableId });
+  handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        baseUrl + `${this.props.idRistorante}/tables`,
+        { name: this.state.newTableName }
+      );
+      this.setState({ newTableId: response.data._id, newTableName: "" });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -27,7 +48,9 @@ class MrQR extends Component {
       return (
         <img
           className="img-fluid rounded qr-image"
-          src={genQrLink(this.state.newTableId)}
+          src={genQrLink(
+            `${frontBaseUrl}${this.props.idRistorante}/${this.state.newTableId}`
+          )}
           alt="qr link"
         />
       );
