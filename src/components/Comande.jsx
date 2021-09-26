@@ -50,7 +50,7 @@ class Comande extends Component {
             <div className="col">
               <div
                 className="allign-right-title"
-                onClick={() => this.props.onPageChange("cassa")}
+                onClick={() => this.props.onPageChange("qr")}
               >
                 <i className="fas fa-utensils m-2" />
                 CUCINA

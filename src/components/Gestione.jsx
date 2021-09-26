@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Comande from "./Comande";
 import Admin from "./Admin";
+import MrQR from "./MrQR";
 
 class Gestione extends Component {
   constructor(props) {
@@ -168,6 +169,8 @@ class Gestione extends Component {
           tables={this.state.tables}
         />
       );
+    if (this.state.page === "qr")
+      return <MrQR onPageChange={this.handlePageChange} />;
   }
 }
 
