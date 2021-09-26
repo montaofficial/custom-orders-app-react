@@ -41,7 +41,7 @@ class Admin extends Component {
     if (numberOfItems > 0) return title;
   };
 
-  handleButtons = async (order, table, action, page) => {
+  handleButtons = async (order, action) => {
     let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
       if (action == "btn1") {
         if (order.currentState == "Deleted") state = "Confirmed";
