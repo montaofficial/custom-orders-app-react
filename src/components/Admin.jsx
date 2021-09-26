@@ -43,22 +43,22 @@ class Admin extends Component {
 
   handleButtons = async (order, action) => {
     let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
-      if (action == "btn1") {
-        if (order.currentState == "Deleted") state = "Confirmed";
-        if (order.currentState == "Waiting confirmation") state = "Confirmed";
-        if (order.currentState == "Confirmed") state = "In preparation";
-        if (order.currentState == "In preparation") state = "Ready";
+    if (action == "btn1") {
+      if (order.currentState == "Deleted") state = "Confirmed";
+      if (order.currentState == "Waiting confirmation") state = "Confirmed";
+      if (order.currentState == "Confirmed") state = "In preparation";
+      if (order.currentState == "In preparation") state = "Ready";
+      if (order.currentState == "Ready") state = "Done";
     }
 
     if (action == "btn2") {
       if (order.currentState == "Waiting confirmation") state = "Deleted";
       if (order.currentState == "Confirmed") state = "Deleted";
-  }
+    }
     try {
-      const response = await axios.post(
-        baseUrl + `orders/${order._id}`,
-        { currentState: state }
-      );
+      const response = await axios.post(baseUrl + `orders/${order._id}`, {
+        currentState: state,
+      });
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -134,6 +134,19 @@ class Admin extends Component {
               page="cassa"
               onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "In preparation")}
+            />
+          </div>
+          <div>
+            <h1 className="white">
+              {this.handleTitleRendering(
+                "Ready",
+                this.handleFiltering(this.props.tables, "Ready").length
+              )}
+            </h1>
+            <Order
+              page="cassa"
+              onAction={this.handleButtons}
+              tables={this.handleFiltering(this.props.tables, "Ready")}
             />
           </div>
           <div>

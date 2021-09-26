@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Order from "./common/Order";
+import axios from "axios";
+const baseUrl = "https://custom-orders.smontanari.com/api/";
 
 class Comande extends Component {
   constructor(props) {
@@ -32,6 +34,29 @@ class Comande extends Component {
 
   handleTitleRendering = (title, numberOfItems) => {
     if (numberOfItems > 0) return title;
+  };
+
+  handleButtons = async (order, action) => {
+    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+    if (action == "btn1") {
+      if (order.currentState == "Deleted") state = "Confirmed";
+      if (order.currentState == "Waiting confirmation") state = "Confirmed";
+      if (order.currentState == "Confirmed") state = "In preparation";
+      if (order.currentState == "In preparation") state = "Ready";
+    }
+
+    if (action == "btn2") {
+      if (order.currentState == "Waiting confirmation") state = "Deleted";
+      if (order.currentState == "Confirmed") state = "Deleted";
+    }
+    try {
+      const response = await axios.post(baseUrl + `orders/${order._id}`, {
+        currentState: state,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render() {
@@ -71,7 +96,7 @@ class Comande extends Component {
             </h1>
             <Order
               page="cucina"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "Confirmed")}
             />
           </div>
@@ -84,7 +109,7 @@ class Comande extends Component {
             </h1>
             <Order
               page="cucina"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "In preparation")}
             />
           </div>
@@ -97,7 +122,7 @@ class Comande extends Component {
             </h1>
             <Order
               page="cucina"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "Ready")}
             />
           </div>

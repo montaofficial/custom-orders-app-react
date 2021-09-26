@@ -4,8 +4,77 @@ import Order from "./common/Order";
 class tableOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { orders: [] };
   }
+
+  checkIfMounted() {
+    return this.mounted;
+  }
+
+  componentDidMount() {
+    this.mounted = true;
+    this.connect();
+  }
+
+  connect() {
+    this.ws = new WebSocket(
+      "wss://custom-orders.smontanari.com/api/orders/" +
+        this.props.idRistorante +
+        "/" +
+        this.props.idTavolo
+    );
+    this.ws.onopen = () => {
+      console.log("wss connected!");
+    };
+
+    this.ws.onmessage = (e) => {
+      let body = {};
+      try {
+        body = JSON.parse(e.data);
+        console.log(body);
+      } catch (e) {
+        console.log(e.message);
+      }
+
+      if (!body) return console.log("Empty JSON!!!");
+
+      if (body.shape == "custom-orders.v1.orders") {
+        console.log("Updated!");
+
+        this.setState({ orders: body.orders });
+      }
+    };
+
+    this.ws.onclose = (e) => {
+      console.log(
+        "Socket is closed. Reconnect will be attempted in 1 second.",
+        e.reason
+      );
+      if (!this.checkIfMounted()) return this.componentWillUnmount();
+      setTimeout(() => {
+        this.connect();
+      }, 1000);
+    };
+
+    this.ws.onerror = (err) => {
+      console.error(
+        "Socket encountered error: ",
+        err.message,
+        "Closing socket"
+      );
+    };
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+    this.ws.onclose = (e) => {
+      console.log("Socket is safely closed.", e.reason);
+    };
+    this.ws.close();
+
+    if (this.interval) clearInterval(this.interval);
+  }
+
   render() {
     return (
       <div>
@@ -33,7 +102,16 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
-          <h1 className="white">Ordini tavolo {this.props.idTavolo}</h1>
+          {this.state.orders.length ? (
+            <Order
+              tables={[
+                {
+                  number: this.state.orders[0].tableName,
+                  orders: this.state.orders,
+                },
+              ]}
+            />
+          ) : null}
         </div>
       </div>
     );

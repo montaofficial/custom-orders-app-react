@@ -19,6 +19,7 @@ class Table extends Component {
     if (this.state.page === "table")
       return (
         <TableOrders
+          idRistorante={this.props?.match?.params?.idRistorante}
           idTavolo={this.props?.match?.params?.idTavolo}
           onPageChange={this.handlePageChange}
         />

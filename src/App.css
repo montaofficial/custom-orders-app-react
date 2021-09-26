@@ -36,6 +36,10 @@ body {
   cursor: not-allowed;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .admin-button {
   font-size: 1.8rem;
 }
@@ -163,4 +167,11 @@ body {
 
 .qr-image {
   margin-top: 50px;
+}
+
+.table-container {
+  background-color: black;
+  color: #f0dd31;
+  padding: 6px 16px;
+  margin: 10px 0px;
 }

@@ -120,6 +120,7 @@ class Gestione extends Component {
     if (this.state.page === "tavoli")
       return (
         <TableOverview
+          idRistorante={this.props?.match?.params?.idRistorante}
           onPageChange={this.handlePageChange}
           tables={this.state.tables}
         />
