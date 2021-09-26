@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Order from "./common/Order";
+import axios from "axios";
+const baseUrl = "https://custom-orders.smontanari.com/api/";
 
 class Admin extends Component {
   constructor(props) {
@@ -37,6 +39,30 @@ class Admin extends Component {
 
   handleTitleRendering = (title, numberOfItems) => {
     if (numberOfItems > 0) return title;
+  };
+
+  handleButtons = async (order, table, action, page) => {
+    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+      if (action == "btn1") {
+        if (order.currentState == "Deleted") state = "Confirmed";
+        if (order.currentState == "Waiting confirmation") state = "Confirmed";
+        if (order.currentState == "Confirmed") state = "In preparation";
+        if (order.currentState == "In preparation") state = "Ready";
+    }
+
+    if (action == "btn2") {
+      if (order.currentState == "Waiting confirmation") state = "Deleted";
+      if (order.currentState == "Confirmed") state = "Deleted";
+  }
+    try {
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        { currentState: state }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render() {
@@ -77,7 +103,7 @@ class Admin extends Component {
             </h1>
             <Order
               page="cassa"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(
                 this.props.tables,
                 "Waiting confirmation"
@@ -93,7 +119,7 @@ class Admin extends Component {
             </h1>
             <Order
               page="cassa"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "Confirmed")}
             />
           </div>
@@ -106,7 +132,7 @@ class Admin extends Component {
             </h1>
             <Order
               page="cassa"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "In preparation")}
             />
           </div>
@@ -119,7 +145,7 @@ class Admin extends Component {
             </h1>
             <Order
               page="cassa"
-              onAction={this.props.onAction}
+              onAction={this.handleButtons}
               tables={this.handleFiltering(this.props.tables, "Deleted")}
             />
           </div>

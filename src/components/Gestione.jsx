@@ -85,70 +85,6 @@ componentWillUnmount() {
    if (this.interval) clearInterval(this.interval);
 }
 
-  handleAction = (order, table, action, page) => {
-    //Removing current table from all tables
-    let tables = this.state.tables.filter((t) => t.number !== table.number);
-    //Extracting current table from all tables
-    let newTable = this.state.tables.filter((t) => t.number === table.number);
-    //Removing current order from current table
-    let newOrders = newTable[0].orders.filter((o) => o._id !== order._id);
-
-    let newOrder = order;
-    //Handleing commands from CASSA
-    if (
-      newOrder.currentState === "Waiting confirmation" &&
-      action === "confirm" &&
-      page === "cassa"
-    ) {
-      newOrder.currentState = "Confirmed";
-      console.log("confirmed");
-    }
-    if (
-      newOrder.currentState === "Waiting confirmation" &&
-      action === "delete" &&
-      page === "cassa"
-    ) {
-      newOrder.currentState = "Deleted";
-    }
-
-    if (
-      newOrder.currentState === "Confirmed" &&
-      action === "delete" &&
-      page === "cassa"
-    ) {
-      newOrder.currentState = "Deleted";
-    }
-
-    if (
-      newOrder.currentState === "Deleted" &&
-      action === "confirm" &&
-      page === "cassa"
-    ) {
-      newOrder.currentState = "Waiting confirmation";
-    }
-
-    //Handleing commands from CASSA
-    if (
-      newOrder.currentState === "Confirmed" &&
-      action === "confirm" &&
-      page === "cucina"
-    ) {
-      console.log("in preparation");
-      newOrder.currentState = "In preparation";
-    }
-    if (
-      newOrder.currentState === "preparation" &&
-      action === "confirm" &&
-      page === "cucina"
-    ) {
-      newOrder.currentState = "Ready";
-    }
-
-    newOrders.push(newOrder);
-    newTable[0].orders = newOrders;
-    tables.push(newTable[0]);
-    this.setState({ tables });
-  };
 
   handlePageChange = (p) => {
     let page = p;
@@ -159,7 +95,6 @@ componentWillUnmount() {
       return (
         <Admin
           onPageChange={this.handlePageChange}
-          onAction={this.handleAction}
           tables={this.state.tables}
         />
       );
@@ -167,7 +102,6 @@ componentWillUnmount() {
       return (
         <Comande
           onPageChange={this.handlePageChange}
-          onAction={this.handleAction}
           tables={this.state.tables}
         />
       );
