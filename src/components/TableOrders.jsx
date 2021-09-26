@@ -10,7 +10,7 @@ class tableOrders extends Component {
     return (
       <div>
         <div className="fixed-top navbar-home">
-        <div className="row justify-content-between">
+          <div className="row justify-content-between">
             <div className="col-auto">
               <inline className="img">
                 <img src="/logo-sham.png" alt="logo sham" />

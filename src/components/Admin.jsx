@@ -43,22 +43,24 @@ class Admin extends Component {
     return (
       <div>
         <div className="fixed-top navbar-home">
-          <div className="row">
+          <div className="row justify-content-between">
             <div className="col-auto">
               <inline className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
               </inline>
               <inline className="title">
-                CUSTOM <inline className="yellow"> BURGER ORDERS</inline>
+                BURGER <inline className="yellow">ORDERS</inline>
               </inline>
             </div>
-            <div className="col">
-              <div
-                className="allign-right-title"
-                onClick={() => this.props.onPageChange("cucina")}
-              >
-                <i className="fas fa-cash-register m-2" />
-                CASSA
+            <div
+              className="col-auto"
+              onClick={() => this.props.onPageChange("cucina")}
+            >
+              <div className="allign-right-title">
+                <div className="menu-icon">
+                  <i className="fas fa-cash-register" />
+                </div>
+                <div className="menu-subtitle">CASSA</div>
               </div>
             </div>
           </div>

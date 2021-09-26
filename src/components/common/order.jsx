@@ -11,11 +11,6 @@ class Order extends Component {
     return elements;
   };
 
-  handleInPreparation = (order) => {
-    if (order.inPreparation === true && this.props.page === "cassa")
-      return "In preparation";
-  };
-
   handleConfirmButton = (order) => {
     if (order.currentState === "Confirmed" && this.props.page === "cassa")
       return "fas fa-check-circle fa-disabled";
@@ -46,42 +41,43 @@ class Order extends Component {
             <div className="orders-section">
               <div className="order-section-title">Tavolo {table.number}</div>
               {table.orders.map((order, key2) => (
-                <div className="row order-section-element" key={key2}>
-                  <div className="col-auto col-md-3  order-section-title">
-                    <i className={this.handleIcon(order.type)} />
-                    {order.type}
+                <div className="order-section-element">
+                  <div className="row justify-content-between" key={key2}>
+                    <div className="col-auto col-md-3  order-section-title">
+                      <i className={this.handleIcon(order.type)} />
+                      {order.type}
+                    </div>
+                    <div className="col-auto row">
+                      <div className="col admin-button">
+                        <i
+                          className={this.handleConfirmButton(order)}
+                          onClick={() =>
+                            this.props.onAction(
+                              order,
+                              table,
+                              "confirm",
+                              this.props.page
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="col admin-button">
+                        <i
+                          className={this.handleDeleteButton(order)}
+                          onClick={() =>
+                            this.props.onAction(
+                              order,
+                              table,
+                              "delete",
+                              this.props.page
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col white">
                     {this.handleIngredients(order)}
-                  </div>
-                  <div className="col-auto">
-                    {this.handleInPreparation(order)}
-                  </div>
-                  <div className="col-auto admin-button">
-                    <i
-                      className={this.handleConfirmButton(order)}
-                      onClick={() =>
-                        this.props.onAction(
-                          order,
-                          table,
-                          "confirm",
-                          this.props.page
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="col-auto admin-button">
-                    <i
-                      className={this.handleDeleteButton(order)}
-                      onClick={() =>
-                        this.props.onAction(
-                          order,
-                          table,
-                          "delete",
-                          this.props.page
-                        )
-                      }
-                    />
                   </div>
                 </div>
               ))}

@@ -158,5 +158,9 @@ body {
 
 .menu-subtitle {
   text-align: center;
-  font-size: .9rem;
+  font-size: 0.9rem;
+}
+
+.qr-image {
+  margin-top: 50px;
 }
