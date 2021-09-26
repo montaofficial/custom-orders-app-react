@@ -33,11 +33,17 @@ class MrQR extends Component {
 
           <div className="admin-container">
             <h1 className="white">Crea nuovo tavolo</h1>
+
+            <img className="img-fluid rounded" src={genQrLink("https://google.com/")} alt="qr link" />
           </div>
         </div>
       </div>
     );
   }
+}
+
+function genQrLink (link) {
+  return `https://image-charts.com/chart?chs=900x900&cht=qr&choe=UTF-8&chl=${encodeURIComponent(link)}`
 }
 
 export default MrQR;
