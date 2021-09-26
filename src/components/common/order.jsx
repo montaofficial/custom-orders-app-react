@@ -52,12 +52,7 @@ class Order extends Component {
                         <i
                           className={this.handleConfirmButton(order)}
                           onClick={() =>
-                            this.props.onAction(
-                              order,
-                              table,
-                              "confirm",
-                              this.props.page
-                            )
+                            this.props.onAction(order, "btn1", this.props.page)
                           }
                         />
                       </div>
@@ -65,12 +60,7 @@ class Order extends Component {
                         <i
                           className={this.handleDeleteButton(order)}
                           onClick={() =>
-                            this.props.onAction(
-                              order,
-                              table,
-                              "delete",
-                              this.props.page
-                            )
+                            this.props.onAction(order, "btn2", this.props.props)
                           }
                         />
                       </div>
