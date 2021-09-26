@@ -104,6 +104,7 @@ class tableOrders extends Component {
         <div className="admin-container">
           {this.state.orders.length ? (
             <Order
+              page="tableOrders"
               tables={[
                 {
                   number: this.state.orders[0].tableName,

@@ -89,6 +89,10 @@ class Order extends Component {
                     <div className="col-auto col-md-3  order-section-title">
                       <i className={this.handleIcon(order.type)} />
                       {order.type}
+                      {this.state.page === "cassa" ||
+                      this.state.page === "tableOrders"
+                        ? " - " + order.price + "  €"
+                        : null}
                     </div>
                     <div className="col-auto row">
                       {this.handleConfirmButton(order) ? (
