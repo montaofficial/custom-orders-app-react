@@ -9,80 +9,81 @@ class Gestione extends Component {
     super(props);
     this.state = {
       page: "cassa",
-      tables: [
-        {
-          number: 30,
-          orders: [
-            {
-              _id: "11111111",
-              currentState: "Waiting confirmation",
-              inPreparation: false,
-              type: "Burger",
-              ingredients: ["carne", "foglie", "spazzatura", "sangue", "canca"],
-            },
-            {
-              _id: "22222222",
-              currentState: "Waiting confirmation",
-              inPreparation: true,
-              type: "Burger",
-              ingredients: ["cane", "pane", "sale", "rame", "fame"],
-            },
-            {
-              _id: "33333333",
-              currentState: "In preparation",
-              inPreparation: false,
-              type: "Appetizer",
-              ingredients: ["Nuggets"],
-            },
-          ],
-        },
-        {
-          number: 13,
-          orders: [
-            {
-              _id: "44444444",
-              currentState: "Waiting confirmation",
-              inPreparation: false,
-              type: "Burger",
-              ingredients: [
-                "salamandra",
-                "catrame",
-                "salsa",
-                "droga",
-                "sigarette",
-              ],
-            },
-            {
-              _id: "55555555",
-              currentState: "Waiting confirmation",
-              inPreparation: false,
-              type: "Burger",
-              ingredients: ["scusa", "mamma", "non", "torno", "stanotte"],
-            },
-            {
-              _id: "66666666",
-              currentState: "Waiting confirmation",
-              inPreparation: false,
-              type: "Appetizer",
-              ingredients: ["Onion rings"],
-            },
-          ],
-        },
-        {
-          number: 10,
-          orders: [
-            {
-              _id: "77777777",
-              currentState: "Deleted",
-              inPreparation: false,
-              type: "Burger",
-              ingredients: ["mangio", "da", "solo", "cazzo", "piango"],
-            },
-          ],
-        },
-      ],
+      tables: [],
     };
   }
+
+  checkIfMounted() {
+    return this.mounted
+ }
+
+componentDidMount() {
+    this.mounted=true;
+    this.connect()
+}
+
+connect() {
+  this.ws = new WebSocket('wss://custom-orders.smontanari.com/api/orders/' + this.props?.match?.params?.idRistorante);
+  this.ws.onopen = ()=> {
+    console.log("wss connected!");
+  };
+
+  this.ws.onmessage = (e)=> {
+      let body = {};
+      try {
+          body = JSON.parse(e.data);
+          console.log(body)
+      } catch (e) { console.log(e.message)}
+
+      if (!body) return console.log("Empty JSON!!!")
+
+      if (body.shape == "custom-orders.v1.orders") {
+          console.log('Updated!');
+
+          let tableObject = {};
+          let tables = [];
+
+          for (let order of body.orders) {
+            if (!tableObject[order.table]) tableObject[order.table] = {
+              number: order.tableName,
+              id: order.table,
+              orders: []
+            };
+
+            tableObject[order.table].orders.push(order);
+          }
+
+          for (let tableId in tableObject) {
+            tables.push(tableObject[tableId]);
+          }
+          
+          this.setState({tables});
+      }
+      
+  };
+
+  this.ws.onclose = (e)=> {
+      console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+      if (!this.checkIfMounted()) return this.componentWillUnmount();
+      setTimeout(()=> {
+        this.connect();
+      }, 1000);
+    };
+
+  this.ws.onerror = (err)=> {
+    console.error('Socket encountered error: ', err.message, 'Closing socket');
+  };
+}
+
+componentWillUnmount() {
+  this.mounted=false;
+  this.ws.onclose = (e)=> {
+      console.log('Socket is safely closed.', e.reason);
+    };
+   this.ws.close();
+
+   if (this.interval) clearInterval(this.interval);
+}
 
   handleAction = (order, table, action, page) => {
     //Removing current table from all tables
