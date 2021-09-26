@@ -10,7 +10,7 @@ class tableOrders extends Component {
     return (
       <div>
         <div className="fixed-top navbar-home">
-          <div className="row">
+        <div className="row justify-content-between">
             <div className="col-auto">
               <inline className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
@@ -19,12 +19,15 @@ class tableOrders extends Component {
                 CREA IL <inline className="yellow"> TUO BURGER</inline>
               </inline>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="allign-right-title">
-                <i
-                  className="fas fa-clipboard-list m-2"
-                  onClick={() => this.props.onPageChange("menu")}
-                />
+                <div className="menu-icon">
+                  <i
+                    className="fas fa-clipboard-list"
+                    onClick={() => this.props.onPageChange("menu")}
+                  />
+                </div>
+                <div className="menu-subtitle">MENU</div>
               </div>
             </div>
           </div>

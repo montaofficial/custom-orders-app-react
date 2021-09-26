@@ -118,7 +118,7 @@ body {
 }
 .allign-right-title {
   padding-right: 1rem;
-  padding-top: 0.4rem;
+  padding-top: 0.1rem;
   font-size: 1.6rem;
   color: #ffffff;
   font-weight: 700;
@@ -149,4 +149,14 @@ body {
 
 .navbar-home .title {
   font-size: larger;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.menu-subtitle {
+  text-align: center;
+  font-size: .9rem;
 }

@@ -30,7 +30,7 @@ class Menu extends Component {
     return (
       <>
         <div className="fixed-top navbar-home">
-          <div className="row">
+          <div className="row justify-content-between">
             <div className="col-auto">
               <inline className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
@@ -39,15 +39,15 @@ class Menu extends Component {
                 CREA IL <inline className="yellow"> TUO BURGER</inline>
               </inline>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="allign-right-title">
-                <div>
+                <div className="menu-icon">
                   <i
-                    className="fas fa-clipboard-list m-2"
+                    className="fas fa-clipboard-list"
                     onClick={() => this.props.onPageChange("table")}
                   />
                 </div>
-                <div>HELLO</div>
+                <div className="menu-subtitle">ORDINI</div>
               </div>
             </div>
           </div>
