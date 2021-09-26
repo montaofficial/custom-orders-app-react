@@ -175,3 +175,90 @@ body {
   padding: 6px 16px;
   margin: 10px 0px;
 }
+
+/* POPUP SECTION */
+
+#dialog_base{
+  background:white;
+  background:rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+  height: 100%;
+  width: 100%;
+
+  backdrop-filter: blur(2px);
+}
+
+#dialog_content{
+  position: fixed; 
+  left: 0; 
+  right: 0;
+  top:30vh;
+  margin-left: auto; 
+  margin-right: auto; 
+  width: 480px; /* Need a specific value to work */
+  overflow: hidden;
+  z-index: 5001;
+}
+
+
+.alert-box {
+  color: #ffffff;
+  background-color: black;
+  border: solid 1px #f0dd31;
+  padding: 38px 18px;
+  border-radius: 12px;
+
+}
+
+.alert-text {
+  text-align: center;
+}
+
+.alert-button {
+  text-align: center;
+  background-color: #f0dd31;
+  color: black;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: 12px 26px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.alert-button:hover {
+  transform: scale(1.03);
+  color: black;
+  border-color: #f0dd31;
+    box-shadow: 0 0 20px #f0dd31;
+}
+
+@media only screen and (max-width: 590px) {
+  #dialog_content{
+    width: 400px;
+  }
+}
+
+@media only screen and (max-width: 482px) {
+  #dialog_content{
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 382px) {
+  #dialog_content{
+    width: 320px;
+  }
+}
+  @media only screen and (max-width: 330px) {
+    #dialog_content{
+      width: 280px;
+    }
+  }
+/* END POPUP SECTION */
+
+.invert-img {
+  filter: invert();
+}
