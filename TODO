@@ -5,4 +5,5 @@ ADMIN /id_ristorante/cassa/
 CUCINA /id_ristorante/comande/
 
 
-1. react-router-dom
+1. Far funzionare tendine.
+2. mostrare ingredienti dei crostoni.
