@@ -47,7 +47,7 @@ class MrQR extends Component {
     else
       return (
         <img
-          className="img-fluid rounded qr-image"
+          className="img-fluid invert-img rounded qr-image"
           src={genQrLink(
             `${frontBaseUrl}${this.props.idRistorante}/${this.state.newTableId}`
           )}
