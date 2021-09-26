@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Comande from "./Comande";
 import Admin from "./Admin";
 import MrQR from "./MrQR";
+import TableOverview from "./TableOverview";
 import axios from "axios";
 
 class Gestione extends Component {
@@ -14,77 +15,88 @@ class Gestione extends Component {
   }
 
   checkIfMounted() {
-    return this.mounted
- }
+    return this.mounted;
+  }
 
-componentDidMount() {
-    this.mounted=true;
-    this.connect()
-}
+  componentDidMount() {
+    this.mounted = true;
+    this.connect();
+  }
 
-connect() {
-  this.ws = new WebSocket('wss://custom-orders.smontanari.com/api/orders/' + this.props?.match?.params?.idRistorante);
-  this.ws.onopen = ()=> {
-    console.log("wss connected!");
-  };
+  connect() {
+    this.ws = new WebSocket(
+      "wss://custom-orders.smontanari.com/api/orders/" +
+        this.props?.match?.params?.idRistorante
+    );
+    this.ws.onopen = () => {
+      console.log("wss connected!");
+    };
 
-  this.ws.onmessage = (e)=> {
+    this.ws.onmessage = (e) => {
       let body = {};
       try {
-          body = JSON.parse(e.data);
-          console.log(body)
-      } catch (e) { console.log(e.message)}
+        body = JSON.parse(e.data);
+        console.log(body);
+      } catch (e) {
+        console.log(e.message);
+      }
 
-      if (!body) return console.log("Empty JSON!!!")
+      if (!body) return console.log("Empty JSON!!!");
 
       if (body.shape == "custom-orders.v1.orders") {
-          console.log('Updated!');
+        console.log("Updated!");
 
-          let tableObject = {};
-          let tables = [];
+        let tableObject = {};
+        let tables = [];
 
-          for (let order of body.orders) {
-            if (!tableObject[order.table]) tableObject[order.table] = {
+        for (let order of body.orders) {
+          if (!tableObject[order.table])
+            tableObject[order.table] = {
               number: order.tableName,
               id: order.table,
-              orders: []
+              orders: [],
             };
 
-            tableObject[order.table].orders.push(order);
-          }
+          tableObject[order.table].orders.push(order);
+        }
 
-          for (let tableId in tableObject) {
-            tables.push(tableObject[tableId]);
-          }
-          
-          this.setState({tables});
+        for (let tableId in tableObject) {
+          tables.push(tableObject[tableId]);
+        }
+
+        this.setState({ tables });
       }
-      
-  };
+    };
 
-  this.ws.onclose = (e)=> {
-      console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+    this.ws.onclose = (e) => {
+      console.log(
+        "Socket is closed. Reconnect will be attempted in 1 second.",
+        e.reason
+      );
       if (!this.checkIfMounted()) return this.componentWillUnmount();
-      setTimeout(()=> {
+      setTimeout(() => {
         this.connect();
       }, 1000);
     };
 
-  this.ws.onerror = (err)=> {
-    console.error('Socket encountered error: ', err.message, 'Closing socket');
-  };
-}
-
-componentWillUnmount() {
-  this.mounted=false;
-  this.ws.onclose = (e)=> {
-      console.log('Socket is safely closed.', e.reason);
+    this.ws.onerror = (err) => {
+      console.error(
+        "Socket encountered error: ",
+        err.message,
+        "Closing socket"
+      );
     };
-   this.ws.close();
+  }
 
-   if (this.interval) clearInterval(this.interval);
-}
+  componentWillUnmount() {
+    this.mounted = false;
+    this.ws.onclose = (e) => {
+      console.log("Socket is safely closed.", e.reason);
+    };
+    this.ws.close();
 
+    if (this.interval) clearInterval(this.interval);
+  }
 
   handlePageChange = (p) => {
     let page = p;
@@ -101,6 +113,13 @@ componentWillUnmount() {
     if (this.state.page === "cucina")
       return (
         <Comande
+          onPageChange={this.handlePageChange}
+          tables={this.state.tables}
+        />
+      );
+    if (this.state.page === "tavoli")
+      return (
+        <TableOverview
           onPageChange={this.handlePageChange}
           tables={this.state.tables}
         />

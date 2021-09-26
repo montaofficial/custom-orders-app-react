@@ -49,7 +49,7 @@ class Comande extends Component {
             </div>
             <div
               className="col-auto"
-              onClick={() => this.props.onPageChange("qr")}
+              onClick={() => this.props.onPageChange("tavoli")}
             >
               <div className="allign-right-title">
                 <div className="menu-icon">
