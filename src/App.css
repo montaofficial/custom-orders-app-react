@@ -290,6 +290,12 @@ body {
   padding-left: 0;
 }
 
+.tuttoassinistra {
+  padding-right: 0;
+  padding-left: 0;
+  margin-top: 6px;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

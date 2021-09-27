@@ -85,9 +85,9 @@ class Order extends Component {
                 return (
                   <div className="order-section-element">
                     <div className="row justify-content-between" key={key2}>
-                      <div className="col-auto   order-section-title">
+                      <div className="col-auto order-section-title">
                         <i className={this.handleIcon(order.type)} />
-                        {order.type}{" "}
+                        {order.type}
                         <span className="badge rounded-pill bg-success price-badge">
                           {this.state.page === "cassa" ||
                           (this.state.page === "tableOrders" &&
@@ -96,7 +96,7 @@ class Order extends Component {
                             : null}
                         </span>
                       </div>
-                      <div className="col-auto row">
+                      <div className="col-auto row justify-content-end">
                         {button1 ? (
                           <div className="col-auto admin-button">
                             <div className="menu-icon">

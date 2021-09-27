@@ -161,14 +161,10 @@ class Admin extends Component {
               <div className="col-auto">
                 <h1 className="white">Deleted</h1>
               </div>
-              <div className="col-auto cursor-pointer ">
-                <i
-                  className={
-                    this.state.showDeleted
-                      ? "fas fa-sort-up sort-icon-up"
-                      : "fas fa-sort-down sort-icon-down"
-                  }
-                ></i>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showDeleted ? "[nascondi]" : "[mostra]"}
+                </div>
               </div>
             </div>
             {this.state.showDeleted ? (
@@ -187,14 +183,10 @@ class Admin extends Component {
               <div className="col-auto">
                 <h1 className="white">Done</h1>
               </div>
-              <div className="col-auto cursor-pointer ">
-                <i
-                  className={
-                    this.state.showDone
-                      ? "fas fa-sort-up sort-icon-up"
-                      : "fas fa-sort-down sort-icon-down"
-                  }
-                ></i>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showDone ? "[nascondi]" : "[mostra]"}
+                </div>
               </div>
             </div>
             {this.state.showDone ? (
