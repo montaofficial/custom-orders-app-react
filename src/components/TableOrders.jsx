@@ -78,10 +78,11 @@ class tableOrders extends Component {
   }
 
   handleButtons = async (order, action) => {
-    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Done", "Deleted", "Deleted by Customer"
 
     if (action == "btn2") {
-      if (order.currentState == "Waiting confirmation") state = "Deleted";
+      if (order.currentState == "Waiting confirmation")
+        state = "Deleted by Customer";
       console.log(state);
     }
     try {
@@ -129,7 +130,9 @@ class tableOrders extends Component {
                 {
                   number: this.state.orders[0].tableName,
                   orders: this.state.orders.filter(
-                    (order) => order.currentState !== "Deleted"
+                    (order) =>
+                      order.currentState !== "Deleted" &&
+                      order.currentState !== "Deleted by Customer"
                   ),
                 },
               ]}
