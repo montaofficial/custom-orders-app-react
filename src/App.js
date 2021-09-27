@@ -12,7 +12,7 @@ import Table from "./components/Table";
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div className="container noselect">
         <Switch>
           <Route path="/:idRistorante/gestione" component={Gestione} />
           <Route path="/:idRistorante/:idTavolo/" component={Table} />
