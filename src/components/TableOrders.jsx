@@ -122,7 +122,7 @@ class tableOrders extends Component {
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
-                <div className="col-auto">
+                <div className="col-auto tuttoaddestra">
                   <div className="menu-icon">
                     <i
                       className="fas fa-user-plus"
