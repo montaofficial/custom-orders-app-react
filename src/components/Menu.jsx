@@ -229,6 +229,7 @@ class Menu extends Component {
       this.state.order
     );
     console.log(response.data);
+    this.props.onPageChange("table");
     this.setState({
       order: [],
       popup: false,
