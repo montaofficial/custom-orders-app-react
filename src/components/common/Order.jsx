@@ -36,6 +36,14 @@ class Order extends Component {
       cl = "fas fa-check-circle cursor-pointer";
       text = "Consegnati";
     }
+    if (state === "In preparation" && page === "tableOrders") {
+      cl = "fas fa-bacon";
+      text = "In preparazione";
+    }
+    if (state === "Ready" && page === "tableOrders") {
+      cl = "fas fa-check-circle";
+      text = "Pronto";
+    }
 
     return [cl, text];
   };
@@ -96,7 +104,7 @@ class Order extends Component {
                             : null}
                         </span>
                       </div>
-                      <div className="col-auto row justify-content-end">
+                      <div className="col-auto row justify-content">
                         {button1 ? (
                           <div className="col-auto admin-button">
                             <div className="menu-icon">
