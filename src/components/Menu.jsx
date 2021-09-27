@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import QrCode from "./common/QrCode";
 const axios = require("axios");
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 
@@ -12,6 +13,8 @@ class Menu extends Component {
       update: false,
       popup: false,
       canConfirm: false,
+
+      table: null,
     };
   }
 
@@ -26,9 +29,20 @@ class Menu extends Component {
     }
   }
 
+  handleQrCode = () => {
+    this.setState({ table: { _id: this.props.idTavolo, name: "Scansiona" } });
+  };
+
   render() {
     return (
       <>
+        <QrCode
+          onClose={() => {
+            this.setState({ table: null });
+          }}
+          table={this.state.table}
+          idRistorante={this.props.idRistorante}
+        />
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
@@ -39,15 +53,26 @@ class Menu extends Component {
                 CREA IL <inline className="yellow"> TUO BURGER</inline>
               </inline>
             </div>
-            <div className="col-auto">
-              <div className="allign-right-title">
-                <div className="menu-icon">
-                  <i
-                    className="fas fa-clipboard-list"
-                    onClick={() => this.props.onPageChange("table")}
-                  />
+            <div className="col-auto allign-right-title">
+              <div className="row">
+                <div className="col-auto">
+                  <div className="menu-icon">
+                    <i
+                      className="fas fa-user-plus"
+                      onClick={() => this.handleQrCode()}
+                    />
+                  </div>
+                  <div className="menu-subtitle">QR</div>
                 </div>
-                <div className="menu-subtitle">ORDINI</div>
+                <div className="col-auto">
+                  <div className="menu-icon">
+                    <i
+                      className="fas fa-clipboard-list"
+                      onClick={() => this.props.onPageChange("table")}
+                    />
+                  </div>
+                  <div className="menu-subtitle">ORDINI</div>
+                </div>
               </div>
             </div>
           </div>

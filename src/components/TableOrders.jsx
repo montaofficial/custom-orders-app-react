@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import Order from "./common/Order";
+import QrCode from "./common/QrCode";
 import axios from "axios";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 
 class tableOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = { orders: [] };
+    this.state = { orders: [], table: null };
   }
 
   checkIfMounted() {
@@ -95,9 +96,20 @@ class tableOrders extends Component {
     }
   };
 
+  handleQrCode = () => {
+    this.setState({ table: { _id: this.props.idTavolo, name: "Scansiona" } });
+  };
+
   render() {
     return (
-      <div>
+      <>
+        <QrCode
+          onClose={() => {
+            this.setState({ table: null });
+          }}
+          table={this.state.table}
+          idRistorante={this.props.idRistorante}
+        />
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
@@ -108,15 +120,26 @@ class tableOrders extends Component {
                 CREA IL <inline className="yellow"> TUO BURGER</inline>
               </inline>
             </div>
-            <div className="col-auto">
-              <div className="allign-right-title">
-                <div className="menu-icon">
-                  <i
-                    className="fas fa-clipboard-list"
-                    onClick={() => this.props.onPageChange("menu")}
-                  />
+            <div className="col-auto allign-right-title">
+              <div className="row">
+                <div className="col-auto">
+                  <div className="menu-icon">
+                    <i
+                      className="fas fa-user-plus"
+                      onClick={() => this.handleQrCode()}
+                    />
+                  </div>
+                  <div className="menu-subtitle">QR</div>
                 </div>
-                <div className="menu-subtitle">MENU</div>
+                <div className="col-auto">
+                  <div className="menu-icon">
+                    <i
+                      className="fas fa-clipboard-list"
+                      onClick={() => this.props.onPageChange("menu")}
+                    />
+                  </div>
+                  <div className="menu-subtitle">MENU</div>
+                </div>
               </div>
             </div>
           </div>
@@ -139,7 +162,7 @@ class tableOrders extends Component {
             />
           ) : null}
         </div>
-      </div>
+      </>
     );
   }
 }

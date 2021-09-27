@@ -115,7 +115,7 @@ body {
 }
 
 .navbar-home .title {
-  padding-left: 14px;
+  padding-left: 8px;
   font-size: 1.6rem;
   color: #ffffff;
   font-weight: 700;
@@ -267,12 +267,10 @@ body {
 }
 
 .admin-button .menu-icon {
-
   font-size: 1.8rem;
-
 }
 
 .admin-button .menu-subtitle {
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
