@@ -41,6 +41,7 @@ body {
 }
 
 .admin-button {
+  padding: 0px;
   font-size: 1.8rem;
 }
 

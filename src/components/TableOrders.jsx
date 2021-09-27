@@ -44,7 +44,7 @@ class tableOrders extends Component {
       if (body.shape == "custom-orders.v1.orders") {
         console.log("Updated!");
 
-        this.setState({ orders: body.orders });
+        this.setState({ orders: body.orders.reverse() });
       }
     };
 

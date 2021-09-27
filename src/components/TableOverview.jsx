@@ -80,11 +80,13 @@ class TableOverview extends Component {
             .filter((t) => t.state === "closed")
             .map((table, key) => (
               <div
-                className="table-container"
+                className="row justify-content-between table-container "
                 key={key}
                 onClick={() => this.setState({ popup: table })}
               >
-                {table.name}
+                <div className="col-auto">
+                  <h1 className="yellow">{table.name}</h1>
+                </div>
               </div>
             ))}
         </div>
