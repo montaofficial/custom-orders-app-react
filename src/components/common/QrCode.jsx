@@ -67,8 +67,8 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
                     <div
                     className="alert-button button-small"
                     onClick={() => {
-                      this.props.onClose();
-                      this.copy(`${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`)
+                        this.copy(`${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`)
+                        this.props.onClose()
                     }}
                   >
                     COPIA LINK
