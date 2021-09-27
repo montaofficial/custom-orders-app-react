@@ -44,6 +44,10 @@ class Order extends Component {
       cl = "fas fa-check-circle";
       text = "Pronto";
     }
+    if (state === "Confirmed" && page === "tableOrders") {
+      cl = "fas fa-check-circle";
+      text = "Accettato";
+    }
 
     return [cl, text];
   };
