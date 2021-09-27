@@ -9,5 +9,7 @@ CUCINA /id_ristorante/comande/
 2. mostrare ingredienti dei crostoni.
 3. Aggiungere descrizione comandi sotto i bottoni
 
+FATTO 
+
 Backend
 Add deleted by costumer (order.state)
