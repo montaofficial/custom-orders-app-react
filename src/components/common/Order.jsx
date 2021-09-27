@@ -87,12 +87,14 @@ class Order extends Component {
                     <div className="row justify-content-between" key={key2}>
                       <div className="col-auto   order-section-title">
                         <i className={this.handleIcon(order.type)} />
-                        {order.type}
-                        {this.state.page === "cassa" ||
-                        (this.state.page === "tableOrders" &&
-                          order.currentState !== "Waiting confirmation")
-                          ? " - " + order.price + "  €"
-                          : null}
+                        {order.type}{" "}
+                        <span className="badge rounded-pill bg-success price-badge">
+                          {this.state.page === "cassa" ||
+                          (this.state.page === "tableOrders" &&
+                            order.currentState !== "Waiting confirmation")
+                            ? order.price + " €"
+                            : null}
+                        </span>
                       </div>
                       <div className="col-auto row">
                         {button1 ? (
