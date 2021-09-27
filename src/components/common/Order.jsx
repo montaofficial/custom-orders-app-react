@@ -83,8 +83,8 @@ class Order extends Component {
                 const [button2, button2Text] = this.handleDeleteButton(order);
 
                 return (
-                  <div className="order-section-element">
-                    <div className="row justify-content-between" key={key2}>
+                  <div className="order-section-element" key={key + "" + key2}>
+                    <div className="row justify-content-between">
                       <div className="col-auto   order-section-title">
                         <i className={this.handleIcon(order.type)} />
                         {order.type}{" "}
