@@ -50,6 +50,16 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
                   <div className="alert-text">
                     <h4>{this.props.table.name}</h4>
                     {this.props.isAdmin? 
+                    <>
+                    {
+                        this.props.table.state == "active" ?
+                        <div
+                        className="alert-button button-small"
+                        onClick={() => {window.open(`${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`, "_blank")}}
+                      >
+                        ORDINA TU
+                      </div>:null
+                    }
                     <div
                       className="alert-button button-small"
                       onClick={() => {
@@ -63,6 +73,7 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
                       {this.props.table.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
                       ORDINI
                     </div>
+                    </>
                     :
                     <div
                     className="alert-button button-small"

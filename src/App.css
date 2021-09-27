@@ -290,3 +290,8 @@ body {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+.button-small {
+  margin-top: 16px;
+  padding: 8px 0;
+}
