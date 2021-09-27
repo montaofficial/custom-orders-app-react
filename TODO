@@ -7,9 +7,12 @@ CUCINA /id_ristorante/comande/
 
 1. Far funzionare tendine.
 2. mostrare ingredienti dei crostoni.
-3. Aggiungere descrizione comandi sotto i bottoni
+
+
+
 
 FATTO 
 
 Backend
 Add deleted by costumer (order.state)
+3. Aggiungere descrizione comandi sotto i bottoni
