@@ -10,6 +10,10 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
           }
      }
 
+     copy (url) {
+        navigator.clipboard.writeText(url);
+      }
+
      img = (str) => {
         if (str === "") return "";
         else
@@ -59,7 +63,16 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
                       {this.props.table.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
                       ORDINI
                     </div>
-                    :null
+                    :
+                    <div
+                    className="alert-button button-small"
+                    onClick={() => {
+                      this.props.onClose();
+                      this.copy(`${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`)
+                    }}
+                  >
+                    COPIA LINK
+                  </div>
                     }
                     {this.img(this.props.table._id)}
                   </div>
