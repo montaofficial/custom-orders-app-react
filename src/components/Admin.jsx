@@ -20,6 +20,8 @@ class Admin extends Component {
     let table = {
       number: 0,
       orders: [],
+      showDone: false,
+      showDeleted: false,
     };
     for (let i = 0; i < tables.length; i++) {
       table = {
@@ -150,33 +152,58 @@ class Admin extends Component {
             />
           </div>
           <div>
-            <h1 className="white">
-              {this.handleTitleRendering(
-                "Deleted",
-                this.handleFiltering(this.props.tables, "Deleted").length
-              )}
-            </h1>
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(this.props.tables, "Deleted")}
-            />
+            <div
+              className="row"
+              onClick={() =>
+                this.setState({ showDeleted: !this.state.showDeleted })
+              }
+            >
+              <div className="col-auto">
+                <h1 className="white">Deleted</h1>
+              </div>
+              <div className="col-auto cursor-pointer ">
+                <i
+                  className={
+                    this.state.showDeleted
+                      ? "fas fa-sort-up sort-icon-up"
+                      : "fas fa-sort-down sort-icon-down"
+                  }
+                ></i>
+              </div>
+            </div>
+            {this.state.showDeleted ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(this.props.tables, "Deleted")}
+              />
+            ) : null}
           </div>
           <div>
-            <div className="row">
+            <div
+              className="row"
+              onClick={() => this.setState({ showDone: !this.state.showDone })}
+            >
               <div className="col-auto">
                 <h1 className="white">Done</h1>
               </div>
-              <div className="col-auto">
-                <i className="fas fa-sort-up sort-icon-up cursor-pointer"></i>
+              <div className="col-auto cursor-pointer ">
+                <i
+                  className={
+                    this.state.showDone
+                      ? "fas fa-sort-up sort-icon-up"
+                      : "fas fa-sort-down sort-icon-down"
+                  }
+                ></i>
               </div>
             </div>
-
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(this.props.tables, "Done")}
-            />
+            {this.state.showDone ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(this.props.tables, "Done")}
+              />
+            ) : null}
           </div>
         </div>
       </div>

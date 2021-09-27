@@ -171,7 +171,17 @@ body {
 
 .sort-icon-up {
   color: #ffffff;
-  margin-top: 15px;
+  margin-top: 10px;
+  font-size: 2rem;
+}
+.sort-icon-down {
+  color: #ffffff;
+
+  font-size: 2rem;
+}
+.price-badge {
+  font-size: 0.8rem;
+  margin-top: -6px;
 }
 
 .table-container {
@@ -274,7 +284,6 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
 }
-
 
 .tuttoaddestra {
   padding-right: 0;
