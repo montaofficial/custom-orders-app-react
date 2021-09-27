@@ -265,3 +265,14 @@ body {
 .invert-img {
   filter: invert();
 }
+
+.admin-button .menu-icon {
+
+  font-size: 1.8rem;
+
+}
+
+.admin-button .menu-subtitle {
+  font-size: .9rem;
+  font-weight: 700;
+}
