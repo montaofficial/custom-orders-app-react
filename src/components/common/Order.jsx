@@ -76,24 +76,18 @@ class Order extends Component {
                   Tavolo {table.number}
                 </div>
                 {this.handleCloseTableButton(table) ? (
-                  <div className="col-auto">
-                    <span
-                      className="badge rounded-pill bg-warning text-dark cursor-pointer"
-                      onClick={() => this.props.onCloseTable(table)}
-                    >
-                      CHIUDI TAVOLO
-                    </span>
-                  </div>
+                  <div className="col-auto"></div>
                 ) : null}
               </div>
               {table.orders.map((order, key2) => (
                 <div className="order-section-element">
                   <div className="row justify-content-between" key={key2}>
-                    <div className="col-auto col-md-3  order-section-title">
+                    <div className="col-auto   order-section-title">
                       <i className={this.handleIcon(order.type)} />
                       {order.type}
                       {this.state.page === "cassa" ||
-                      this.state.page === "tableOrders"
+                      (this.state.page === "tableOrders" &&
+                        order.currentState !== "Waiting confirmation")
                         ? " - " + order.price + "  €"
                         : null}
                     </div>
