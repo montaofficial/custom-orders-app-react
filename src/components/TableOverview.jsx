@@ -18,7 +18,7 @@ class TableOverview extends Component {
       const response = await axios.get(
         baseUrl + `${this.props.idRistorante}/tables`
       );
-      console.log(response.data);
+
       this.setState({ tables: response.data });
     } catch (error) {
       console.error(error);
@@ -29,10 +29,12 @@ class TableOverview extends Component {
     return (
       <>
         <QrCode
-          onClose={()=>{this.setState({popup: null})}}
-          table= {this.state.popup}
+          onClose={() => {
+            this.setState({ popup: null });
+          }}
+          table={this.state.popup}
           idRistorante={this.props.idRistorante}
-          onUpdate={()=>this.componentDidMount()}
+          onUpdate={() => this.componentDidMount()}
           isAdmin={true}
         />
         <div className="fixed-top navbar-home">
@@ -64,11 +66,13 @@ class TableOverview extends Component {
             .filter((t) => t.state === "active")
             .map((table, key) => (
               <div
-                className="table-container"
+                className="row justify-content-between table-container "
                 key={key}
                 onClick={() => this.setState({ popup: table })}
               >
-                {table.name}
+                <div className="col-auto">
+                  <h1 className="yellow">{table.name}</h1>
+                </div>
               </div>
             ))}
           <h1 className="white">Tavoli Chiusi</h1>
