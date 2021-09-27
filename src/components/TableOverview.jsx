@@ -6,10 +6,10 @@ const frontBaseUrl = "http://192.168.1.84:3000/";
 class TableOverview extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       tables: [],
-      popup: null
-     };
+      popup: null,
+    };
   }
 
   async componentDidMount() {
@@ -30,9 +30,7 @@ class TableOverview extends Component {
       return (
         <img
           className="img-fluid invert-img rounded"
-          src={genQrLink(
-            `${frontBaseUrl}${this.props.idRistorante}/${str}`
-          )}
+          src={genQrLink(`${frontBaseUrl}${this.props.idRistorante}/${str}`)}
           alt="qr link"
         />
       );
@@ -40,10 +38,7 @@ class TableOverview extends Component {
 
   async editOrders(id, state) {
     try {
-      const response = await axios.post(
-        baseUrl + `tables/${id}`,
-        { state }
-      );
+      const response = await axios.post(baseUrl + `tables/${id}`, { state });
       console.log(response.data);
       try {
         const response = await axios.get(
@@ -62,33 +57,43 @@ class TableOverview extends Component {
   render() {
     return (
       <div>
-        {
-            this.state.popup? <>
-            <div id='dialog_base' onClick={()=>this.setState({popup: null})}></div>
-            <div id='dialog_content'>
-            <div className="card alert-box">
+        {this.state.popup ? (
+          <>
+            <div
+              id="dialog_base"
+              onClick={() => this.setState({ popup: null })}
+            ></div>
+            <div id="dialog_content">
+              <div className="card alert-box">
                 <div className="alert-text">
-                <h4>{this.state.popup.name}</h4>
-                <div className="alert-button button-small"
-                onClick={()=>{
-                  this.setState({popup: null});
-                  this.editOrders(this.state.popup._id, this.state.popup.state == "active"? "closed": "active");
-                }}>
-                  {this.state.popup.state == "active"? "CHIUDI": "RIATTIVA"} ORDINI
-                </div>
-                {this.img(this.state.popup._id)}
+                  <h4>{this.state.popup.name}</h4>
+                  <div
+                    className="alert-button button-small"
+                    onClick={() => {
+                      this.setState({ popup: null });
+                      this.editOrders(
+                        this.state.popup._id,
+                        this.state.popup.state == "active" ? "closed" : "active"
+                      );
+                    }}
+                  >
+                    {this.state.popup.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
+                    ORDINI
+                  </div>
+                  {this.img(this.state.popup._id)}
                 </div>
                 <div className="row justify-content-center mt-4">
-                    <div className="col-auto alert-button"
-                    onClick={()=>this.setState({popup: null})}
-                    >
-                CHIUDI QR
+                  <div
+                    className="col-auto alert-button"
+                    onClick={() => this.setState({ popup: null })}
+                  >
+                    CHIUDI QR
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
-        </div>
-            </>: null
-        }
+          </>
+        ) : null}
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
@@ -103,9 +108,9 @@ class TableOverview extends Component {
               className="col-auto"
               onClick={() => this.props.onPageChange("qr")}
             >
-              <div className="allign-right-title">
+              <div className="allign-right-title cursor-pointer">
                 <div className="menu-icon">
-                  <i className="fas fa-utensils" />
+                  <i className="fas fa-utensils cursor-pointer" />
                 </div>
                 <div className="menu-subtitle">TAVOLI</div>
               </div>
@@ -117,17 +122,25 @@ class TableOverview extends Component {
           {this.state.tables
             .filter((t) => t.state === "active")
             .map((table, key) => (
-              <div className="table-container"
-              key={key}
-              onClick={()=>this.setState({popup: table})}>{table.name}</div>
+              <div
+                className="table-container"
+                key={key}
+                onClick={() => this.setState({ popup: table })}
+              >
+                {table.name}
+              </div>
             ))}
           <h1 className="white">Tavoli Chiusi</h1>
           {this.state.tables
             .filter((t) => t.state === "closed")
             .map((table, key) => (
-              <div className="table-container"
-              key={key}
-              onClick={()=>this.setState({popup: table})}>{table.name}</div>
+              <div
+                className="table-container"
+                key={key}
+                onClick={() => this.setState({ popup: table })}
+              >
+                {table.name}
+              </div>
             ))}
         </div>
       </div>
@@ -141,6 +154,5 @@ function genQrLink(link) {
     link
   )}`;
 }
-
 
 export default TableOverview;

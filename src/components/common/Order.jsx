@@ -47,6 +47,9 @@ class Order extends Component {
     if (state === "Confirmed" && page === "cassa") {
       cl = "fas fa-times-circle cursor-pointer";
     }
+    if (state === "Waiting confirmation" && page === "tableOrders") {
+      cl = "fas fa-times-circle cursor-pointer";
+    }
 
     return cl;
   };

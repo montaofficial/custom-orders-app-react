@@ -82,9 +82,9 @@ class Admin extends Component {
               className="col-auto"
               onClick={() => this.props.onPageChange("cucina")}
             >
-              <div className="allign-right-title">
+              <div className="allign-right-title cursor-pointer">
                 <div className="menu-icon">
-                  <i className="fas fa-cash-register" />
+                  <i className="fas fa-cash-register cursor-pointer" />
                 </div>
                 <div className="menu-subtitle">CASSA</div>
               </div>

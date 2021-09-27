@@ -74,9 +74,9 @@ class MrQR extends Component {
                 className="col-auto"
                 onClick={() => this.props.onPageChange("cassa")}
               >
-                <div className="allign-right-title">
+                <div className="allign-right-title cursor-pointer">
                   <div className="menu-icon">
-                    <i className="fas fa-qrcode" />
+                    <i className="fas fa-qrcode cursor-pointer" />
                   </div>
                   <div className="menu-subtitle">QR CODE</div>
                 </div>

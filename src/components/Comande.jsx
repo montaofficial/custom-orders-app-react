@@ -76,9 +76,9 @@ class Comande extends Component {
               className="col-auto"
               onClick={() => this.props.onPageChange("tavoli")}
             >
-              <div className="allign-right-title">
+              <div className="allign-right-title cursor-pointer">
                 <div className="menu-icon">
-                  <i className="fas fa-utensils" />
+                  <i className="fas fa-utensils cursor-pointer" />
                 </div>
                 <div className="menu-subtitle">CUCINA</div>
               </div>

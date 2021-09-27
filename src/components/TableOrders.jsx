@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Order from "./common/Order";
+import axios from "axios";
+const baseUrl = "https://custom-orders.smontanari.com/api/";
 
 class tableOrders extends Component {
   constructor(props) {
@@ -75,6 +77,23 @@ class tableOrders extends Component {
     if (this.interval) clearInterval(this.interval);
   }
 
+  handleButtons = async (order, action) => {
+    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+
+    if (action == "btn2") {
+      if (order.currentState == "Waiting confirmation") state = "Deleted";
+      console.log(state);
+    }
+    try {
+      const response = await axios.post(baseUrl + `orders/${order._id}`, {
+        currentState: state,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   render() {
     return (
       <div>
@@ -105,10 +124,13 @@ class tableOrders extends Component {
           {this.state.orders.length ? (
             <Order
               page="tableOrders"
+              onAction={this.handleButtons}
               tables={[
                 {
                   number: this.state.orders[0].tableName,
-                  orders: this.state.orders,
+                  orders: this.state.orders.filter(
+                    (order) => order.currentState !== "Deleted"
+                  ),
                 },
               ]}
             />
