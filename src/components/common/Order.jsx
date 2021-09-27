@@ -141,7 +141,7 @@ class Order extends Component {
               })}
             </div>
           </div>
-        ))}{" "}
+        ))}
       </div>
     );
   }
