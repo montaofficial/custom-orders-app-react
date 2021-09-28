@@ -36,6 +36,14 @@ class Admin extends Component {
     }
     //removing empty table
     filtered = filtered.filter((table) => table.orders.length > 0);
+
+    //If category = Done or Deleted, ordering table by number
+    if (filter === "Done" || filter === "Deleted") {
+      filtered = filtered.sort(function (a, b) {
+        return a.number - b.number;
+      });
+    }
+
     return filtered;
   };
 

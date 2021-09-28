@@ -230,6 +230,16 @@ body {
   padding: 6px 16px;
   margin: 10px 10px;
   text-align: center;
+  font-weight: 150;
+}
+
+.table-container-cl {
+  background-color: rgb(36, 0, 0);
+  color: #f0dd31;
+  padding: 6px 16px;
+  margin: 10px 10px;
+  text-align: center;
+  font-weight: 100;
 }
 
 /* POPUP SECTION */
