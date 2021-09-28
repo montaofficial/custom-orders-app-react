@@ -4,11 +4,9 @@ MENU /id_ristorante/id_tavolo/
 ADMIN /id_ristorante/cassa/
 CUCINA /id_ristorante/comande/
 
-
-
+1. aggiornare tavoli in table overview
 2. mostrare ingredienti dei crostoni.
-
-
+3. inserire nome customer se vuole
 
 
 FATTO 
