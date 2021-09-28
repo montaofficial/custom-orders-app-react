@@ -109,6 +109,8 @@ class tableOrders extends Component {
           }}
           table={this.state.table}
           idRistorante={this.props.idRistorante}
+          canEditOrders={false}
+          isAdmin={false}
         />
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">

@@ -104,6 +104,16 @@ body {
   margin-bottom: 70px;
 }
 
+.menu-icon {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.menu-subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
 .navbar-home {
   background-color: #000000;
   height: 56px;
@@ -117,10 +127,51 @@ body {
 
 .navbar-home .title {
   padding-left: 8px;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: #ffffff;
   font-weight: 700;
 }
+
+@media only screen and (max-width: 490px) {
+  .navbar-home .title {
+    font-size: 1.3rem;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .navbar-home .title {
+    font-size: 1.2rem;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .navbar-home .title {
+    padding-left: 4px;
+    font-size: 1.1rem;
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  .navbar-home .img img {
+    margin-top: 6px;
+    margin-left: 4px;
+    height: 48px;
+  }
+  .navbar-home .title {
+    padding-left: 4px;
+    font-size: 1rem;
+  }
+  .menu-icon {
+    font-size: 1rem;
+  }
+  .menu-subtitle {
+    font-size: 0.6rem;
+  }
+  .navbar-home {
+    height: 49px;
+  }
+}
+
 .allign-right-title {
   padding-right: 1rem;
   padding-top: 0.1rem;
@@ -152,19 +203,7 @@ body {
   box-shadow: 0px 0px 16px #000000;
 }
 
-.navbar-home .title {
-  font-size: larger;
-}
 
-.menu-icon {
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.menu-subtitle {
-  text-align: center;
-  font-size: 0.9rem;
-}
 
 .qr-image {
   margin-top: 50px;
@@ -295,6 +334,47 @@ body {
 .admin-button .menu-subtitle {
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+@media only screen and (max-width: 420px) {
+  .admin-button .menu-icon {
+    font-size: 1.6rem;
+  }
+  
+  .admin-button .menu-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .admin-button .menu-icon {
+    font-size: 1.4rem;
+  }
+  
+  .admin-button .menu-subtitle {
+    font-size: 0.6rem;
+    font-weight: 700;
+  }
+  .order-section-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .admin-button .menu-icon {
+    font-size: 1.4rem;
+  }
+  
+  .admin-button .menu-subtitle {
+    font-size: 0.6rem;
+    font-weight: 700;
+  }
+
+  .order-section-title {
+    font-size: 1.2rem;
+  }
+  
 }
 
 .tuttoaddestra {

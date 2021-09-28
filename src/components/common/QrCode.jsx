@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import QRCode from "react-qr-code";
 const axios = require("axios");
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 const frontBaseUrl = "http://192.168.1.84:3000/";
@@ -17,11 +18,17 @@ class QrCode extends Component {
     if (str === "") return "";
     else
       return (
+        <>
+        <QRCode className="img-fluid invert-img mt-4" value={`${frontBaseUrl}${this.props.idRistorante}/${str}`}/>
+        
+        </>
+      );
+      return (
         <img
-          className="img-fluid invert-img rounded"
-          src={genQrLink(`${frontBaseUrl}${this.props.idRistorante}/${str}`)}
-          alt="qr link"
-        />
+        className="img-fluid invert-img rounded"
+        src={genQrLink(`${frontBaseUrl}${this.props.idRistorante}/${str}`)}
+        alt="qr link"
+      />
       );
   };
 
@@ -59,7 +66,7 @@ class QrCode extends Component {
                       MODIFICA/AGGIUNGI ORDINI
                     </div>
                   ) : null}
-                  <div
+                  {this.props.canEditOrders? <div
                     className="alert-button button-small"
                     onClick={() => {
                       this.props.onClose();
@@ -71,7 +78,7 @@ class QrCode extends Component {
                   >
                     {this.props.table.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
                     ORDINI
-                  </div>
+                  </div>: null}
                 </>
               ) : (
                 <div

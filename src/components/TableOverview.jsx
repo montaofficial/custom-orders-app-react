@@ -39,6 +39,7 @@ class TableOverview extends Component {
           table={this.state.popup}
           idRistorante={this.props.idRistorante}
           onUpdate={() => this.componentDidMount()}
+          canEditOrders={true}
           isAdmin={true}
         />
         <div className="fixed-top navbar-home">
