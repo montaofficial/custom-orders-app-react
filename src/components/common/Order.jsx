@@ -7,7 +7,12 @@ class Order extends Component {
   }
 
   handleIngredients = (order) => {
-    const elements = order.ingredients.join(", ");
+    let elements = "";
+    if (order.type !== "Crostone") {
+      elements = order.ingredients.join(", ");
+    } else {
+      elements = order.ingredients;
+    }
     return elements;
   };
 
@@ -73,9 +78,25 @@ class Order extends Component {
     return [cl, text];
   };
 
+  handleOrderType = (order) => {
+    let orderMod = order;
+    if (order.type === "Appetizer") {
+      if (order.ingredients[0] === "Crostone 1") {
+        console.log("è crostone 1");
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+        console.log(orderMod);
+      }
+    }
+
+    return orderMod;
+  };
+
   handleIcon = (type) => {
     if (type === "Burger") return "fas fa-hamburger";
     if (type === "Appetizer") return "fas fa-drumstick-bite";
+    if (type === "Crostone") return "fas fa-bread-slice";
   };
 
   render() {
@@ -95,18 +116,24 @@ class Order extends Component {
                 const [button2, button2Text] = this.handleDeleteButton(order);
 
                 return (
-                  <div className="order-section-element" key={key+""+key2}>
+                  <div className="order-section-element" key={key + "" + key2}>
                     <div className="row justify-content-between">
                       <div className="col-auto order-section-title">
-                        <i className={this.handleIcon(order.type)} />
-                        {order.type}
-                        <span className="badge rounded-pill bg-success price-badge">
-                          {this.state.page === "cassa" ||
-                          (this.state.page === "tableOrders" &&
-                            order.currentState !== "Waiting confirmation")
-                            ? order.price + " €"
-                            : null}
-                        </span>
+                        <i
+                          className={this.handleIcon(
+                            this.handleOrderType(order).type
+                          )}
+                        />
+                        {this.handleOrderType(order).type}
+                        <div>
+                          <span className="badge rounded-pill bg-success price-badge">
+                            {this.state.page === "cassa" ||
+                            (this.state.page === "tableOrders" &&
+                              order.currentState !== "Waiting confirmation")
+                              ? order.price + " €"
+                              : null}
+                          </span>
+                        </div>
                       </div>
                       <div className="col-auto row justify-content">
                         {button1 ? (
