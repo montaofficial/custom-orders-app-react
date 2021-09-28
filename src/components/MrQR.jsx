@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import QrCode from "./common/QrCode";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 const frontBaseUrl = "http://192.168.1.84:3000/";
 
@@ -10,6 +11,7 @@ class MrQR extends Component {
       newTableName: "",
       newTableId: "",
       tables: [],
+      table: null
     };
   }
   async componentDidMount() {
@@ -29,31 +31,10 @@ class MrQR extends Component {
         baseUrl + `${this.props.idRistorante}/tables`,
         { name: this.state.newTableName }
       );
-      this.setState({ newTableId: response.data._id, newTableName: "" });
+      this.setState({ newTableId: response.data._id, newTableName: "", table: response.data });
     } catch (error) {
       console.error(error);
     }
-  };
-
-  handleChange = ({ currentTarget: input }) => {
-    let newTableName = this.state.newTableName;
-    newTableName = input.value;
-    genQrLink(newTableName);
-    this.setState({ newTableName });
-  };
-
-  img = (str) => {
-    if (str === "") return "";
-    else
-      return (
-        <img
-          className="img-fluid invert-img rounded qr-image"
-          src={genQrLink(
-            `${frontBaseUrl}${this.props.idRistorante}/${this.state.newTableId}`
-          )}
-          alt="qr link"
-        />
-      );
   };
 
   render() {
@@ -94,7 +75,7 @@ class MrQR extends Component {
                     id="tableNumberInput"
                     aria-describedby="Nome o numero del tavolo"
                     value={this.state.newTableName}
-                    onChange={this.handleChange}
+                    onChange={({ currentTarget: input }) => this.setState({ newTableName: input.value })}
                     autoFocus
                   />
                   <div id="tableNumberInputHelp" className="form-text">
@@ -108,7 +89,16 @@ class MrQR extends Component {
               >
                 Crea tavolo
               </button>
-              {this.img(this.state.newTableId)}
+              <QrCode
+                onClose={() => {
+                  this.setState({ table: null });
+                }}
+                table={this.state.table}
+                idRistorante={this.props.idRistorante}
+                onUpdate={()=>{console.log("cambiato lo stato del tavolo")}}
+                isAdmin={true}
+                canEditOrders={false}
+              />
             </div>
           </div>
         </div>
@@ -116,12 +106,4 @@ class MrQR extends Component {
     );
   }
 }
-
-function genQrLink(link) {
-  if (link === "") return "not-founds";
-  return `https://image-charts.com/chart?chs=900x900&cht=qr&choe=UTF-8&chl=${encodeURIComponent(
-    link
-  )}`;
-}
-
 export default MrQR;
