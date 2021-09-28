@@ -122,21 +122,21 @@ class tableOrders extends Component {
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
-                <div className="col-auto tuttoaddestra">
+                <div
+                  className="col-auto tuttoaddestra"
+                  onClick={() => this.handleQrCode()}
+                >
                   <div className="menu-icon">
-                    <i
-                      className="fas fa-user-plus"
-                      onClick={() => this.handleQrCode()}
-                    />
+                    <i className="fas fa-user-plus" />
                   </div>
                   <div className="menu-subtitle">QR</div>
                 </div>
-                <div className="col-auto">
+                <div
+                  className="col-auto"
+                  onClick={() => this.props.onPageChange("menu")}
+                >
                   <div className="menu-icon">
-                    <i
-                      className="fas fa-clipboard-list"
-                      onClick={() => this.props.onPageChange("menu")}
-                    />
+                    <i className="fas fa-clipboard-list" />
                   </div>
                   <div className="menu-subtitle">MENU</div>
                 </div>
@@ -145,22 +145,45 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
-          {this.state.orders.length ? (
+          {this.state.orders.filter(
+            (order) =>
+              order.currentState !== "Deleted" &&
+              order.currentState !== "Deleted by Customer" &&
+              order.currentState !== "Done"
+          ).length ? (
             <Order
               page="tableOrders"
               onAction={this.handleButtons}
               tables={[
                 {
-                  number: this.state.orders[0].tableName,
+                  number: this.state.orders[0].tableName + " ORDINE",
                   orders: this.state.orders.filter(
                     (order) =>
                       order.currentState !== "Deleted" &&
-                      order.currentState !== "Deleted by Customer"
+                      order.currentState !== "Deleted by Customer" &&
+                      order.currentState !== "Done"
                   ),
                 },
               ]}
             />
           ) : null}
+          <div className="transparent">
+            {this.state.orders.filter((order) => order.currentState === "Done")
+              .length ? (
+              <Order
+                page="tableOrders"
+                onAction={this.handleButtons}
+                tables={[
+                  {
+                    number: this.state.orders[0].tableName + " CONSEGNATI",
+                    orders: this.state.orders.filter(
+                      (order) => order.currentState === "Done"
+                    ),
+                  },
+                ]}
+              />
+            ) : null}
+          </div>
         </div>
       </>
     );

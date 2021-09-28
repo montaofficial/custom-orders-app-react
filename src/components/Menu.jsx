@@ -55,21 +55,21 @@ class Menu extends Component {
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
-                <div className="col-auto tuttoaddestra">
+                <div
+                  className="col-auto tuttoaddestra"
+                  onClick={() => this.handleQrCode()}
+                >
                   <div className="menu-icon">
-                    <i
-                      className="fas fa-user-plus"
-                      onClick={() => this.handleQrCode()}
-                    />
+                    <i className="fas fa-user-plus" />
                   </div>
                   <div className="menu-subtitle">QR</div>
                 </div>
-                <div className="col-auto">
+                <div
+                  className="col-auto"
+                  onClick={() => this.props.onPageChange("table")}
+                >
                   <div className="menu-icon">
-                    <i
-                      className="fas fa-clipboard-list"
-                      onClick={() => this.props.onPageChange("table")}
-                    />
+                    <i className="fas fa-clipboard-list" />
                   </div>
                   <div className="menu-subtitle">ORDINI</div>
                 </div>

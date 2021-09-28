@@ -56,7 +56,7 @@ class QrCode extends Component {
                         );
                       }}
                     >
-                      MODIFICA ORDINE
+                      MODIFICA/AGGIUNGI ORDINI
                     </div>
                   ) : null}
                   <div
