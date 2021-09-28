@@ -10,6 +10,7 @@ class TableOverview extends Component {
     this.state = {
       tables: [],
       popup: null,
+      showClosed: false,
     };
   }
 
@@ -80,20 +81,42 @@ class TableOverview extends Component {
                 </div>
               ))}
           </div>
-          <h1 className="white">Tavoli Chiusi</h1>
-          {this.state.tables
-            .filter((t) => t.state === "closed")
-            .map((table, key) => (
+          {this.state.tables.filter((t) => t.state === "closed").length ? (
+            <div>
               <div
-                className="row justify-content-between table-container "
-                key={key}
-                onClick={() => this.setState({ popup: table })}
+                className="row"
+                onClick={() =>
+                  this.setState({ showClosed: !this.state.showClosed })
+                }
               >
                 <div className="col-auto">
-                  <h1 className="yellow">{table.name}</h1>
+                  <h1 className="white">Tavoli Chiusi</h1>
+                </div>
+                <div className="col-auto cursor-pointer tuttoassinistra">
+                  <div className="white">
+                    {this.state.showClosed ? "[nascondi]" : "[mostra]"}
+                  </div>
                 </div>
               </div>
-            ))}
+              {this.state.showClosed ? (
+                <div>
+                  {this.state.tables
+                    .filter((t) => t.state === "closed")
+                    .map((table, key) => (
+                      <div
+                        className="row justify-content-between table-container "
+                        key={key}
+                        onClick={() => this.setState({ popup: table })}
+                      >
+                        <div className="col-auto">
+                          <h1 className="yellow">{table.name}</h1>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </>
     );
