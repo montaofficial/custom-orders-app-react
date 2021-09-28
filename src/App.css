@@ -189,7 +189,8 @@ body {
   background-color: black;
   color: #f0dd31;
   padding: 6px 16px;
-  margin: 10px 0px;
+  margin: 10px 10px;
+  text-align: center;
 }
 
 /* POPUP SECTION */

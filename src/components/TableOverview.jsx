@@ -18,6 +18,9 @@ class TableOverview extends Component {
       const response = await axios.get(
         baseUrl + `${this.props.idRistorante}/tables`
       );
+      response.data.sort(function (a, b) {
+        return a.name - b.name;
+      });
 
       this.setState({ tables: response.data });
     } catch (error) {
@@ -62,19 +65,21 @@ class TableOverview extends Component {
         </div>
         <div className="admin-container">
           <h1 className="white">Tavoli Attivi</h1>
-          {this.state.tables
-            .filter((t) => t.state === "active")
-            .map((table, key) => (
-              <div
-                className="row justify-content-between table-container "
-                key={key}
-                onClick={() => this.setState({ popup: table })}
-              >
-                <div className="col-auto">
-                  <h1 className="yellow">{table.name}</h1>
+          <div className="row d-flex justify-content-between">
+            {this.state.tables
+              .filter((t) => t.state === "active")
+              .map((table, key) => (
+                <div
+                  className="col-2 justify-content-between table-container "
+                  key={key}
+                  onClick={() => this.setState({ popup: table })}
+                >
+                  <div className="col-auto">
+                    <h1 className="yellow">{table.name}</h1>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
           <h1 className="white">Tavoli Chiusi</h1>
           {this.state.tables
             .filter((t) => t.state === "closed")
