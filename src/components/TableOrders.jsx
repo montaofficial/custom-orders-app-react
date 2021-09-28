@@ -115,12 +115,12 @@ class tableOrders extends Component {
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
-              <inline className="img">
+              <span className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
-              </inline>
-              <inline className="title">
-                CREA IL <inline className="yellow"> TUO BURGER</inline>
-              </inline>
+              </span>
+              <span className="title">
+                CREA IL <span className="yellow"> TUO BURGER</span>
+              </span>
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">

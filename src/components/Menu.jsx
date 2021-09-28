@@ -46,12 +46,12 @@ class Menu extends Component {
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
-              <inline className="img">
+              <span className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
-              </inline>
-              <inline className="title">
-                CREA IL <inline className="yellow"> TUO BURGER</inline>
-              </inline>
+              </span>
+              <span className="title">
+                CREA IL <span className="yellow"> TUO BURGER</span>
+              </span>
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
@@ -139,9 +139,9 @@ class Menu extends Component {
                         <div className="col element-name">
                           {element.name}
                           {element.vegan ? (
-                            <inline className="element-vegan">
+                            <span className="element-vegan">
                               <i className="fas fa-leaf"></i>
-                            </inline>
+                            </span>
                           ) : null}
                           {element.details ? (
                             <div className="element-description">

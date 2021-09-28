@@ -65,12 +65,12 @@ class Comande extends Component {
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
-              <inline className="img">
+              <span className="img">
                 <img src="/logo-sham.png" alt="logo sham" />
-              </inline>
-              <inline className="title">
-                BURGER <inline className="yellow">ORDERS</inline>
-              </inline>
+              </span>
+              <span className="title">
+                BURGER <span className="yellow">ORDERS</span>
+              </span>
             </div>
             <div
               className="col-auto"
