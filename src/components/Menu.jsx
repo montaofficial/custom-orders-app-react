@@ -226,7 +226,9 @@ class Menu extends Component {
   async postOrder() {
     const response = await axios.post(
       baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
-      this.state.order
+      {
+        ingredients: this.state.order
+    }
     );
     console.log(response.data);
     this.props.onPageChange("table");
