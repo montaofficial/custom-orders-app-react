@@ -135,7 +135,7 @@ class Menu extends Component {
                 {this.state.category == key ? (
                   <div className="menu-section-list">
                     {category.options.map((element, key2) => (
-                      <div className="row menu-section-element" key={key2}>
+                      <div className="row menu-section-element" key={key+""+key2}>
                         <div className="col element-name">
                           {element.name}
                           {element.vegan ? (
