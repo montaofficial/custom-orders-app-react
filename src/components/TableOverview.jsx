@@ -52,15 +52,28 @@ class TableOverview extends Component {
                 BURGER <span className="yellow">ORDERS</span>
               </span>
             </div>
-            <div
-              className="col-auto"
-              onClick={() => this.props.onPageChange("qr")}
-            >
-              <div className="allign-right-title cursor-pointer">
-                <div className="menu-icon">
-                  <i className="fas fa-utensils cursor-pointer" />
+            <div className="col-auto allign-right-title">
+              <div className="row">
+                <div className="col-auto tuttoaddestra">
+                  <div className="menu-icon">
+                    <i className="fas fa-sync-alt" />
+                  </div>
+                  <div
+                    className="menu-subtitle"
+                    onClick={() => this.componentDidMount()}
+                  >
+                    REFRESH
+                  </div>
                 </div>
-                <div className="menu-subtitle">TAVOLI</div>
+                <div
+                  className="col-auto"
+                  onClick={() => this.props.onPageChange("qr")}
+                >
+                  <div className="menu-icon">
+                    <i className="fas fa-utensils cursor-pointer" />
+                  </div>
+                  <div className="menu-subtitle">TAVOLI</div>
+                </div>
               </div>
             </div>
           </div>
