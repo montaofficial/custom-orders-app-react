@@ -82,11 +82,29 @@ class Order extends Component {
     let orderMod = order;
     if (order.type === "Appetizer") {
       if (order.ingredients[0] === "Crostone 1") {
-        console.log("è crostone 1");
         orderMod.type = "Crostone";
         orderMod.ingredients = "";
         orderMod.ingredients = order.details;
-        console.log(orderMod);
+      }
+      if (order.ingredients[0] === "Crostone 2") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 3") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 4") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 5") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
       }
     }
 
