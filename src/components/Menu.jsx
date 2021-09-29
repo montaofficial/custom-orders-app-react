@@ -119,23 +119,22 @@ class Menu extends Component {
           </div>
         ) : (
           <div className="menu-cliente">
-            <form>
-              <div className="mb-3">
-                <input
-                  placeholder="Nome (opzionale)"
-                  aria-label="name"
-                  className="form-control"
-                  id="name"
-                  value={this.state.name}
-                  onChange={({ currentTarget: input }) =>
-                    this.setState({ name: input.value })
-                  }
-                />
-                <div id="tableNumberInputHelp" className="form-text">
-                  Inserendo il nome sarà più semplice distinguere gli ordini
-                </div>
+            <div className="mb-3">
+              <input
+                placeholder="Nome (opzionale)"
+                aria-label="name"
+                className="form-control"
+                id="name"
+                value={this.state.name}
+                onChange={({ currentTarget: input }) =>
+                  this.setState({ name: input.value })
+                }
+              />
+              <div id="tableNumberInputHelp" className="form-text">
+                Inserendo il nome sarà più semplice distinguere gli ordini
               </div>
-            </form>
+            </div>
+
             {this.state.options.map((category, key) => (
               <div className="menu-section" key={key}>
                 <div
