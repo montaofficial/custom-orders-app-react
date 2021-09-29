@@ -136,6 +136,11 @@ class Order extends Component {
                 return (
                   <div className="order-section-element" key={key + "" + key2}>
                     <div className="row justify-content-between">
+                      <div>
+                        {order.customer
+                          ? order.customer + " ha ordinato:"
+                          : null}
+                      </div>
                       <div className="col-auto order-section-title">
                         <i
                           className={this.handleIcon(

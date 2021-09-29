@@ -13,6 +13,7 @@ class Menu extends Component {
       update: false,
       popup: false,
       canConfirm: false,
+      name: "",
 
       table: null,
     };
@@ -118,6 +119,23 @@ class Menu extends Component {
           </div>
         ) : (
           <div className="menu-cliente">
+            <form>
+              <div className="mb-3">
+                <input
+                  placeholder="Nome (opzionale)"
+                  aria-label="name"
+                  className="form-control"
+                  id="name"
+                  value={this.state.name}
+                  onChange={({ currentTarget: input }) =>
+                    this.setState({ name: input.value })
+                  }
+                />
+                <div id="tableNumberInputHelp" className="form-text">
+                  Inserendo il nome sarà più semplice distinguere gli ordini
+                </div>
+              </div>
+            </form>
             {this.state.options.map((category, key) => (
               <div className="menu-section" key={key}>
                 <div
@@ -135,7 +153,10 @@ class Menu extends Component {
                 {this.state.category == key ? (
                   <div className="menu-section-list">
                     {category.options.map((element, key2) => (
-                      <div className="row menu-section-element" key={key+""+key2}>
+                      <div
+                        className="row menu-section-element"
+                        key={key + "" + key2}
+                      >
                         <div className="col element-name">
                           {element.name}
                           {element.vegan ? (
@@ -227,8 +248,9 @@ class Menu extends Component {
     const response = await axios.post(
       baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
       {
-        ingredients: this.state.order
-    }
+        ingredients: this.state.order,
+        customer: this.state.name,
+      }
     );
     console.log(response.data);
     this.props.onPageChange("table");
