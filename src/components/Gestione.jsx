@@ -13,6 +13,7 @@ class Gestione extends Component {
       page: "cassa",
       tables: [],
       waitingConfirmation: [],
+      confirmed: [],
     };
   }
 
@@ -66,32 +67,26 @@ class Gestione extends Component {
           tables.push(tableObject[tableId]);
         }
 
-        //Detecting changes in order
+        //Detecting changes in orders
         let tablesBefore = tables;
         let waitingConfirmationNow = [];
+        let confirmedNow = [];
         for (let i = 0; i < tables.length; i++) {
           for (let c = 0; c < tables[i].orders.length; c++) {
             if (tables[i].orders[c].currentState === "Waiting confirmation") {
               waitingConfirmationNow.push(tables[i].orders[c]._id);
             }
+            if (tables[i].orders[c].currentState === "Confirmed") {
+              confirmedNow.push(tables[i].orders[c]._id);
+            }
           }
         }
-        if (
-          !_.isEqual(
-            _.sortBy(this.state.waitingConfirmation),
-            _.sortBy(waitingConfirmationNow)
-          ) &&
-          waitingConfirmationNow.length >= this.state.waitingConfirmation.length
-        ) {
-          console.log("Suono del nuovo");
-          this.playAudio();
-          this.setState({
-            tables,
-            waitingConfirmation: waitingConfirmationNow,
-          });
-        }
 
-        this.setState({ tables });
+        this.setState({
+          tables,
+          waitingConfirmation: waitingConfirmationNow,
+          confirmed: confirmedNow,
+        });
       }
     };
 
@@ -130,11 +125,6 @@ class Gestione extends Component {
     this.setState({ page });
   };
 
-  playAudio() {
-    const audioEl = document.getElementsByClassName("audio-element")[0];
-    audioEl.play();
-  }
-
   render() {
     return (
       <>
@@ -145,12 +135,14 @@ class Gestione extends Component {
           <Admin
             onPageChange={this.handlePageChange}
             tables={this.state.tables}
+            waitingConfirmation={this.state.waitingConfirmation}
           />
         ) : null}
         {this.state.page === "cucina" ? (
           <Comande
             onPageChange={this.handlePageChange}
             tables={this.state.tables}
+            confirmed={this.state.confirmed}
           />
         ) : null}
         {this.state.page === "tavoli" ? (

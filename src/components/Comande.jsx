@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import Order from "./common/Order";
 import axios from "axios";
+import _ from "lodash";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 
 class Comande extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      confirmed: [],
+    };
   }
 
   handleFiltering = (tables, filter) => {
@@ -59,6 +62,24 @@ class Comande extends Component {
     }
   };
 
+  playAudio(list) {
+    console.log("Comande");
+    console.log("Waiting before: ", this.state.confirmed);
+    console.log("Waiting now: ", list);
+    let confirmed = this.state.confirmed;
+    if (
+      !_.isEqual(_.sortBy(list), _.sortBy(confirmed)) &&
+      list.length >= confirmed.length
+    ) {
+      console.log("Nuova comanda");
+      const audioEl = document.getElementsByClassName("audio-element")[0];
+      audioEl.play();
+      this.setState({
+        confirmed: list,
+      });
+    }
+  }
+
   render() {
     return (
       <div>
@@ -87,12 +108,16 @@ class Comande extends Component {
         </div>
 
         <div className="admin-container">
+          <audio className="audio-element">
+            <source src="../new-order.mp3"></source>
+          </audio>
           <div>
             <h1 className="white">
               {this.handleTitleRendering(
                 "Orders",
                 this.handleFiltering(this.props.tables, "Confirmed").length
               )}
+              {this.playAudio(this.props.confirmed)}
             </h1>
             <Order
               page="cucina"
