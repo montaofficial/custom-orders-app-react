@@ -147,6 +147,22 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
+          <div className="row justify-content-between menu-section">
+            <h1 className="yellow">
+              Tavolo{" "}
+              {this.state.orders.length > 0
+                ? this.state.orders[0].tableName
+                : ""}
+            </h1>
+            <div className="col alert-button button-small">
+              <i className="fas fa-user-tie"></i> CAMERIERE
+            </div>
+            <div className="col-2"></div>
+            <div className="col alert-button button-small">
+              <i className="fas fa-file-invoice-dollar"></i> CONTO
+            </div>
+          </div>
+
           {this.state.orders.filter(
             (order) =>
               order.currentState !== "Deleted" &&

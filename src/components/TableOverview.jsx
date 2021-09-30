@@ -80,16 +80,17 @@ class TableOverview extends Component {
         </div>
         <div className="admin-container">
           <h1 className="white">Tavoli Attivi</h1>
-          <div className="row d-flex justify-content-between">
+          <div className="row-1 d-flex justify-content-between">
             {this.state.tables
               .filter((t) => t.state === "active")
               .map((table, key) => (
                 <div
-                  className="col-2 justify-content-between table-container "
+                  className="col-3 rounded table-container "
                   key={key}
                   onClick={() => this.setState({ popup: table })}
                 >
                   <div className="col-auto">
+                    <p></p>
                     <h1 className="yellow">{table.name}</h1>
                   </div>
                 </div>
@@ -113,16 +114,17 @@ class TableOverview extends Component {
                 </div>
               </div>
               {this.state.showClosed ? (
-                <div>
+                <div className="row-1 d-flex justify-content-between">
                   {this.state.tables
                     .filter((t) => t.state === "closed")
                     .map((table, key) => (
                       <div
-                        className="row justify-content-between table-container "
+                        className="col-3 rounded table-container "
                         key={key}
                         onClick={() => this.setState({ popup: table })}
                       >
                         <div className="col-auto">
+                          <p></p>
                           <h1 className="yellow">{table.name}</h1>
                         </div>
                       </div>

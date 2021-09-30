@@ -11,7 +11,7 @@ class MrQR extends Component {
       newTableName: "",
       newTableId: "",
       tables: [],
-      table: null
+      table: null,
     };
   }
   async componentDidMount() {
@@ -31,7 +31,11 @@ class MrQR extends Component {
         baseUrl + `${this.props.idRistorante}/tables`,
         { name: this.state.newTableName }
       );
-      this.setState({ newTableId: response.data._id, newTableName: "", table: response.data });
+      this.setState({
+        newTableId: response.data._id,
+        newTableName: "",
+        table: response.data,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -68,21 +72,28 @@ class MrQR extends Component {
           <div className="admin-container">
             <div className="white m-2">
               <h1 className="white">Crea nuovo tavolo</h1>
-              <form>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    id="tableNumberInput"
-                    aria-describedby="Nome o numero del tavolo"
-                    value={this.state.newTableName}
-                    onChange={({ currentTarget: input }) => this.setState({ newTableName: input.value })}
-                    autoFocus
-                  />
-                  <div id="tableNumberInputHelp" className="form-text">
-                    Inserisci il numero del tavolo.
-                  </div>
+              <div className="mb-3">
+                <input
+                  className="form-control"
+                  id="tableNumberInput"
+                  aria-describedby="Nome o numero del tavolo"
+                  value={this.state.newTableName}
+                  onChange={({ currentTarget: input }) =>
+                    this.setState({ newTableName: input.value })
+                  }
+                  autoFocus
+                  onKeyDown={(event) => {
+                    if (event.keyCode == 13) {
+                      event.preventDefault();
+                      event.target.blur();
+                      this.handleSubmit();
+                    }
+                  }}
+                />
+                <div id="tableNumberInputHelp" className="form-text">
+                  Inserisci il numero del tavolo.
                 </div>
-              </form>
+              </div>
               <button
                 className="btn btn-light create-table-button"
                 onClick={() => this.handleSubmit()}
@@ -95,7 +106,9 @@ class MrQR extends Component {
                 }}
                 table={this.state.table}
                 idRistorante={this.props.idRistorante}
-                onUpdate={()=>{console.log("cambiato lo stato del tavolo")}}
+                onUpdate={() => {
+                  console.log("cambiato lo stato del tavolo");
+                }}
                 isAdmin={true}
                 canEditOrders={false}
               />
