@@ -129,6 +129,12 @@ class Menu extends Component {
                 onChange={({ currentTarget: input }) =>
                   this.setState({ name: input.value })
                 }
+                onKeyDown={(event)=>{
+                  if (event.keyCode == 13) {
+                    event.preventDefault();
+                    event.target.blur()
+                }
+                }}
               />
               <div id="tableNumberInputHelp" className="form-text">
                 Inserendo il nome sarà più semplice distinguere gli ordini
