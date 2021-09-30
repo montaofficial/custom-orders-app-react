@@ -62,23 +62,7 @@ class Comande extends Component {
     }
   };
 
-  playAudio(list) {
-    console.log("Comande");
-    console.log("Waiting before: ", this.state.confirmed);
-    console.log("Waiting now: ", list);
-    let confirmed = this.state.confirmed;
-    if (
-      !_.isEqual(_.sortBy(list), _.sortBy(confirmed)) &&
-      list.length >= confirmed.length
-    ) {
-      console.log("Nuova comanda");
-      const audioEl = document.getElementsByClassName("audio-element")[0];
-      audioEl.play();
-      this.setState({
-        confirmed: list,
-      });
-    }
-  }
+
 
   render() {
     return (
@@ -108,16 +92,12 @@ class Comande extends Component {
         </div>
 
         <div className="admin-container">
-          <audio className="audio-element">
-            <source src="../new-order.mp3"></source>
-          </audio>
           <div>
             <h1 className="white">
               {this.handleTitleRendering(
                 "Orders",
                 this.handleFiltering(this.props.tables, "Confirmed").length
               )}
-              {this.playAudio(this.props.confirmed)}
             </h1>
             <Order
               page="cucina"

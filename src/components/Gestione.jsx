@@ -17,6 +17,10 @@ class Gestione extends Component {
     };
   }
 
+ tempConfirmed = [];
+ tempWaitingConfirmation = [];
+ isFirstTime = true;
+
   checkIfMounted() {
     return this.mounted;
   }
@@ -39,7 +43,7 @@ class Gestione extends Component {
       let body = {};
       try {
         body = JSON.parse(e.data);
-        console.log(body);
+        //console.log(body);
       } catch (e) {
         console.log(e.message);
       }
@@ -47,7 +51,7 @@ class Gestione extends Component {
       if (!body) return console.log("Empty JSON!!!");
 
       if (body.shape == "custom-orders.v1.orders") {
-        console.log("Updated!");
+        //console.log("Updated!");
 
         let tableObject = {};
         let tables = [];
@@ -68,19 +72,18 @@ class Gestione extends Component {
         }
 
         //Detecting changes in orders
-        let tablesBefore = tables;
         let waitingConfirmationNow = [];
         let confirmedNow = [];
-        for (let i = 0; i < tables.length; i++) {
-          for (let c = 0; c < tables[i].orders.length; c++) {
-            if (tables[i].orders[c].currentState === "Waiting confirmation") {
-              waitingConfirmationNow.push(tables[i].orders[c]._id);
+        for (let order of body.orders) {
+            if (order.currentState === "Waiting confirmation") {
+              waitingConfirmationNow.push(order._id);
             }
-            if (tables[i].orders[c].currentState === "Confirmed") {
-              confirmedNow.push(tables[i].orders[c]._id);
+            if (order.currentState === "Confirmed") {
+              confirmedNow.push(order._id);
             }
-          }
         }
+        // passo gli array cambiati qui dentro
+        this.playAudio({confirmedNow, waitingConfirmationNow})
 
         this.setState({
           tables,
@@ -125,12 +128,53 @@ class Gestione extends Component {
     this.setState({ page });
   };
 
+  playAudio(data) {
+    if (this.isFirstTime) {
+      this.isFirstTime = false;
+      this.tempWaitingConfirmation = data.waitingConfirmationNow;
+      this.tempConfirmed = data.confirmedNow;
+      return;
+    }
+   if (this.state.page == "cassa") {
+    const newOrders = this.tempWaitingConfirmation;
+    const oldOrders = data.waitingConfirmationNow;
+    if (
+      !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+      oldOrders.length >= newOrders.length
+    ) {
+      console.log("Nuova comanda in cassa, suono!");
+      try {
+        const audioEl = document.getElementById("audio-element");
+        audioEl.play();
+        this.tempWaitingConfirmation = oldOrders;
+      } catch (e) {
+        console.log(e.message)
+      }
+    }
+   }
+
+   if (this.state.page == "cucina") {
+    const newOrders = this.tempConfirmed;
+    const oldOrders = data.confirmedNow;
+    if (
+      !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+      oldOrders.length >= newOrders.length
+    ) {
+      console.log("Nuova comanda in cucina, suono!");
+      try {
+        const audioEl = document.getElementById("audio-element");
+        audioEl.play();
+        this.tempConfirmed = oldOrders;
+      } catch (e) {
+        console.log(e.message)
+      }
+    }
+   }
+  }
+
   render() {
     return (
       <>
-        <audio className="audio-element">
-          <source src="../new-order.mp3"></source>
-        </audio>
         {this.state.page === "cassa" ? (
           <Admin
             onPageChange={this.handlePageChange}

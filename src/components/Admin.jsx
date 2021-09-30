@@ -7,9 +7,7 @@ const baseUrl = "https://custom-orders.smontanari.com/api/";
 class Admin extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      waitingConfirmation: [],
-    };
+    this.state = {};
   }
 
   handleIngredients = (order) => {
@@ -77,24 +75,6 @@ class Admin extends Component {
     }
   };
 
-  playAudio(list) {
-    console.log("Admin");
-    console.log("Waiting before: ", this.state.waitingConfirmation);
-    console.log("Waiting now: ", list);
-    let waitingConfirmation = this.state.waitingConfirmation;
-    if (
-      !_.isEqual(_.sortBy(list), _.sortBy(waitingConfirmation)) &&
-      list.length >= waitingConfirmation.length
-    ) {
-      console.log("Nuovo ordine");
-      const audioEl = document.getElementsByClassName("audio-element")[0];
-      audioEl.play();
-      this.setState({
-        waitingConfirmation: list,
-      });
-    }
-  }
-
   render() {
     return (
       <div>
@@ -123,9 +103,6 @@ class Admin extends Component {
         </div>
 
         <div className="admin-container">
-          <audio className="audio-element">
-            <source src="../new-order.mp3"></source>
-          </audio>
           <div>
             <h1 className="white">
               {this.handleTitleRendering(
@@ -133,7 +110,6 @@ class Admin extends Component {
                 this.handleFiltering(this.props.tables, "Waiting confirmation")
                   .length
               )}
-              {this.playAudio(this.props.waitingConfirmation)}
             </h1>
             <Order
               page="cassa"
