@@ -139,7 +139,7 @@ class Gestione extends Component {
     return (
       <>
         <audio className="audio-element">
-          <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
+          <source src="../new-order.mp3"></source>
         </audio>
         {this.state.page === "cassa" ? (
           <Admin
