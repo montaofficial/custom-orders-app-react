@@ -9,10 +9,6 @@ class Admin extends Component {
     this.state = {};
   }
 
-  componentDidUpdate() {
-    this.playAudio();
-  }
-
   handleIngredients = (order) => {
     const elements = order.ingredients.join(", ");
     return elements;
@@ -78,11 +74,6 @@ class Admin extends Component {
     }
   };
 
-  playAudio() {
-    const audioEl = document.getElementsByClassName("audio-element")[0];
-    audioEl.play();
-  }
-
   render() {
     return (
       <div>
@@ -111,9 +102,6 @@ class Admin extends Component {
         </div>
 
         <div className="admin-container">
-          <audio className="audio-element">
-            <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
-          </audio>
           <div>
             <h1 className="white">
               {this.handleTitleRendering(

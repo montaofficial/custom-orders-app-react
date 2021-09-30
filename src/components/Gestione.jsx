@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import Comande from "./Comande";
 import Admin from "./Admin";
 import MrQR from "./MrQR";
@@ -11,6 +12,7 @@ class Gestione extends Component {
     this.state = {
       page: "cassa",
       tables: [],
+      waitingConfirmation: [],
     };
   }
 
@@ -64,6 +66,31 @@ class Gestione extends Component {
           tables.push(tableObject[tableId]);
         }
 
+        //Detecting changes in order
+        let tablesBefore = tables;
+        let waitingConfirmationNow = [];
+        for (let i = 0; i < tables.length; i++) {
+          for (let c = 0; c < tables[i].orders.length; c++) {
+            if (tables[i].orders[c].currentState === "Waiting confirmation") {
+              waitingConfirmationNow.push(tables[i].orders[c]._id);
+            }
+          }
+        }
+        if (
+          !_.isEqual(
+            _.sortBy(this.state.waitingConfirmation),
+            _.sortBy(waitingConfirmationNow)
+          ) &&
+          waitingConfirmationNow.length >= this.state.waitingConfirmation.length
+        ) {
+          console.log("Suono del nuovo");
+          this.playAudio();
+          this.setState({
+            tables,
+            waitingConfirmation: waitingConfirmationNow,
+          });
+        }
+
         this.setState({ tables });
       }
     };
@@ -102,36 +129,45 @@ class Gestione extends Component {
     let page = p;
     this.setState({ page });
   };
+
+  playAudio() {
+    const audioEl = document.getElementsByClassName("audio-element")[0];
+    audioEl.play();
+  }
+
   render() {
-    if (this.state.page === "cassa")
-      return (
-        <Admin
-          onPageChange={this.handlePageChange}
-          tables={this.state.tables}
-        />
-      );
-    if (this.state.page === "cucina")
-      return (
-        <Comande
-          onPageChange={this.handlePageChange}
-          tables={this.state.tables}
-        />
-      );
-    if (this.state.page === "tavoli")
-      return (
-        <TableOverview
-          idRistorante={this.props?.match?.params?.idRistorante}
-          onPageChange={this.handlePageChange}
-          tables={this.state.tables}
-        />
-      );
-    if (this.state.page === "qr")
-      return (
-        <MrQR
-          onPageChange={this.handlePageChange}
-          idRistorante={this.props?.match?.params?.idRistorante}
-        />
-      );
+    return (
+      <>
+        <audio className="audio-element">
+          <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3"></source>
+        </audio>
+        {this.state.page === "cassa" ? (
+          <Admin
+            onPageChange={this.handlePageChange}
+            tables={this.state.tables}
+          />
+        ) : null}
+        {this.state.page === "cucina" ? (
+          <Comande
+            onPageChange={this.handlePageChange}
+            tables={this.state.tables}
+          />
+        ) : null}
+        {this.state.page === "tavoli" ? (
+          <TableOverview
+            idRistorante={this.props?.match?.params?.idRistorante}
+            onPageChange={this.handlePageChange}
+            tables={this.state.tables}
+          />
+        ) : null}
+        {this.state.page === "qr" ? (
+          <MrQR
+            onPageChange={this.handlePageChange}
+            idRistorante={this.props?.match?.params?.idRistorante}
+          />
+        ) : null}
+      </>
+    );
   }
 }
 
