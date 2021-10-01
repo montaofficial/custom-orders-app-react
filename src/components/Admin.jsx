@@ -103,18 +103,29 @@ class Admin extends Component {
         </div>
 
         <div className="admin-container">
-          <div className="row justify-content-between menu-section">
-            <div className="col alert-button button-small">
-              <i className="fas fa-user-tie"></i> CAMERIERE
+          <div className="menu-section min-h-200">
+            <h4>Richieste servizio</h4>
+            <div className="row justify-content-start">
+              {this.props.waiterRequests.map((request, key) => (
+                <div
+                  className="col-3 col-md-2 col-xl-1 alert-button button-small"
+                  key={key}
+                >
+                  <i className="fas fa-user-tie"></i> {request.tableName}
+                </div>
+              ))}
             </div>
-            {this.state.bill ? (
-              <div
-                className="col alert-button-disabled button-small"
-                onClick={() => this.handleWaiterCall("waiter")}
-              >
-                <i className="fas fa-file-invoice-dollar"></i> CONTO
-              </div>
-            ) : null}
+            <div className="row justify-content-start">
+              {this.props.billRequests.map((request, key) => (
+                <div
+                  className="col-3 col-md-2 col-xl-1 alert-button-bill button-small"
+                  key={key}
+                >
+                  <i className="fas fa-file-invoice-dollar"></i>{" "}
+                  {request.tableName}
+                </div>
+              ))}
+            </div>
           </div>
           <div>
             <h1 className="white">

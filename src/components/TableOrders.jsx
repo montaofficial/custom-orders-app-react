@@ -10,7 +10,7 @@ class tableOrders extends Component {
     this.state = {
       orders: [],
       table: null,
-      bill: false,
+      bill: true,
       waiter: null,
       waiterBlink: false,
     };
@@ -224,16 +224,28 @@ class tableOrders extends Component {
                 event.target.blur();
               }}
             >
-              <i className="fas fa-user-tie"></i>{" "}
-              {this.state.waiter ? "ANNULLA CHIAMATA" : "CHIAMA CAMERIERE"}
+              {this.state.waiter?.type == "bill" ? (
+                <i className="fas fa-file-invoice-dollar"></i>
+              ) : (
+                <i className="fas fa-user-tie"></i>
+              )}
+              {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIAMA CAMERIERE"}
             </div>
 
-            {this.state.bill ? (
+            {!this.state.waiter && this.state.bill ? (
               <div
-                className="col alert-button-disabled button-small"
-                onClick={() => this.handleWaiterCall("waiter")}
+                className={
+                  "col alert-button button-small prevent-hover" +
+                  (this.state.waiterBlink ? " button-blink" : "")
+                }
+                onClick={(event) => {
+                  this.handleWaiterCall("bill");
+                  event.preventDefault();
+                  event.target.blur();
+                }}
               >
-                <i className="fas fa-file-invoice-dollar"></i> CONTO
+                <i className="fas fa-file-invoice-dollar"></i>
+                {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIEDI CONTO"}
               </div>
             ) : null}
           </div>

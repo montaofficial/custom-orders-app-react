@@ -14,12 +14,14 @@ class Gestione extends Component {
       tables: [],
       waitingConfirmation: [],
       confirmed: [],
+      waiterRequests: [],
+      billRequests: [],
     };
   }
 
- tempConfirmed = [];
- tempWaitingConfirmation = [];
- isFirstTime = true;
+  tempConfirmed = [];
+  tempWaitingConfirmation = [];
+  isFirstTime = true;
 
   checkIfMounted() {
     return this.mounted;
@@ -75,20 +77,40 @@ class Gestione extends Component {
         let waitingConfirmationNow = [];
         let confirmedNow = [];
         for (let order of body.orders) {
-            if (order.currentState === "Waiting confirmation") {
-              waitingConfirmationNow.push(order._id);
-            }
-            if (order.currentState === "Confirmed") {
-              confirmedNow.push(order._id);
-            }
+          if (order.currentState === "Waiting confirmation") {
+            waitingConfirmationNow.push(order._id);
+          }
+          if (order.currentState === "Confirmed") {
+            confirmedNow.push(order._id);
+          }
         }
         // passo gli array cambiati qui dentro
-        this.playAudio({confirmedNow, waitingConfirmationNow})
+        this.playAudio({ confirmedNow, waitingConfirmationNow });
 
         this.setState({
           tables,
           waitingConfirmation: waitingConfirmationNow,
           confirmed: confirmedNow,
+        });
+      }
+
+      if (body.shape == "custom-orders.v1.calls") {
+        console.log("Updated calls!");
+
+        let calls = body.calls.filter((c) => c.currentState === "waiting");
+        const newWaiterRequest = calls.filter((c) => c.type === "waiter");
+        const newBillRequest = calls.filter((c) => c.type === "bill");
+
+        if (this.state.waiterRequests.length < newWaiterRequest.length) {
+          this.playAudioRaw();
+        }
+        if (this.state.billRequests.length < newBillRequest.length) {
+          this.playAudioRaw();
+        }
+
+        return this.setState({
+          waiterRequests: newWaiterRequest,
+          billRequests: newBillRequest,
         });
       }
     };
@@ -135,41 +157,50 @@ class Gestione extends Component {
       this.tempConfirmed = data.confirmedNow;
       return;
     }
-   if (this.state.page == "cassa") {
-    const newOrders = this.tempWaitingConfirmation;
-    const oldOrders = data.waitingConfirmationNow;
-    if (
-      !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
-      oldOrders.length >= newOrders.length
-    ) {
-      console.log("Nuova comanda in cassa, suono!");
-      try {
-        const audioEl = document.getElementById("audio-element");
-        audioEl.play();
-        this.tempWaitingConfirmation = oldOrders;
-      } catch (e) {
-        console.log(e.message)
+    if (this.state.page == "cassa") {
+      const newOrders = this.tempWaitingConfirmation;
+      const oldOrders = data.waitingConfirmationNow;
+      if (
+        !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+        oldOrders.length >= newOrders.length
+      ) {
+        console.log("Nuova comanda in cassa, suono!");
+        try {
+          const audioEl = document.getElementById("audio-element");
+          audioEl.play();
+          this.tempWaitingConfirmation = oldOrders;
+        } catch (e) {
+          console.log(e.message);
+        }
       }
     }
-   }
 
-   if (this.state.page == "cucina") {
-    const newOrders = this.tempConfirmed;
-    const oldOrders = data.confirmedNow;
-    if (
-      !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
-      oldOrders.length >= newOrders.length
-    ) {
-      console.log("Nuova comanda in cucina, suono!");
-      try {
-        const audioEl = document.getElementById("audio-element");
-        audioEl.play();
-        this.tempConfirmed = oldOrders;
-      } catch (e) {
-        console.log(e.message)
+    if (this.state.page == "cucina") {
+      const newOrders = this.tempConfirmed;
+      const oldOrders = data.confirmedNow;
+      if (
+        !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+        oldOrders.length >= newOrders.length
+      ) {
+        console.log("Nuova comanda in cucina, suono!");
+        try {
+          const audioEl = document.getElementById("audio-element");
+          audioEl.play();
+          this.tempConfirmed = oldOrders;
+        } catch (e) {
+          console.log(e.message);
+        }
       }
     }
-   }
+  }
+
+  playAudioRaw() {
+    try {
+      const audioEl = document.getElementById("audio-element");
+      audioEl.play();
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   render() {
@@ -180,6 +211,8 @@ class Gestione extends Component {
             onPageChange={this.handlePageChange}
             tables={this.state.tables}
             waitingConfirmation={this.state.waitingConfirmation}
+            waiterRequests={this.state.waiterRequests}
+            billRequests={this.state.billRequests}
           />
         ) : null}
         {this.state.page === "cucina" ? (
