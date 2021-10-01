@@ -75,6 +75,16 @@ class Admin extends Component {
     }
   };
 
+  async handleWaiterCall(type) {
+    try {
+      const response = await axios.post(baseUrl + `calls/${type._id}`, {
+        currentState: "served",
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -109,6 +119,9 @@ class Admin extends Component {
               {this.props.waiterRequests.map((request, key) => (
                 <div
                   className="col-3 col-md-2 col-xl-1 alert-button button-small"
+                  onClick={() => {
+                    this.handleWaiterCall(request);
+                  }}
                   key={key}
                 >
                   <i className="fas fa-user-tie"></i> {request.tableName}
@@ -119,6 +132,9 @@ class Admin extends Component {
               {this.props.billRequests.map((request, key) => (
                 <div
                   className="col-3 col-md-2 col-xl-1 alert-button-bill button-small"
+                  onClick={() => {
+                    this.handleWaiterCall(request);
+                  }}
                   key={key}
                 >
                   <i className="fas fa-file-invoice-dollar"></i>{" "}
