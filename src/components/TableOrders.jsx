@@ -7,7 +7,13 @@ const baseUrl = "https://custom-orders.smontanari.com/api/";
 class tableOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = { orders: [], table: null };
+    this.state = {
+      orders: [],
+      table: null,
+      bill: false,
+      waiter: null,
+      waiterBlink: false,
+    };
   }
 
   checkIfMounted() {
@@ -17,6 +23,11 @@ class tableOrders extends Component {
   componentDidMount() {
     this.mounted = true;
     this.connect();
+    this.timer = setInterval(() => {
+      if (this.state.waiter) {
+        this.setState({ waiterBlink: !this.state.waiterBlink });
+      }
+    }, 800);
   }
 
   connect() {
@@ -44,7 +55,23 @@ class tableOrders extends Component {
       if (body.shape == "custom-orders.v1.orders") {
         console.log("Updated!");
 
-        this.setState({ orders: body.orders.reverse() });
+        return this.setState({ orders: body.orders.reverse() });
+      }
+      if (body.shape == "custom-orders.v1.calls") {
+        console.log("Updated!");
+        if (
+          !body.calls ||
+          !body.calls.length ||
+          !body.calls.filter((c) => c.currentState === "waiting").length
+        ) {
+          return this.setState({ waiter: null, waiterBlink: false });
+        }
+        let calls = body.calls.filter((c) => c.currentState === "waiting");
+
+        return this.setState({
+          waiter: calls[calls.length - 1],
+          waiterBlink: false,
+        });
       }
     };
 
@@ -76,6 +103,7 @@ class tableOrders extends Component {
     this.ws.close();
 
     if (this.interval) clearInterval(this.interval);
+    if (this.timer) clearInterval(this.timer);
   }
 
   handleButtons = async (order, action) => {
@@ -99,6 +127,37 @@ class tableOrders extends Component {
   handleQrCode = () => {
     this.setState({ table: { _id: this.props.idTavolo, name: "Scansiona" } });
   };
+
+  async handleWaiterCall(type) {
+    if (!this.state.waiter) {
+      try {
+        const response = await axios.post(
+          baseUrl + `${this.props.idRistorante}/calls`,
+          {
+            table: this.props.idTavolo,
+            type: type,
+          }
+        );
+        this.setState({ waiter: response.data });
+      } catch (e) {
+        console.log(e.message);
+      }
+    } else {
+      try {
+        const response = await axios.post(
+          baseUrl + `calls/${this.state.waiter._id}`,
+          {
+            currentState: "deleted",
+          }
+        );
+        if (response.data) {
+          this.setState({ waiter: null, waiterBlink: false });
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  }
 
   render() {
     return (
@@ -154,13 +213,29 @@ class tableOrders extends Component {
                 ? this.state.orders[0].tableName
                 : ""}
             </h1>
-            <div className="col alert-button button-small">
-              <i className="fas fa-user-tie"></i> CAMERIERE
+            <div
+              className={
+                "col alert-button button-small prevent-hover" +
+                (this.state.waiterBlink ? " button-blink" : "")
+              }
+              onClick={(event) => {
+                this.handleWaiterCall("waiter");
+                event.preventDefault();
+                event.target.blur();
+              }}
+            >
+              <i className="fas fa-user-tie"></i>{" "}
+              {this.state.waiter ? "ANNULLA CHIAMATA" : "CHIAMA CAMERIERE"}
             </div>
-            <div className="col-2"></div>
-            <div className="col alert-button button-small">
-              <i className="fas fa-file-invoice-dollar"></i> CONTO
-            </div>
+
+            {this.state.bill ? (
+              <div
+                className="col alert-button-disabled button-small"
+                onClick={() => this.handleWaiterCall("waiter")}
+              >
+                <i className="fas fa-file-invoice-dollar"></i> CONTO
+              </div>
+            ) : null}
           </div>
 
           {this.state.orders.filter(

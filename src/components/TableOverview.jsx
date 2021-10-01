@@ -80,17 +80,16 @@ class TableOverview extends Component {
         </div>
         <div className="admin-container">
           <h1 className="white">Tavoli Attivi</h1>
-          <div className="row-1 d-flex justify-content-between">
+          <div className="row d-flex justify-content-start">
             {this.state.tables
               .filter((t) => t.state === "active")
               .map((table, key) => (
                 <div
-                  className="col-3 rounded table-container "
+                  className="col-6 col-md-4 col-lg-3 px-3"
                   key={key}
                   onClick={() => this.setState({ popup: table })}
                 >
-                  <div className="col-auto">
-                    <p></p>
+                  <div className="rounded table-container">
                     <h1 className="yellow">{table.name}</h1>
                   </div>
                 </div>
@@ -99,7 +98,7 @@ class TableOverview extends Component {
           {this.state.tables.filter((t) => t.state === "closed").length ? (
             <div>
               <div
-                className="row"
+                className="row  mt-3"
                 onClick={() =>
                   this.setState({ showClosed: !this.state.showClosed })
                 }
@@ -114,17 +113,16 @@ class TableOverview extends Component {
                 </div>
               </div>
               {this.state.showClosed ? (
-                <div className="row-1 d-flex justify-content-between">
+                <div className="row d-flex justify-content-start">
                   {this.state.tables
                     .filter((t) => t.state === "closed")
                     .map((table, key) => (
                       <div
-                        className="col-3 rounded table-container "
+                        className="col-6 col-md-4 col-lg-3 px-3"
                         key={key}
                         onClick={() => this.setState({ popup: table })}
                       >
-                        <div className="col-auto">
-                          <p></p>
+                        <div className="rounded table-container">
                           <h1 className="yellow">{table.name}</h1>
                         </div>
                       </div>

@@ -226,7 +226,7 @@ body {
   background-color: black;
   color: #f0dd31;
   padding: 6px 16px;
-  margin: 10px 10px;
+  margin-top: 20px;
   text-align: center;
   font-weight: 150;
 }
@@ -282,6 +282,17 @@ body {
 .alert-button {
   text-align: center;
   background-color: #f0dd31;
+  color: black;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 26px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.alert-button-disabled {
+  text-align: center;
+  background-color: #adadad;
   color: black;
   font-weight: 700;
   font-size: 0.9rem;
@@ -397,9 +408,26 @@ body {
 
 .button-small {
   margin-top: 16px;
+  margin-bottom: 16px;
+  margin-left: 12px;
+  margin-right: 12px;
   padding: 8px 0;
 }
 
 .transparent {
   opacity: 0.5;
+}
+
+.prevent-hover:hover {
+  transform: scale(1);
+  color: black;
+  border-color: #f0dd31;
+  box-shadow: 0 0 0px #f0dd31;
+}
+
+.button-blink {
+  transform: scale(1.03) !important;
+  color: black;
+  border-color: #f0dd31;
+  box-shadow: 0 0 20px #f0dd31 !important;
 }

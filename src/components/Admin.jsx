@@ -7,7 +7,7 @@ const baseUrl = "https://custom-orders.smontanari.com/api/";
 class Admin extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { bill: false };
   }
 
   handleIngredients = (order) => {
@@ -103,6 +103,19 @@ class Admin extends Component {
         </div>
 
         <div className="admin-container">
+          <div className="row justify-content-between menu-section">
+            <div className="col alert-button button-small">
+              <i className="fas fa-user-tie"></i> CAMERIERE
+            </div>
+            {this.state.bill ? (
+              <div
+                className="col alert-button-disabled button-small"
+                onClick={() => this.handleWaiterCall("waiter")}
+              >
+                <i className="fas fa-file-invoice-dollar"></i> CONTO
+              </div>
+            ) : null}
+          </div>
           <div>
             <h1 className="white">
               {this.handleTitleRendering(
