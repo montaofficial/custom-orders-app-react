@@ -4,6 +4,8 @@ import QrCode from "./common/QrCode";
 import axios from "axios";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 
+const timeToWait = 1 * 60 * 1000;
+
 class tableOrders extends Component {
   constructor(props) {
     super(props);
@@ -13,8 +15,11 @@ class tableOrders extends Component {
       bill: true,
       waiter: null,
       waiterBlink: false,
+      timeTillOrder: 0,
     };
   }
+
+  lastWaiterCall = null;
 
   checkIfMounted() {
     return this.mounted;
@@ -28,7 +33,25 @@ class tableOrders extends Component {
         this.setState({ waiterBlink: !this.state.waiterBlink });
       }
     }, 800);
+    this.verifyCanCall();
+    this.clockIntervall = setInterval(this.verifyCanCall, 1000);
   }
+
+  verifyCanCall = () => {
+    let tempTimeTillOrder = 0;
+    if (!this.lastWaiterCall && tempTimeTillOrder === 0) return;
+    if (!this.lastWaiterCall) return this.setState({ timeTillOrder: 0 });
+    if (this.lastWaiterCall > new Date() - timeToWait) {
+      tempTimeTillOrder = Math.trunc(
+        (this.lastWaiterCall - (new Date() - timeToWait)) / 1000
+      );
+    } else {
+      tempTimeTillOrder = 0;
+    }
+    if (tempTimeTillOrder !== this.state.timeTillOrder) {
+      this.setState({ timeTillOrder: tempTimeTillOrder });
+    }
+  };
 
   connect() {
     this.ws = new WebSocket(
@@ -59,6 +82,16 @@ class tableOrders extends Component {
       }
       if (body.shape == "custom-orders.v1.calls") {
         console.log("Updated!");
+        if (
+          body.calls &&
+          body.calls.filter((c) => c.currentState === "deleted").length
+        ) {
+          this.lastWaiterCall = new Date(
+            body.calls.filter((c) => c.currentState === "deleted")[
+              body.calls.filter((c) => c.currentState === "deleted").length - 1
+            ].lastModified
+          );
+        }
         if (
           !body.calls ||
           !body.calls.length ||
@@ -104,6 +137,7 @@ class tableOrders extends Component {
 
     if (this.interval) clearInterval(this.interval);
     if (this.timer) clearInterval(this.timer);
+    if (this.clockIntervall) clearInterval(this.clockIntervall);
   }
 
   handleButtons = async (order, action) => {
@@ -130,17 +164,23 @@ class tableOrders extends Component {
 
   async handleWaiterCall(type) {
     if (!this.state.waiter) {
-      try {
-        const response = await axios.post(
-          baseUrl + `${this.props.idRistorante}/calls`,
-          {
-            table: this.props.idTavolo,
-            type: type,
-          }
-        );
-        this.setState({ waiter: response.data });
-      } catch (e) {
-        console.log(e.message);
+      if (
+        !this.lastWaiterCall ||
+        this.lastWaiterCall < new Date() - timeToWait
+      ) {
+        try {
+          const response = await axios.post(
+            baseUrl + `${this.props.idRistorante}/calls`,
+            {
+              table: this.props.idTavolo,
+              type: type,
+            }
+          );
+
+          this.setState({ waiter: response.data });
+        } catch (e) {
+          console.log(e.message);
+        }
       }
     } else {
       try {
@@ -151,6 +191,7 @@ class tableOrders extends Component {
           }
         );
         if (response.data) {
+          this.lastWaiterCall = new Date();
           this.setState({ waiter: null, waiterBlink: false });
         }
       } catch (e) {
@@ -206,49 +247,58 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
-          <div className="row justify-content-between menu-section">
-            <h1 className="yellow">
-              Tavolo{" "}
-              {this.state.orders.length > 0
-                ? this.state.orders[0].tableName
-                : ""}
-            </h1>
-            <div
-              className={
-                "col alert-button button-small prevent-hover" +
-                (this.state.waiterBlink ? " button-blink" : "")
-              }
-              onClick={(event) => {
-                this.handleWaiterCall("waiter");
-                event.preventDefault();
-                event.target.blur();
-              }}
-            >
-              {this.state.waiter?.type == "bill" ? (
-                <i className="fas fa-file-invoice-dollar"></i>
-              ) : (
-                <i className="fas fa-user-tie"></i>
-              )}
-              {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
+          {this.state.timeTillOrder > 0 ? (
+            <div className="row justify-content-between menu-section">
+              <p className="yellow">
+                Hai appena annullato la chiamata. Potrai chiamare ancora tra{" "}
+                {this.state.timeTillOrder} secondi
+              </p>
             </div>
-
-            {!this.state.waiter && this.state.bill ? (
+          ) : (
+            <div className="row justify-content-between menu-section">
+              <h1 className="yellow">
+                Tavolo{" "}
+                {this.state.orders.length > 0
+                  ? this.state.orders[0].tableName
+                  : ""}
+              </h1>
               <div
                 className={
                   "col alert-button button-small prevent-hover" +
                   (this.state.waiterBlink ? " button-blink" : "")
                 }
                 onClick={(event) => {
-                  this.handleWaiterCall("bill");
+                  this.handleWaiterCall("waiter");
                   event.preventDefault();
                   event.target.blur();
                 }}
               >
-                <i className="fas fa-file-invoice-dollar"></i>
-                {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIEDI CONTO"}
+                {this.state.waiter?.type == "bill" ? (
+                  <i className="fas fa-file-invoice-dollar"></i>
+                ) : (
+                  <i className="fas fa-user-tie"></i>
+                )}
+                {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
               </div>
-            ) : null}
-          </div>
+
+              {!this.state.waiter && this.state.bill ? (
+                <div
+                  className={
+                    "col alert-button button-small prevent-hover" +
+                    (this.state.waiterBlink ? " button-blink" : "")
+                  }
+                  onClick={(event) => {
+                    this.handleWaiterCall("bill");
+                    event.preventDefault();
+                    event.target.blur();
+                  }}
+                >
+                  <i className="fas fa-file-invoice-dollar"></i>
+                  {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIEDI CONTO"}
+                </div>
+              ) : null}
+            </div>
+          )}
 
           {this.state.orders.filter(
             (order) =>

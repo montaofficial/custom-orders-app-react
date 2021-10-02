@@ -9,6 +9,15 @@ body {
   margin: 12px 0;
   position: relative;
 }
+
+.inPreparation {
+  background-color: #360a0a;
+}
+
+.ready {
+  background-color: #0f2c0b;
+}
+
 .order-section-element::after {
   position: absolute;
   content: "";
@@ -22,7 +31,12 @@ body {
 }
 
 .admin-container {
+  padding: 10px;
   margin-top: 68px;
+}
+
+.container-flex {
+  padding: 6px;
 }
 
 .order-section-title {
@@ -179,6 +193,44 @@ body {
   color: #ffffff;
   font-weight: 700;
   text-align: right;
+}
+
+.admin-container-cucina {
+  padding: 20px;
+}
+
+.scale {
+  transform: scale(0.5);
+}
+
+.table-container-cucina {
+  background-color: black;
+  color: #f0dd31;
+  padding: 6px;
+  font-weight: 150;
+}
+
+.allign-left-title-cucina {
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.allign-left-subtitle-cucina {
+  font-size: 1.6rem;
+  color: #f0dd31;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.allign-left-text-cucina {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: left;
 }
 
 .yellow {

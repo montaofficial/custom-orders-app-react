@@ -39,7 +39,7 @@ class Order extends Component {
     }
     if (state === "Ready" && page === "cassa") {
       cl = "fas fa-check-circle cursor-pointer";
-      text = "Consegnati";
+      text = "Consegnato";
     }
     if (state === "In preparation" && page === "tableOrders") {
       cl = "fas fa-bacon";
