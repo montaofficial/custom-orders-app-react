@@ -49,7 +49,7 @@ class MrQR extends Component {
             <div className="row justify-content-between">
               <div className="col-auto">
                 <span className="img">
-                  <img src="/logo-sham.png" alt="logo sham" />
+                  <img src="/logo-sham-low.svg" alt="logo sham" />
                 </span>
                 <span className="title">
                   BURGER <span className="yellow">ORDERS</span>
