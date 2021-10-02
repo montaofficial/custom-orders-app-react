@@ -229,7 +229,7 @@ class tableOrders extends Component {
               ) : (
                 <i className="fas fa-user-tie"></i>
               )}
-              {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIAMA CAMERIERE"}
+              {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
             </div>
 
             {!this.state.waiter && this.state.bill ? (
