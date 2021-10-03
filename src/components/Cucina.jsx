@@ -8,12 +8,14 @@ class Cucina extends Component {
     super(props);
     this.state = {
       page: "cucina",
+      options: [],
       tables: [],
       waitingConfirmation: [],
       confirmed: [],
       inPreparation: [],
       waiterRequests: [],
       billRequests: [],
+      allIngredients: [],
     };
   }
 
@@ -25,7 +27,16 @@ class Cucina extends Component {
     return this.mounted;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        baseUrl + `614d9fb7db2d0588b88a006b/menu`
+      );
+      this.setState({ options: response.data });
+    } catch (error) {
+      console.error(error);
+    }
+
     this.mounted = true;
     this.connect();
   }
@@ -83,9 +94,36 @@ class Cucina extends Component {
         // passo gli array cambiati qui dentro
         this.playAudio({ confirmedNow, waitingConfirmationNow });
 
+        let allIngredients = [];
+        let mrFail = 0;
+        for (let i = 0; i < inPreparation.length; i++) {
+          for (let c = 0; c < inPreparation[i].ingredients.length; c++) {
+            if (inPreparation[i].type === "Burger") {
+              for (let d = 0; d < allIngredients.length; d++) {
+                if (
+                  allIngredients[d].ingredient ===
+                  inPreparation[i].ingredients[c]
+                ) {
+                  allIngredients[d].count++;
+                } else {
+                  mrFail++;
+                }
+              }
+              if (mrFail === allIngredients.length) {
+                allIngredients.push({
+                  ingredient: inPreparation[i].ingredients[c],
+                  count: 1,
+                });
+              }
+              mrFail = 0;
+            }
+          }
+        }
+
         this.setState({
           tables,
           inPreparation,
+          allIngredients,
         });
       }
 
@@ -211,8 +249,6 @@ class Cucina extends Component {
 
   handleButtons = async (order) => {
     let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
-    console.log("Mi hanno chiamato", order);
-
     if (order.currentState == "Confirmed") state = "In preparation";
     if (order.currentState == "In preparation") state = "Ready";
     if (order.currentState == "Ready") state = "In preparation";
@@ -267,29 +303,48 @@ class Cucina extends Component {
     return newClass;
   };
 
-  handleInPreparationOrdersIngredients = (orders) => {
-    let allIngredients = [];
-    for (let i = 0; i < orders.length; i++) {
-      for (let c = 0; c < orders[i].ingredients.length; c++) {
-        if (orders[i].type === "Burger") {
-          allIngredients.push(orders[i].ingredients[c]);
-        }
-      }
-    }
-    allIngredients = new Set(allIngredients);
-    allIngredients = [...allIngredients];
-    console.log(allIngredients);
-    allIngredients = allIngredients.join(", ");
-    console.log(allIngredients);
-    return allIngredients;
-  };
-
   render() {
     return (
       <div className="admin-container-cucina">
-        <div className="white">Ingredienti necessari:</div>
+        <div className="table-container-cucina">Ingredienti necessari:</div>
         <div className="white">
-          {this.handleInPreparationOrdersIngredients(this.state.inPreparation)}
+          {() =>
+            this.handleTypeFiltration(
+              this.handleInPreparationOrdersIngredients(
+                this.state.inPreparation
+              ),
+              "Carne"
+            )
+          }
+          <div className="row">
+            {this.state.options.slice(0, 4).map((category, key) => (
+              <div className="col" key={key}>
+                <div className="table-container-cucina">
+                  <div className="allign-left-title-cucina">
+                    {category.name}
+                  </div>
+                  <div className="white">
+                    {category.options.map((element, key2) => (
+                      <div>
+                        {this.state.allIngredients
+                          .map((a) => a.ingredient)
+                          .includes(element.name) ? (
+                          <div>
+                            {this.state.allIngredients.map((a) => {
+                              if (a.ingredient === element.name) {
+                                return a.count;
+                              }
+                            })}{" "}
+                            {element.name}
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="row justify-content-start">
           {this.state.tables.map((table, key) => {

@@ -5,8 +5,9 @@ ADMIN /id_ristorante/cassa/
 CUCINA /id_ristorante/comande/
 
 
-3. inserire nome customer se vuole
-4. chiedere a monta se è felice
+rimuovere bottoni fino al primo ordine confermato
+ordinare ordini in cucina(appetizer in fondo)
+Rendere cliccabile tutto l'elemento in menù(non solo la casella di spunta)
 
 
 FATTO 
