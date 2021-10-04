@@ -211,7 +211,7 @@ body {
 }
 
 .allign-left-title-cucina {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #ffffff;
   font-weight: 700;
   text-align: left;
@@ -227,7 +227,14 @@ body {
 }
 
 .allign-left-text-cucina {
-  font-size: 1rem;
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: left;
+}
+
+.ingredients-cucina {
+  font-size: 0.8rem;
   color: #ffffff;
   font-weight: 500;
   text-align: left;

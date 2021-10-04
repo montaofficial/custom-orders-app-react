@@ -247,58 +247,66 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
-          {this.state.timeTillOrder > 0 ? (
-            <div className="row justify-content-between menu-section">
-              <p className="yellow">
-                Hai appena annullato la chiamata. Potrai chiamare ancora tra{" "}
-                {this.state.timeTillOrder} secondi
-              </p>
-            </div>
-          ) : (
-            <div className="row justify-content-between menu-section">
-              <h1 className="yellow">
-                Tavolo{" "}
-                {this.state.orders.length > 0
-                  ? this.state.orders[0].tableName
-                  : ""}
-              </h1>
-              <div
-                className={
-                  "col alert-button button-small prevent-hover" +
-                  (this.state.waiterBlink ? " button-blink" : "")
-                }
-                onClick={(event) => {
-                  this.handleWaiterCall("waiter");
-                  event.preventDefault();
-                  event.target.blur();
-                }}
-              >
-                {this.state.waiter?.type == "bill" ? (
-                  <i className="fas fa-file-invoice-dollar"></i>
-                ) : (
-                  <i className="fas fa-user-tie"></i>
-                )}
-                {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
-              </div>
-
-              {!this.state.waiter && this.state.bill ? (
-                <div
-                  className={
-                    "col alert-button button-small prevent-hover" +
-                    (this.state.waiterBlink ? " button-blink" : "")
-                  }
-                  onClick={(event) => {
-                    this.handleWaiterCall("bill");
-                    event.preventDefault();
-                    event.target.blur();
-                  }}
-                >
-                  <i className="fas fa-file-invoice-dollar"></i>
-                  {this.state.waiter ? " ANNULLA CHIAMATA" : " CHIEDI CONTO"}
+          {this.state.orders.filter(
+            (order) => order.currentState !== "Waiting confirmation"
+          ).length ? (
+            <div>
+              {this.state.timeTillOrder > 0 ? (
+                <div className="row justify-content-between menu-section">
+                  <p className="yellow">
+                    Hai appena annullato la chiamata. Potrai chiamare ancora tra{" "}
+                    {this.state.timeTillOrder} secondi
+                  </p>
                 </div>
-              ) : null}
+              ) : (
+                <div className="row justify-content-between menu-section">
+                  <h1 className="yellow">
+                    Tavolo{" "}
+                    {this.state.orders.length > 0
+                      ? this.state.orders[0].tableName
+                      : ""}
+                  </h1>
+                  <div
+                    className={
+                      "col alert-button button-small prevent-hover" +
+                      (this.state.waiterBlink ? " button-blink" : "")
+                    }
+                    onClick={(event) => {
+                      this.handleWaiterCall("waiter");
+                      event.preventDefault();
+                      event.target.blur();
+                    }}
+                  >
+                    {this.state.waiter?.type == "bill" ? (
+                      <i className="fas fa-file-invoice-dollar"></i>
+                    ) : (
+                      <i className="fas fa-user-tie"></i>
+                    )}
+                    {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
+                  </div>
+
+                  {!this.state.waiter && this.state.bill ? (
+                    <div
+                      className={
+                        "col alert-button button-small prevent-hover" +
+                        (this.state.waiterBlink ? " button-blink" : "")
+                      }
+                      onClick={(event) => {
+                        this.handleWaiterCall("bill");
+                        event.preventDefault();
+                        event.target.blur();
+                      }}
+                    >
+                      <i className="fas fa-file-invoice-dollar"></i>
+                      {this.state.waiter
+                        ? " ANNULLA CHIAMATA"
+                        : " CHIEDI CONTO"}
+                    </div>
+                  ) : null}
+                </div>
+              )}
             </div>
-          )}
+          ) : null}
 
           {this.state.orders.filter(
             (order) =>

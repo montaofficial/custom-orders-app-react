@@ -323,7 +323,7 @@ class Cucina extends Component {
                   <div className="allign-left-title-cucina">
                     {category.name}
                   </div>
-                  <div className="white">
+                  <div className="ingredients-cucina">
                     {category.options.map((element, key2) => (
                       <div>
                         {this.state.allIngredients
@@ -362,22 +362,46 @@ class Cucina extends Component {
                     Tavolo {table.number}
                   </div>
                   <div>
-                    {orders.map((order, key2) => (
-                      <div key={key2}>
-                        <div
-                          className={this.handleClassColor(order)}
-                          onClick={() => this.handleButtons(order)}
-                        >
-                          <div className="allign-left-subtitle-cucina">
-                            <i className={this.handleIcon(order.type)}></i>
-                            {this.handleOrderType(order).type}
-                          </div>
-                          <div className="allign-left-text-cucina">
-                            {this.handleIngredients(order)}
+                    {orders
+                      .filter((o) => o.type === "Burger")
+                      .map((order, key2) => (
+                        <div key={key2}>
+                          <div
+                            className={this.handleClassColor(order)}
+                            onClick={() => this.handleButtons(order)}
+                          >
+                            <div className="allign-left-subtitle-cucina">
+                              <i className={this.handleIcon(order.type)}></i>
+                              {this.handleOrderType(order).type}
+                            </div>
+                            <div className="allign-left-text-cucina">
+                              {this.handleIngredients(order)}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    {orders
+                      .filter((o) => o.type !== "Burger")
+                      .map((order, key2) => (
+                        <div key={key2}>
+                          <div
+                            className={this.handleClassColor(order)}
+                            onClick={() => this.handleButtons(order)}
+                          >
+                            <div className="allign-left-subtitle-cucina">
+                              <i
+                                className={this.handleIcon(
+                                  this.handleOrderType(order).type
+                                )}
+                              ></i>
+                              {this.handleOrderType(order).type}
+                            </div>
+                            <div className="allign-left-text-cucina">
+                              {this.handleIngredients(order)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
