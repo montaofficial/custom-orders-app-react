@@ -16,6 +16,11 @@ class NotFound extends Component {
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/waiter">
+            Camerieri
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/614d9fb7db2d0588b88a006b/cucina">
             Cucina
           </a>

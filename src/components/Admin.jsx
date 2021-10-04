@@ -104,9 +104,17 @@ class Admin extends Component {
             >
               <div className="allign-right-title cursor-pointer">
                 <div className="menu-icon">
-                  <i className="fas fa-cash-register cursor-pointer" />
+                  <i
+                    className={
+                      this.props.waiter
+                        ? "fas fa-user-alt  cursor-pointer"
+                        : "fas fa-cash-register cursor-pointer"
+                    }
+                  />
                 </div>
-                <div className="menu-subtitle">CASSA</div>
+                <div className="menu-subtitle">
+                  {this.props.waiter ? "CAMERIERE" : "CASSA"}
+                </div>
               </div>
             </div>
           </div>
