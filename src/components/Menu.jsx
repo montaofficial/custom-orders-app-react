@@ -13,6 +13,8 @@ class Menu extends Component {
       update: false,
       popup: false,
       canConfirm: false,
+      tableOpen: true,
+      tableOpenPopup: true,
       name: "",
 
       table: null,
@@ -56,15 +58,18 @@ class Menu extends Component {
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
-                <div
-                  className="col-auto tuttoaddestra"
-                  onClick={() => this.handleQrCode()}
-                >
-                  <div className="menu-icon">
-                    <i className="fas fa-user-plus" />
+                {this.state.tableOpen ? (
+                  <div
+                    className="col-auto tuttoaddestra"
+                    onClick={() => this.handleQrCode()}
+                  >
+                    <div className="menu-icon">
+                      <i className="fas fa-user-plus" />
+                    </div>
+                    <div className="menu-subtitle">QR</div>
                   </div>
-                  <div className="menu-subtitle">QR</div>
-                </div>
+                ) : null}
+
                 <div
                   className="col-auto"
                   onClick={() => this.props.onPageChange("table")}
@@ -79,130 +84,162 @@ class Menu extends Component {
           </div>
         </div>
 
-        {this.state.popup ? null : (
-          <div
-            className="fixed-bottom submit-order"
-            onClick={() => this.submitOrder()}
-          >
-            ORDINA
-          </div>
-        )}
-        {this.state.popup ? (
-          <div className="menu-cliente">
-            <div className="menu-section">
-              <div className="menu-section-title">Attenzione!</div>
-              <div className="menu-section-body">
-                Non hai selezionato carne!
-                <br />
-                {this.state.canConfirm
-                  ? "Vuoi ordinare solo gli Apetizers?"
-                  : null}
-                <br />
-                <br />
-                <br />
-                <div
-                  className="submit-order"
-                  onClick={() => this.setState({ popup: false })}
-                >
-                  INDIETRO
-                </div>
-                {this.state.canConfirm ? (
+        {this.state.tableOpenPopup ? (
+          <div>
+            {this.state.popup ? null : (
+              <div>
+                {this.state.tableOpen ? (
                   <div
-                    className="submit-order"
-                    onClick={() => this.postOrder()}
+                    className="fixed-bottom submit-order"
+                    onClick={() => this.submitOrder()}
                   >
-                    CONFERMA
+                    ORDINA
                   </div>
                 ) : null}
               </div>
-            </div>
+            )}
+            {this.state.popup ? (
+              <div className="menu-cliente">
+                <div className="menu-section">
+                  <div className="menu-section-title">Attenzione!</div>
+                  <div className="menu-section-body">
+                    Non hai selezionato carne!
+                    <br />
+                    {this.state.canConfirm
+                      ? "Vuoi ordinare solo gli Apetizers?"
+                      : null}
+                    <br />
+                    <br />
+                    <br />
+                    <div
+                      className="submit-order"
+                      onClick={() => this.setState({ popup: false })}
+                    >
+                      INDIETRO
+                    </div>
+                    {this.state.canConfirm ? (
+                      <div
+                        className="submit-order"
+                        onClick={() => this.postOrder()}
+                      >
+                        CONFERMA
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="menu-cliente">
+                {this.state.tableOpen ? (
+                  <div className="mb-3">
+                    <input
+                      placeholder="Nome (opzionale)"
+                      aria-label="name"
+                      className="form-control"
+                      id="name"
+                      value={this.state.name}
+                      onChange={({ currentTarget: input }) =>
+                        this.setState({ name: input.value })
+                      }
+                      onKeyDown={(event) => {
+                        if (event.keyCode == 13) {
+                          event.preventDefault();
+                          event.target.blur();
+                        }
+                      }}
+                    />
+
+                    <div id="tableNumberInputHelp" className="form-text">
+                      Inserendo il nome sarà più semplice distinguere gli ordini
+                    </div>
+                  </div>
+                ) : null}
+
+                {this.state.options.map((category, key) => (
+                  <div className="menu-section" key={key}>
+                    <div
+                      className={
+                        this.state.category == key
+                          ? "menu-section-title active"
+                          : "menu-section-title"
+                      }
+                      onClick={() => {
+                        this.setState({ category: key });
+                      }}
+                    >
+                      {category.name}
+                    </div>
+                    {this.state.category == key ? (
+                      <div className="menu-section-list">
+                        {category.options.map((element, key2) => (
+                          <div
+                            className="row menu-section-element"
+                            key={key + "" + key2}
+                            onClick={
+                              this.state.order.includes(element.name)
+                                ? () => this.removeItem(element.name)
+                                : () => this.addItem(element.name, category)
+                            }
+                          >
+                            <div className="col element-name">
+                              {element.name}
+                              {element.vegan ? (
+                                <span className="element-vegan">
+                                  <i className="fas fa-leaf"></i>
+                                </span>
+                              ) : null}
+                              {element.details ? (
+                                <div className="element-description">
+                                  {element.details}
+                                </div>
+                              ) : null}
+                            </div>
+                            {this.state.tableOpen ? (
+                              <>
+                                <div className="col-auto price">
+                                  {displayPrice(element.price)}
+                                </div>
+                                <div className="col-auto select">
+                                  {this.state.order.includes(element.name) ? (
+                                    <div className="icon">
+                                      <i className="fas fa-check-square"></i>
+                                    </div>
+                                  ) : (
+                                    <div className="icon">
+                                      <i className="far fa-square"></i>
+                                    </div>
+                                  )}
+                                </div>
+                              </>
+                            ) : null}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="menu-cliente">
-            <div className="mb-3">
-              <input
-                placeholder="Nome (opzionale)"
-                aria-label="name"
-                className="form-control"
-                id="name"
-                value={this.state.name}
-                onChange={({ currentTarget: input }) =>
-                  this.setState({ name: input.value })
-                }
-                onKeyDown={(event)=>{
-                  if (event.keyCode == 13) {
-                    event.preventDefault();
-                    event.target.blur()
-                }
-                }}
-              />
-              <div id="tableNumberInputHelp" className="form-text">
-                Inserendo il nome sarà più semplice distinguere gli ordini
+          <div>
+            <div className="menu-cliente">
+              <div className="menu-section">
+                <div className="menu-section-title">Attenzione!</div>
+                <div className="menu-section-body">
+                  <h1 className="white">
+                    Scusa "AMICO" il tuo tavolo è stato chiuso, puoi comunque
+                    continuare a consultare il mennù. Torna a pagarci presto
+                  </h1>
+                  <div
+                    className="submit-order"
+                    onClick={() => this.setState({ tableOpenPopup: true })}
+                  >
+                    INDIETRO
+                  </div>
+                </div>
               </div>
             </div>
-
-            {this.state.options.map((category, key) => (
-              <div className="menu-section" key={key}>
-                <div
-                  className={
-                    this.state.category == key
-                      ? "menu-section-title active"
-                      : "menu-section-title"
-                  }
-                  onClick={() => {
-                    this.setState({ category: key });
-                  }}
-                >
-                  {category.name}
-                </div>
-                {this.state.category == key ? (
-                  <div className="menu-section-list">
-                    {category.options.map((element, key2) => (
-                      <div
-                        className="row menu-section-element"
-                        key={key + "" + key2}
-                      >
-                        <div className="col element-name">
-                          {element.name}
-                          {element.vegan ? (
-                            <span className="element-vegan">
-                              <i className="fas fa-leaf"></i>
-                            </span>
-                          ) : null}
-                          {element.details ? (
-                            <div className="element-description">
-                              {element.details}
-                            </div>
-                          ) : null}
-                        </div>
-                        <div className="col-auto price">
-                          {displayPrice(element.price)}
-                        </div>
-                        <div className="col-auto select">
-                          {this.state.order.includes(element.name) ? (
-                            <div
-                              className="icon"
-                              onClick={() => this.removeItem(element.name)}
-                            >
-                              <i className="fas fa-check-square"></i>
-                            </div>
-                          ) : (
-                            <div
-                              className="icon"
-                              onClick={() =>
-                                this.addItem(element.name, category)
-                              }
-                            >
-                              <i className="far fa-square"></i>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
           </div>
         )}
       </>
@@ -250,20 +287,25 @@ class Menu extends Component {
   }
 
   async postOrder() {
-    const response = await axios.post(
-      baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
-      {
-        ingredients: this.state.order,
-        customer: this.state.name,
-      }
-    );
-    console.log(response.data);
-    this.props.onPageChange("table");
-    this.setState({
-      order: [],
-      popup: false,
-      category: 0,
-    });
+    try {
+      const response = await axios.post(
+        baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
+        {
+          ingredients: this.state.order,
+          customer: this.state.name,
+        }
+      );
+      console.log(response.data);
+      this.props.onPageChange("table");
+      this.setState({
+        order: [],
+        popup: false,
+        category: 0,
+      });
+    } catch (error) {
+      console.error(error);
+      this.setState({ tableOpenPopup: false, tableOpen: false, popup: false });
+    }
   }
 }
 
