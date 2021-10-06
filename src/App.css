@@ -33,6 +33,7 @@ body {
 .admin-container {
   padding: 10px;
   margin-top: 68px;
+  word-wrap: break-word;
 }
 
 .container-flex {
@@ -197,6 +198,7 @@ body {
 
 .admin-container-cucina {
   padding: 20px;
+  word-wrap: break-word;
 }
 
 .scale {
