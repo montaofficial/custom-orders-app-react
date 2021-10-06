@@ -270,7 +270,7 @@ class tableOrders extends Component {
                       <h1 className="yellow">
                         Tavolo{" "}
                         {this.state.orders.length > 0
-                          ? this.state.orders[0].tableName
+                          ? this.props.tableOpen.name
                           : ""}
                       </h1>
                       <div
@@ -328,7 +328,7 @@ class tableOrders extends Component {
               onAction={this.handleButtons}
               tables={[
                 {
-                  number: this.state.orders[0].tableName + " ORDINE",
+                  number: this.props.tableOpen.name + " ORDINE",
                   orders: this.state.orders.filter(
                     (order) =>
                       order.currentState !== "Deleted" &&
@@ -347,7 +347,7 @@ class tableOrders extends Component {
                 onAction={this.handleButtons}
                 tables={[
                   {
-                    number: this.state.orders[0].tableName + " CONSEGNATI",
+                    number: this.props.tableOpen.name + " CONSEGNATI",
                     orders: this.state.orders.filter(
                       (order) => order.currentState === "Done"
                     ),
