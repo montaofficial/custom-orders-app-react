@@ -10,17 +10,17 @@ class Table extends Component {
     this.state = {
       page: "menu",
       options: [],
-      tableOpen: true,
       tableOpenPopup: true,
+      table: null
     };
   }
 
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `${this.props?.match?.params?.idRistorante}/menu`
+        baseUrl + `${this.props?.match?.params?.idRistorante}/menu/${this.props?.match?.params?.idTavolo}`
       );
-      this.setState({ options: response.data });
+      this.setState({ options: response.data.menu, table: response.data.table });
     } catch (error) {
       console.error(error);
     }
@@ -38,7 +38,7 @@ class Table extends Component {
           idRistorante={this.props?.match?.params?.idRistorante}
           idTavolo={this.props?.match?.params?.idTavolo}
           onPageChange={this.handlePageChange}
-          tableOpen={this.state.tableOpen}
+          tableOpen={this.state.table}
         />
       );
     if (this.state.page === "menu")
@@ -48,7 +48,7 @@ class Table extends Component {
           idTavolo={this.props?.match?.params?.idTavolo}
           onPageChange={this.handlePageChange}
           options={this.state.options}
-          tableOpen={this.state.tableOpen}
+          tableOpen={this.state.table}
           tableOpenPopup={this.state.tableOpenPopup}
           onTableClosed={() =>
             this.setState({
