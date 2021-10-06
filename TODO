@@ -5,13 +5,5 @@ ADMIN /id_ristorante/cassa/
 CUCINA /id_ristorante/comande/
 
 
-rimuovere bottoni fino al primo ordine confermato
-ordinare ordini in cucina(appetizer in fondo)
-Rendere cliccabile tutto l'elemento in menù(non solo la casella di spunta)
 
 
-FATTO 
-
-Backend
-Add deleted by costumer (order.state)
-3. Aggiungere descrizione comandi sotto i bottoni
