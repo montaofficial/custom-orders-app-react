@@ -248,7 +248,10 @@ class tableOrders extends Component {
         </div>
         <div className="admin-container">
           {this.state.orders.filter(
-            (order) => order.currentState !== "Waiting confirmation"
+            (order) =>
+              order.currentState !== "Waiting confirmation" &&
+              order.currentState !== "Deleted" &&
+              order.currentState !== "Deleted by Customer"
           ).length ? (
             <div>
               {this.state.timeTillOrder > 0 ? (
