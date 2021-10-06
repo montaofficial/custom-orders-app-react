@@ -52,7 +52,7 @@ class Table extends Component {
           tableOpenPopup={this.state.tableOpenPopup}
           onTableClosed={() =>
             this.setState({
-              tableOpen: false,
+              table: null,
               tableOpenPopup: false,
             })
           }

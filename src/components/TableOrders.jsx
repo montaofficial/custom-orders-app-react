@@ -249,8 +249,15 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
+          <div className="menu-section">
+
+          
           {this.props.tableOpen ? (
             <div>
+              <h1 className="yellow">
+                        Tavolo{" "}
+                        {this.props.tableOpen.name}
+                      </h1>
               {this.state.orders.filter(
                 (order) =>
                   order.currentState !== "Waiting confirmation" &&
@@ -259,20 +266,15 @@ class tableOrders extends Component {
               ).length ? (
                 <div>
                   {this.state.timeTillOrder > 0 ? (
-                    <div className="row justify-content-between menu-section">
+                    <div className="row justify-content-between">
                       <p className="yellow">
                         Hai appena annullato la chiamata. Potrai chiamare ancora
                         tra {this.state.timeTillOrder} secondi
                       </p>
                     </div>
                   ) : (
-                    <div className="row justify-content-between menu-section">
-                      <h1 className="yellow">
-                        Tavolo{" "}
-                        {this.state.orders.length > 0
-                          ? this.props.tableOpen.name
-                          : ""}
-                      </h1>
+                    <div className="row justify-content-between">
+                      
                       <div
                         className={
                           "col alert-button button-small prevent-hover" +
@@ -316,6 +318,7 @@ class tableOrders extends Component {
               ) : null}
             </div>
           ) : null}
+          </div>
 
           {this.state.orders.filter(
             (order) =>
