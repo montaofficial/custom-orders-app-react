@@ -14,10 +14,22 @@ class MrQR extends Component {
       table: null,
     };
   }
+
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
+
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `${this.props.idRistorante}/tables`
+        baseUrl + `${this.props.idRistorante}/tables`,
+        this.getHeaders()
       );
       this.setState({ tables: response.data });
     } catch (error) {
@@ -29,7 +41,8 @@ class MrQR extends Component {
     try {
       const response = await axios.post(
         baseUrl + `${this.props.idRistorante}/tables`,
-        { name: this.state.newTableName }
+        { name: this.state.newTableName },
+        this.getHeaders()
       );
       this.setState({
         newTableId: response.data._id,

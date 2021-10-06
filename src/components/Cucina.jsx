@@ -27,10 +27,21 @@ class Cucina extends Component {
     return this.mounted;
   }
 
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
+
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `614d9fb7db2d0588b88a006b/menu`
+        baseUrl + `614d9fb7db2d0588b88a006b/menu`,
+        this.getHeaders()
       );
       this.setState({ options: response.data });
     } catch (error) {
@@ -256,7 +267,8 @@ class Cucina extends Component {
     try {
       const response = await axios.post(baseUrl + `orders/${order._id}`, {
         currentState: state,
-      });
+      },
+      this.getHeaders());
       console.log(response);
     } catch (error) {
       console.error(error);

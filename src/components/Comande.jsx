@@ -55,14 +55,23 @@ class Comande extends Component {
     try {
       const response = await axios.post(baseUrl + `orders/${order._id}`, {
         currentState: state,
-      });
+      },
+      this.getHeaders());
       console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
 
   render() {
     return (

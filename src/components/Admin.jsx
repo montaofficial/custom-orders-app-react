@@ -10,6 +10,16 @@ class Admin extends Component {
     this.state = { bill: false };
   }
 
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
+
   handleIngredients = (order) => {
     const elements = order.ingredients.join(", ");
     return elements;
@@ -72,7 +82,9 @@ class Admin extends Component {
     try {
       const response = await axios.post(baseUrl + `orders/${order._id}`, {
         currentState: state,
-      });
+      },
+      this.getHeaders()
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -83,7 +95,8 @@ class Admin extends Component {
     try {
       const response = await axios.post(baseUrl + `calls/${type._id}`, {
         currentState: "served",
-      });
+      },
+      this.getHeaders());
     } catch (e) {
       console.log(e.message);
     }

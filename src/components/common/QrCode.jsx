@@ -32,9 +32,21 @@ class QrCode extends Component {
       );
   };
 
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
+
   async editOrders(id, state) {
     try {
-      const response = await axios.post(baseUrl + `tables/${id}`, { state });
+      const response = await axios.post(baseUrl + `tables/${id}`,
+       { state },
+       this.getHeaders());
       console.log(response.data);
       this.props.onUpdate();
     } catch (error) {

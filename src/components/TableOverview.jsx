@@ -14,10 +14,21 @@ class TableOverview extends Component {
     };
   }
 
+  getHeaders () {
+    const token = localStorage.getItem('custom-orders-token') || "";
+    return {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': token
+      },
+    }
+  }
+
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `${this.props.idRistorante}/tables`
+        baseUrl + `${this.props.idRistorante}/tables`,
+        this.getHeaders()
       );
       response.data.sort(function (a, b) {
         return a.name - b.name;
