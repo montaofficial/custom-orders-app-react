@@ -14,13 +14,17 @@ class Admin extends Component {
     const elements = order.ingredients.join(", ");
     return elements;
   };
-
+  // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Done", "Deleted", "Deleted by Customer"
   handleFiltering = (tables, filter) => {
     let filtered = [];
     let orders = [];
     let table = {
       number: 0,
       orders: [],
+      showWaiting: false,
+      showConfirmed: false,
+      showPreparation: false,
+      showReady: false,
       showDone: false,
       showDeleted: false,
     };
@@ -152,60 +156,129 @@ class Admin extends Component {
             </div>
           </div>
           <div>
-            <h1 className="white">
-              {this.handleTitleRendering(
-                "Waiting confirmation",
-                this.handleFiltering(this.props.tables, "Waiting confirmation")
-                  .length
-              )}
-            </h1>
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(
-                this.props.tables,
-                "Waiting confirmation"
-              )}
-            />
+            <div
+              className="row"
+              onClick={() =>
+                this.setState({ showWaiting: !this.state.showWaiting })
+              }
+            >
+              <div className="col-auto">
+                <h1 className="white">Waiting confirmation</h1>
+              </div>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showWaiting ? "[nascondi]" : "[mostra] "}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {
+                      this.handleFiltering(
+                        this.props.tables,
+                        "Waiting confirmation"
+                      ).length
+                    }
+                  </span>
+                </div>
+              </div>
+            </div>
+            {this.state.showWaiting ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(
+                  this.props.tables,
+                  "Waiting confirmation"
+                )}
+              />
+            ) : null}
           </div>
           <div>
-            <h1 className="white">
-              {this.handleTitleRendering(
-                "Confirmed",
-                this.handleFiltering(this.props.tables, "Confirmed").length
-              )}
-            </h1>
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(this.props.tables, "Confirmed")}
-            />
+            <div
+              className="row"
+              onClick={() =>
+                this.setState({ showConfirmed: !this.state.showConfirmed })
+              }
+            >
+              <div className="col-auto">
+                <h1 className="white">Confirmed</h1>
+              </div>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showConfirmed ? "[nascondi]" : "[mostra]"}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {
+                      this.handleFiltering(this.props.tables, "Confirmed")
+                        .length
+                    }
+                  </span>
+                </div>
+              </div>
+            </div>
+            {this.state.showConfirmed ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(this.props.tables, "Confirmed")}
+              />
+            ) : null}
           </div>
           <div>
-            <h1 className="white">
-              {this.handleTitleRendering(
-                "In preparation",
-                this.handleFiltering(this.props.tables, "In preparation").length
-              )}
-            </h1>
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(this.props.tables, "In preparation")}
-            />
+            <div
+              className="row"
+              onClick={() =>
+                this.setState({ showPreparation: !this.state.showPreparation })
+              }
+            >
+              <div className="col-auto">
+                <h1 className="white">In preparation</h1>
+              </div>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showPreparation ? "[nascondi]" : "[mostra]"}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {
+                      this.handleFiltering(this.props.tables, "In preparation")
+                        .length
+                    }
+                  </span>
+                </div>
+              </div>
+            </div>
+            {this.state.showPreparation ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(
+                  this.props.tables,
+                  "In preparation"
+                )}
+              />
+            ) : null}
           </div>
           <div>
-            <h1 className="white">
-              {this.handleTitleRendering(
-                "Ready",
-                this.handleFiltering(this.props.tables, "Ready").length
-              )}
-            </h1>
-            <Order
-              page="cassa"
-              onAction={this.handleButtons}
-              tables={this.handleFiltering(this.props.tables, "Ready")}
-            />
+            <div
+              className="row"
+              onClick={() =>
+                this.setState({ showReady: !this.state.showReady })
+              }
+            >
+              <div className="col-auto">
+                <h1 className="white">Ready</h1>
+              </div>
+              <div className="col-auto cursor-pointer tuttoassinistra">
+                <div className="white">
+                  {this.state.showReady ? "[nascondi]" : "[mostra]"}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {this.handleFiltering(this.props.tables, "Ready").length}
+                  </span>
+                </div>
+              </div>
+            </div>
+            {this.state.showReady ? (
+              <Order
+                page="cassa"
+                onAction={this.handleButtons}
+                tables={this.handleFiltering(this.props.tables, "Ready")}
+              />
+            ) : null}
           </div>
           <div>
             <div
@@ -219,7 +292,10 @@ class Admin extends Component {
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
-                  {this.state.showDeleted ? "[nascondi]" : "[mostra]"}
+                  {this.state.showDeleted ? "[nascondi]" : "[mostra]"}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {this.handleFiltering(this.props.tables, "Deleted").length}
+                  </span>
                 </div>
               </div>
             </div>
@@ -241,7 +317,10 @@ class Admin extends Component {
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
-                  {this.state.showDone ? "[nascondi]" : "[mostra]"}
+                  {this.state.showDone ? "[nascondi]" : "[mostra]"}{" "}
+                  <span className="col-auto badge rounded-pill bg-warning how-many-badge">
+                    {this.handleFiltering(this.props.tables, "Done").length}
+                  </span>
                 </div>
               </div>
             </div>

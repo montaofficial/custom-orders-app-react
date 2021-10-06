@@ -282,6 +282,9 @@ body {
   font-size: 0.8rem;
   margin-top: -6px;
 }
+.how-many-badge {
+  color: black;
+}
 
 .table-container {
   background-color: black;
