@@ -54,16 +54,17 @@ class Menu extends Component {
                     <div className="menu-subtitle">QR</div>
                   </div>
                 ) : null}
-
-                <div
-                  className="col-auto"
-                  onClick={() => this.props.onPageChange("table")}
-                >
-                  <div className="menu-icon">
-                    <i className="fas fa-clipboard-list" />
+                {this.props.tableOpen ? (
+                  <div
+                    className="col-auto"
+                    onClick={() => this.props.onPageChange("table")}
+                  >
+                    <div className="menu-icon">
+                      <i className="fas fa-clipboard-list" />
+                    </div>
+                    <div className="menu-subtitle">ORDINI</div>
                   </div>
-                  <div className="menu-subtitle">ORDINI</div>
-                </div>
+                ) : null}
               </div>
             </div>
           </div>
