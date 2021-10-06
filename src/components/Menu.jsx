@@ -7,29 +7,14 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: [],
       order: [],
       category: 0,
       update: false,
       popup: false,
       canConfirm: false,
-      tableOpen: true,
-      tableOpenPopup: true,
       name: "",
-
       table: null,
     };
-  }
-
-  async componentDidMount() {
-    try {
-      const response = await axios.get(
-        baseUrl + `${this.props.idRistorante}/menu`
-      );
-      this.setState({ options: response.data });
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   handleQrCode = () => {
@@ -58,7 +43,7 @@ class Menu extends Component {
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
-                {this.state.tableOpen ? (
+                {this.props.tableOpen ? (
                   <div
                     className="col-auto tuttoaddestra"
                     onClick={() => this.handleQrCode()}
@@ -84,11 +69,11 @@ class Menu extends Component {
           </div>
         </div>
 
-        {this.state.tableOpenPopup ? (
+        {this.props.tableOpenPopup ? (
           <div>
             {this.state.popup ? null : (
               <div>
-                {this.state.tableOpen ? (
+                {this.props.tableOpen ? (
                   <div
                     className="fixed-bottom submit-order"
                     onClick={() => this.submitOrder()}
@@ -130,7 +115,7 @@ class Menu extends Component {
               </div>
             ) : (
               <div className="menu-cliente">
-                {this.state.tableOpen ? (
+                {this.props.tableOpen ? (
                   <div className="mb-3">
                     <input
                       placeholder="Nome (opzionale)"
@@ -155,7 +140,7 @@ class Menu extends Component {
                   </div>
                 ) : null}
 
-                {this.state.options.map((category, key) => (
+                {this.props.options.map((category, key) => (
                   <div className="menu-section" key={key}>
                     <div
                       className={
@@ -194,7 +179,7 @@ class Menu extends Component {
                                 </div>
                               ) : null}
                             </div>
-                            {this.state.tableOpen ? (
+                            {this.props.tableOpen ? (
                               <>
                                 <div className="col-auto price">
                                   {displayPrice(element.price)}
@@ -228,12 +213,15 @@ class Menu extends Component {
                 <div className="menu-section-title">Attenzione!</div>
                 <div className="menu-section-body">
                   <h1 className="white">
-                    Scusa "AMICO" il tuo tavolo è stato chiuso, puoi comunque
-                    continuare a consultare il mennù. Torna a pagarci presto
+                    La sessione è stata chiusa. Potrai ancora consultare lo
+                    storico ordini e il menù.
+                  </h1>
+                  <h1 className="white">
+                    Grazie per averci scelto! Alla prossima!
                   </h1>
                   <div
                     className="submit-order"
-                    onClick={() => this.setState({ tableOpenPopup: true })}
+                    onClick={() => this.props.onTableClosed2()}
                   >
                     INDIETRO
                   </div>
@@ -267,14 +255,13 @@ class Menu extends Component {
   }
 
   submitOrder() {
-    console.log(this.state.order);
-    if (this.state.options[0] && this.state.options[5]) {
+    if (this.props.options[0] && this.props.options[5]) {
       let foundCarne = false;
       let foundApetizer = false;
-      for (let carne of this.state.options[0].options)
+      for (let carne of this.props.options[0].options)
         if (this.state.order.includes(carne.name)) foundCarne = true;
 
-      for (let apet of this.state.options[5].options)
+      for (let apet of this.props.options[5].options)
         if (this.state.order.includes(apet.name)) foundApetizer = true;
 
       if (!foundCarne && foundApetizer)
@@ -304,7 +291,9 @@ class Menu extends Component {
       });
     } catch (error) {
       console.error(error);
-      this.setState({ tableOpenPopup: false, tableOpen: false, popup: false });
+      if (error.response.status === 400) {
+        this.props.onTableClosed();
+      }
     }
   }
 }
