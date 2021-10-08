@@ -44,7 +44,7 @@ class Login extends React.Component {
               </div>
               <div className="row justify-content-center">
                 <div className="col-12">
-                <h3 className="login-title">PGE ADMIN</h3>
+                <h3 className="login-title white">AMMINISTRAZIONE</h3>
                 </div>
               </div>
               <div  className="row">

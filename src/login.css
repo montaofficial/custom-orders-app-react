@@ -26,7 +26,7 @@
   
   a:hover {
     text-decoration: none;
-    color: #cc073c
+    color: #f0dd31
   }
   
   .white-link {
@@ -46,7 +46,7 @@
     
   .white-link:hover {
       text-decoration: none;
-      color: #cc073c
+      color: #f0dd31
     
   }
   
@@ -267,7 +267,7 @@
   .login-card input:focus {
     
     border-color: transparent ;
-    border-bottom: solid 2px #CC073C;
+    border-bottom: solid 2px #f0dd31;
   }
   
   
@@ -310,7 +310,7 @@
     width: 100%;
     height: 100%;
     box-shadow: 0 0;
-    color: #cc073cc2
+    color: #f0dd31c2
   }
   
   .input100:focus+.focus-input100 {
@@ -357,24 +357,24 @@
   }
   
   .input100:focus+.focus-input100+.symbol-input100 {
-    color: #cc073c;
+    color: #f0dd31;
     padding-left: 2px
   }
   
   .symbol-input100:hover {
-    color: #CC073C;
+    color: #f0dd31;
   }
   
   .login100-form-btn {
     font-size: 14px;
     line-height: 1.5;
     font-weight: 700;
-    color: #fff;
+    color: #000;
     text-transform: uppercase;
     width: 100%;
     height: 38px;
     border-radius: 4px;
-    background: #cc073c;
+    background: #f0dd31;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -390,7 +390,7 @@
   }
   
   .login100-form-btn:hover {
-    background: #9b1a3c
+    background: #dac401
   }
   
   .validate-input {
