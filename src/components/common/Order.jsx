@@ -30,7 +30,7 @@ class Order extends Component {
       text = "Recupera";
     }
     if (state === "Confirmed" && page === "cucina") {
-      cl = "fas fa-bacon cursor-pointer";
+      cl = "fas fa-wine-bottle cursor-pointer";
       text = "Prepara";
     }
     if (state === "In preparation" && page === "cucina") {
@@ -42,7 +42,7 @@ class Order extends Component {
       text = "Consegnato";
     }
     if (state === "In preparation" && page === "tableOrders") {
-      cl = "fas fa-bacon";
+      cl = "fas fa-wine-bottle";
       text = "In preparazione";
     }
     if (state === "Ready" && page === "tableOrders") {
@@ -81,40 +81,27 @@ class Order extends Component {
   handleOrderType = (order) => {
     let orderMod = order;
     if (order.type === "Appetizer") {
-      if (order.ingredients[0] === "Crostone 1") {
-        orderMod.type = "Crostone";
-        orderMod.ingredients = "";
-        orderMod.ingredients = order.details;
+      orderMod.type = "Drink";
+      if (order.ingredients[0] === "Birra alla spina") {
+        orderMod.type = "Birra";
+        orderMod.ingredients = ["Birra alla spina"];
       }
-      if (order.ingredients[0] === "Crostone 2") {
-        orderMod.type = "Crostone";
-        orderMod.ingredients = "";
-        orderMod.ingredients = order.details;
+      if (order.ingredients[0] === "Acqua naturale") {
+        orderMod.type = "Acqua";
+        orderMod.ingredients = ["Naturale"];
       }
-      if (order.ingredients[0] === "Crostone 3") {
-        orderMod.type = "Crostone";
-        orderMod.ingredients = "";
-        orderMod.ingredients = order.details;
-      }
-      if (order.ingredients[0] === "Crostone 4") {
-        orderMod.type = "Crostone";
-        orderMod.ingredients = "";
-        orderMod.ingredients = order.details;
-      }
-      if (order.ingredients[0] === "Crostone 5") {
-        orderMod.type = "Crostone";
-        orderMod.ingredients = "";
-        orderMod.ingredients = order.details;
+      if (order.ingredients[0] === "Acqua gassata") {
+        orderMod.type = "Acqua";
+        orderMod.ingredients = ["Gassata"];
       }
     }
-
     return orderMod;
   };
 
   handleIcon = (type) => {
-    if (type === "Burger") return "fas fa-hamburger";
-    if (type === "Appetizer") return "fas fa-drumstick-bite";
-    if (type === "Crostone") return "fas fa-bread-slice";
+    if (type === "Birra") return "fas fa-beer";
+    if (type === "Acqua") return "fas fa-faucet";
+    if (type === "Drink") return "fas fa-glass-martini-alt";
   };
 
   render() {

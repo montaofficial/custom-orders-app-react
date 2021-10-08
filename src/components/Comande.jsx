@@ -53,24 +53,27 @@ class Comande extends Component {
       if (order.currentState == "Confirmed") state = "Deleted";
     }
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   render() {
@@ -80,7 +83,7 @@ class Comande extends Component {
           <div className="row justify-content-between">
             <div className="col-auto">
               <span className="img">
-                <img src="/logo-sham-low.svg" alt="logo sham" />
+                <img src="/americano.png" alt="logo sham" />
               </span>
               <span className="title">
                 BURGER <span className="yellow">ORDERS</span>

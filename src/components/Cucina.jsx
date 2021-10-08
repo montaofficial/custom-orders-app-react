@@ -27,14 +27,14 @@ class Cucina extends Component {
     return this.mounted;
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -253,8 +253,8 @@ class Cucina extends Component {
   };
 
   handleIcon = (type) => {
-    if (type === "Burger") return "fas fa-hamburger";
-    if (type === "Appetizer") return "fas fa-drumstick-bite";
+    if (type === "Birra") return "fas fa-beer";
+    if (type === "Appetizer") return "fas fa-beer";
     if (type === "Crostone") return "fas fa-bread-slice";
   };
 
@@ -265,10 +265,13 @@ class Cucina extends Component {
     if (order.currentState == "Ready") state = "In preparation";
 
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -302,6 +305,11 @@ class Cucina extends Component {
         orderMod.type = "Crostone";
         orderMod.ingredients = "";
         orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Birra alla spina") {
+        orderMod.type = "Birra";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.ingredients;
       }
     }
     return orderMod;

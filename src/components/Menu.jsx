@@ -35,10 +35,10 @@ class Menu extends Component {
           <div className="row justify-content-between">
             <div className="col-auto">
               <span className="img">
-                <img src="/logo-sham-low.svg" alt="logo sham" />
+                <img src="/americano.png" alt="logo sham" />
               </span>
               <span className="title">
-                CREA IL <span className="yellow"> TUO BURGER</span>
+                ORDINA IL <span className="yellow"> TUO DRINK</span>
               </span>
             </div>
             <div className="col-auto allign-right-title">
@@ -256,22 +256,8 @@ class Menu extends Component {
   }
 
   submitOrder() {
-    if (this.props.options[0] && this.props.options[5]) {
-      let foundCarne = false;
-      let foundApetizer = false;
-      for (let carne of this.props.options[0].options)
-        if (this.state.order.includes(carne.name)) foundCarne = true;
-
-      for (let apet of this.props.options[5].options)
-        if (this.state.order.includes(apet.name)) foundApetizer = true;
-
-      if (!foundCarne && foundApetizer)
-        return this.setState({ popup: true, canConfirm: true });
-      if (!foundCarne && !foundApetizer)
-        return this.setState({ popup: true, canConfirm: false });
-
-      return this.postOrder();
-    }
+    this.setState({ popup: false, canConfirm: true });
+    return this.postOrder();
   }
 
   async postOrder() {

@@ -10,14 +10,14 @@ class Admin extends Component {
     this.state = { bill: false };
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   handleIngredients = (order) => {
@@ -80,10 +80,12 @@ class Admin extends Component {
       if (order.currentState == "Confirmed") state = "Deleted";
     }
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders()
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
       );
       console.log(response);
     } catch (error) {
@@ -93,10 +95,13 @@ class Admin extends Component {
 
   async handleWaiterCall(type) {
     try {
-      const response = await axios.post(baseUrl + `calls/${type._id}`, {
-        currentState: "served",
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `calls/${type._id}`,
+        {
+          currentState: "served",
+        },
+        this.getHeaders()
+      );
     } catch (e) {
       console.log(e.message);
     }
@@ -109,7 +114,7 @@ class Admin extends Component {
           <div className="row justify-content-between">
             <div className="col-auto">
               <span className="img">
-                <img src="/logo-sham-low.svg" alt="logo sham" />
+                <img src="/americano.png" alt="logo sham" />
               </span>
               <span className="title">
                 BURGER <span className="yellow">ORDERS</span>

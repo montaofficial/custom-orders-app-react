@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import QRCode from "react-qr-code";
 const axios = require("axios");
 const baseUrl = "https://custom-orders.smontanari.com/api/";
-const frontBaseUrl = "https://custom-orders.smontanari.com/";
+const frontBaseUrl = "http://192.168.1.84:3000/";
 
 class QrCode extends Component {
   constructor(props) {
@@ -19,34 +19,38 @@ class QrCode extends Component {
     else
       return (
         <>
-        <QRCode className="img-fluid invert-img mt-4" value={`${frontBaseUrl}${this.props.idRistorante}/${str}`}/>
-        
+          <QRCode
+            className="img-fluid invert-img mt-4"
+            value={`${frontBaseUrl}${this.props.idRistorante}/${str}`}
+          />
         </>
       );
-      return (
-        <img
+    return (
+      <img
         className="img-fluid invert-img rounded"
         src={genQrLink(`${frontBaseUrl}${this.props.idRistorante}/${str}`)}
         alt="qr link"
       />
-      );
+    );
   };
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async editOrders(id, state) {
     try {
-      const response = await axios.post(baseUrl + `tables/${id}`,
-       { state },
-       this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `tables/${id}`,
+        { state },
+        this.getHeaders()
+      );
       console.log(response.data);
       this.props.onUpdate();
     } catch (error) {
@@ -78,19 +82,25 @@ class QrCode extends Component {
                       MODIFICA/AGGIUNGI ORDINI
                     </div>
                   ) : null}
-                  {this.props.canEditOrders? <div
-                    className="alert-button button-small"
-                    onClick={() => {
-                      this.props.onClose();
-                      this.editOrders(
-                        this.props.table._id,
-                        this.props.table.state == "active" ? "closed" : "active"
-                      );
-                    }}
-                  >
-                    {this.props.table.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
-                    ORDINI
-                  </div>: null}
+                  {this.props.canEditOrders ? (
+                    <div
+                      className="alert-button button-small"
+                      onClick={() => {
+                        this.props.onClose();
+                        this.editOrders(
+                          this.props.table._id,
+                          this.props.table.state == "active"
+                            ? "closed"
+                            : "active"
+                        );
+                      }}
+                    >
+                      {this.props.table.state == "active"
+                        ? "CHIUDI"
+                        : "RIATTIVA"}{" "}
+                      ORDINI
+                    </div>
+                  ) : null}
                 </>
               ) : (
                 <div

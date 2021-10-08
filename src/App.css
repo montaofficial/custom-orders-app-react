@@ -4,7 +4,7 @@ body {
 
 .order-section-element {
   background-color: #1d1d1d;
-  color: #f0dd31;
+  color: #ff5e00;
   padding: 10px 16px;
   margin: 12px 0;
   position: relative;
@@ -27,7 +27,7 @@ body {
   left: 0;
   right: 0;
   width: 100%;
-  background: #f0dd31;
+  background: #ff5e00;
 }
 
 .admin-container {
@@ -62,7 +62,7 @@ body {
 
 .menu-section {
   background-color: #000000;
-  color: #f0dd31;
+  color: #ff5e00;
   padding: 10px 16px;
   margin: 12px 0;
   position: relative;
@@ -96,7 +96,7 @@ body {
   left: 0;
   right: 0;
   width: 100%;
-  background: #f0dd31;
+  background: #ff5e00;
 }
 
 .menu-section-element .element-name {
@@ -106,7 +106,7 @@ body {
 
 .menu-section-element .element-name .element-description {
   font-size: 0.8rem;
-  color: #f0dd31;
+  color: #ff5e00;
 }
 
 .menu-section-element .element-vegan {
@@ -207,7 +207,7 @@ body {
 
 .table-container-cucina {
   background-color: black;
-  color: #f0dd31;
+  color: #ff5e00;
   padding: 6px;
   font-weight: 150;
 }
@@ -222,7 +222,7 @@ body {
 
 .allign-left-subtitle-cucina {
   font-size: 1.6rem;
-  color: #f0dd31;
+  color: #ff5e00;
   font-weight: 700;
   text-align: left;
   text-transform: uppercase;
@@ -243,14 +243,14 @@ body {
 }
 
 .yellow {
-  color: #f0dd31;
+  color: #ff5e00;
 }
 .white {
   color: #ffffff;
 }
 
 .submit-order {
-  background-color: #f0dd31;
+  background-color: #ff5e00;
   color: #000000;
   margin-bottom: 10px;
   margin-left: 8px;
@@ -288,7 +288,7 @@ body {
 
 .table-container {
   background-color: black;
-  color: #f0dd31;
+  color: #f06731;
   padding: 6px 16px;
   margin-top: 20px;
   text-align: center;
@@ -297,7 +297,7 @@ body {
 
 .table-container-cl {
   background-color: rgb(36, 0, 0);
-  color: #f0dd31;
+  color: #ff5e00;
   padding: 6px 16px;
   margin: 10px 10px;
   text-align: center;
@@ -334,7 +334,7 @@ body {
 .alert-box {
   color: #ffffff;
   background-color: black;
-  border: solid 1px #f0dd31;
+  border: solid 1px #ff5e00;
   padding: 38px 18px;
   border-radius: 12px;
 }
@@ -345,7 +345,7 @@ body {
 
 .alert-button {
   text-align: center;
-  background-color: #f0dd31;
+  background-color: #ff5e00;
   color: black;
   font-weight: 700;
   font-size: 0.9rem;
@@ -386,8 +386,8 @@ body {
 .alert-button:hover {
   transform: scale(1.03);
   color: black;
-  border-color: #f0dd31;
-  box-shadow: 0 0 20px #f0dd31;
+  border-color: #ff5e00;
+  box-shadow: 0 0 20px #ff5e00;
 }
 
 @media only screen and (max-width: 590px) {
@@ -503,14 +503,14 @@ body {
 .prevent-hover:hover {
   transform: scale(1);
   color: black;
-  border-color: #f0dd31;
-  box-shadow: 0 0 0px #f0dd31;
+  border-color: #ff5e00;
+  box-shadow: 0 0 0px #ff5e00;
 }
 
 .button-blink {
   transform: scale(1.03) !important;
   color: black;
-  border-color: #f0dd31;
+  border-color: #ff5e00;
   box-shadow: 0 0 20px #f0dd31 !important;
 }
 

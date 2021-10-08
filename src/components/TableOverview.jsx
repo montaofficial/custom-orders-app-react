@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import QrCode from "./common/QrCode";
 const axios = require("axios");
 const baseUrl = "https://custom-orders.smontanari.com/api/";
-const frontBaseUrl = "https://custom-orders.smontanari.com/";
+const frontBaseUrl = "http://192.168.1.84:3000/";
 
 class TableOverview extends Component {
   constructor(props) {
@@ -14,14 +14,14 @@ class TableOverview extends Component {
     };
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -57,7 +57,7 @@ class TableOverview extends Component {
           <div className="row justify-content-between">
             <div className="col-auto">
               <span className="img">
-                <img src="/logo-sham-low.svg" alt="logo sham" />
+                <img src="/americano.png" alt="logo sham" />
               </span>
               <span className="title">
                 BURGER <span className="yellow">ORDERS</span>
