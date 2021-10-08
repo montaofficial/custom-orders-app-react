@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import QrCode from "./common/QrCode";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
-const frontBaseUrl = "http://192.168.1.84:3000/";
+const frontBaseUrl = "https://orders.soolutions.io/";
 
 class MrQR extends Component {
   constructor(props) {
