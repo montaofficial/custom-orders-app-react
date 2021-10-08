@@ -1,19 +1,19 @@
 {
-  "short_name": "Shamrock",
-  "name": "Custom Burger Orders",
+  "short_name": "Bar americano",
+  "name": "Bar americano",
   "icons": [
     {
-      "src": "logo-sham-low.svg",
+      "src": "americano.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo-sham-low.svg",
+      "src": "americano.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo-sham-low.svg",
+      "src": "americano.png",
       "type": "image/png",
       "sizes": "512x512"
     }
