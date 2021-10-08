@@ -95,9 +95,9 @@ class Comande extends Component {
             >
               <div className="allign-right-title cursor-pointer">
                 <div className="menu-icon">
-                  <i className="fas fa-utensils cursor-pointer" />
+                  <i className="fas fa-glass-cheers cursor-pointer" />
                 </div>
-                <div className="menu-subtitle">CUCINA</div>
+                <div className="menu-subtitle">Bancone</div>
               </div>
             </div>
           </div>
