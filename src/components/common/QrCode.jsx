@@ -19,34 +19,38 @@ class QrCode extends Component {
     else
       return (
         <>
-        <QRCode className="img-fluid invert-img mt-4" value={`${frontBaseUrl}${this.props.idRistorante}/${str}`}/>
-        
+          <QRCode
+            className="img-fluid invert-img mt-4"
+            value={`${frontBaseUrl}${this.props.idRistorante}/${str}`}
+          />
         </>
       );
-      return (
-        <img
+    return (
+      <img
         className="img-fluid invert-img rounded"
         src={genQrLink(`${frontBaseUrl}${this.props.idRistorante}/${str}`)}
         alt="qr link"
       />
-      );
+    );
   };
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async editOrders(id, state) {
     try {
-      const response = await axios.post(baseUrl + `tables/${id}`,
-       { state },
-       this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `tables/${id}`,
+        { state },
+        this.getHeaders()
+      );
       console.log(response.data);
       this.props.onUpdate();
     } catch (error) {
@@ -65,32 +69,53 @@ class QrCode extends Component {
               <h4>{this.props.table.name}</h4>
               {this.props.isAdmin ? (
                 <>
-                  {this.props.table.state == "active" ? (
-                    <div
-                      className="alert-button button-small"
-                      onClick={() => {
-                        window.open(
-                          `${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`,
-                          "_blank"
-                        );
-                      }}
-                    >
-                      MODIFICA/AGGIUNGI ORDINI
+                  {this.props.admin ? (
+                    <div>
+                      <div
+                        className="alert-button button-small"
+                        onClick={() =>
+                          this.props.onModifyOrders(this.props.table._id)
+                        }
+                      >
+                        MODIFICA/AGGIUNGI ORDINI
+                      </div>
                     </div>
-                  ) : null}
-                  {this.props.canEditOrders? <div
-                    className="alert-button button-small"
-                    onClick={() => {
-                      this.props.onClose();
-                      this.editOrders(
-                        this.props.table._id,
-                        this.props.table.state == "active" ? "closed" : "active"
-                      );
-                    }}
-                  >
-                    {this.props.table.state == "active" ? "CHIUDI" : "RIATTIVA"}{" "}
-                    ORDINI
-                  </div>: null}
+                  ) : (
+                    <div>
+                      {this.props.table.state == "active" ? (
+                        <div
+                          className="alert-button button-small"
+                          onClick={() => {
+                            window.open(
+                              `${frontBaseUrl}${this.props.idRistorante}/${this.props.table._id}`,
+                              "_blank"
+                            );
+                          }}
+                        >
+                          MODIFICA/AGGIUNGI ORDINI
+                        </div>
+                      ) : null}
+                      {this.props.canEditOrders ? (
+                        <div
+                          className="alert-button button-small"
+                          onClick={() => {
+                            this.props.onClose();
+                            this.editOrders(
+                              this.props.table._id,
+                              this.props.table.state == "active"
+                                ? "closed"
+                                : "active"
+                            );
+                          }}
+                        >
+                          {this.props.table.state == "active"
+                            ? "CHIUDI"
+                            : "RIATTIVA"}{" "}
+                          ORDINI
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
                 </>
               ) : (
                 <div

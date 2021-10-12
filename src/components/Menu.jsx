@@ -37,9 +37,15 @@ class Menu extends Component {
               <span className="img">
                 <img src="/logo-sham-low.svg" alt="logo sham" />
               </span>
-              <span className="title">
-                CREA IL <span className="yellow"> TUO BURGER</span>
-              </span>
+              {this.props.admin ? (
+                <span className="title">
+                  MODIFICA <span className="yellow"> ORDINI</span>
+                </span>
+              ) : (
+                <span className="title">
+                  CREA IL <span className="yellow"> TUO BURGER</span>
+                </span>
+              )}
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">

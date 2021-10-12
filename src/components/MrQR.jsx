@@ -15,14 +15,14 @@ class MrQR extends Component {
     };
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -124,6 +124,8 @@ class MrQR extends Component {
                 }}
                 isAdmin={true}
                 canEditOrders={false}
+                admin={this.props.admin}
+                onModifyOrders={this.props.onModifyOrders}
               />
             </div>
           </div>

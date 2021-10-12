@@ -27,14 +27,14 @@ class Cucina extends Component {
     return this.mounted;
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -265,13 +265,55 @@ class Cucina extends Component {
     if (order.currentState == "Ready") state = "In preparation";
 
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  handleAllOrders = async (action, orders) => {
+    if (action === "prepare") {
+      const toConfirm = orders.filter((o) => o.currentState === "Confirmed");
+      for (let i = 0; i < toConfirm.length; i++) {
+        try {
+          const response = await axios.post(
+            baseUrl + `orders/${toConfirm[i]._id}`,
+            {
+              currentState: "In preparation",
+            },
+            this.getHeaders()
+          );
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    if (action === "done") {
+      const toConfirm = orders.filter(
+        (o) => o.currentState === "In preparation"
+      );
+      for (let i = 0; i < toConfirm.length; i++) {
+        try {
+          const response = await axios.post(
+            baseUrl + `orders/${toConfirm[i]._id}`,
+            {
+              currentState: "Ready",
+            },
+            this.getHeaders()
+          );
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   };
 
@@ -318,7 +360,6 @@ class Cucina extends Component {
   render() {
     return (
       <div className="admin-container-cucina">
-        <div className="table-container-cucina">Ingredienti necessari:</div>
         <div className="white">
           {() =>
             this.handleTypeFiltration(
@@ -328,34 +369,36 @@ class Cucina extends Component {
               "Carne"
             )
           }
-          <div className="row">
-            {this.state.options.slice(0, 4).map((category, key) => (
-              <div className="col" key={key}>
-                <div className="table-container-cucina">
-                  <div className="allign-left-title-cucina">
-                    {category.name}
-                  </div>
-                  <div className="ingredients-cucina">
-                    {category.options.map((element, key2) => (
-                      <div>
-                        {this.state.allIngredients
-                          .map((a) => a.ingredient)
-                          .includes(element.name) ? (
-                          <div>
-                            {this.state.allIngredients.map((a) => {
-                              if (a.ingredient === element.name) {
-                                return a.count;
-                              }
-                            })}{" "}
-                            {element.name}
-                          </div>
-                        ) : null}
-                      </div>
-                    ))}
+          <div className=" min-h-200">
+            <div className="row">
+              {this.state.options.slice(0, 4).map((category, key) => (
+                <div className="col" key={key}>
+                  <div className="table-container-cucina">
+                    <div className="allign-left-title-cucina">
+                      {category.name}
+                    </div>
+                    <div className="ingredients-cucina">
+                      {category.options.map((element, key2) => (
+                        <div>
+                          {this.state.allIngredients
+                            .map((a) => a.ingredient)
+                            .includes(element.name) ? (
+                            <div>
+                              {this.state.allIngredients.map((a) => {
+                                if (a.ingredient === element.name) {
+                                  return a.count;
+                                }
+                              })}{" "}
+                              {element.name}
+                            </div>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
         <div className="row justify-content-start">
@@ -386,8 +429,42 @@ class Cucina extends Component {
                               <i className={this.handleIcon(order.type)}></i>
                               {this.handleOrderType(order).type}
                             </div>
-                            <div className="allign-left-text-cucina">
-                              {this.handleIngredients(order)}
+                            <div className="row">
+                              <div className="col">
+                                {order.ingredients
+                                  .slice(
+                                    0,
+                                    Math.ceil(order.ingredients.length / 2)
+                                  )
+                                  .map((i, key3) => (
+                                    <div className="row" key={key3}>
+                                      <div className="col-auto allign-left-text-cucina">
+                                        ◆
+                                      </div>
+                                      <div className="col allign-left-text-cucina">
+                                        {" "}
+                                        {i}
+                                      </div>
+                                    </div>
+                                  ))}
+                              </div>
+                              <div className="col">
+                                {order.ingredients
+                                  .slice(
+                                    Math.ceil(order.ingredients.length / 2)
+                                  )
+                                  .map((i, key3) => (
+                                    <div className="row" key={key3}>
+                                      <div className="col-auto allign-left-text-cucina">
+                                        ◆
+                                      </div>
+                                      <div className="col allign-left-text-cucina">
+                                        {" "}
+                                        {i}
+                                      </div>
+                                    </div>
+                                  ))}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -414,6 +491,20 @@ class Cucina extends Component {
                           </div>
                         </div>
                       ))}
+                  </div>
+                  <div className="row justify-content-between m-1">
+                    <div
+                      className="col alert-button m-1"
+                      onClick={() => this.handleAllOrders("prepare", orders)}
+                    >
+                      PREPARA
+                    </div>
+                    <div
+                      className="col alert-button m-1"
+                      onClick={() => this.handleAllOrders("done", orders)}
+                    >
+                      FINITO
+                    </div>
                   </div>
                 </div>
               </div>

@@ -14,14 +14,14 @@ class TableOverview extends Component {
     };
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -52,6 +52,8 @@ class TableOverview extends Component {
           onUpdate={() => this.componentDidMount()}
           canEditOrders={true}
           isAdmin={true}
+          admin={this.props.admin}
+          onModifyOrders={this.props.onModifyOrders}
         />
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
@@ -98,7 +100,10 @@ class TableOverview extends Component {
                 <div
                   className="col-6 col-md-4 col-lg-3 px-3"
                   key={key}
-                  onClick={() => this.setState({ popup: table })}
+                  onClick={() => {
+                    console.log("Ho inviato: ", table);
+                    this.setState({ popup: table });
+                  }}
                 >
                   <div className="rounded table-container">
                     <h1 className="yellow">{table.name}</h1>

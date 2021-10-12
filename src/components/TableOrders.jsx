@@ -218,9 +218,15 @@ class tableOrders extends Component {
               <span className="img">
                 <img src="/logo-sham-low.svg" alt="logo sham" />
               </span>
-              <span className="title">
-                CREA IL <span className="yellow"> TUO BURGER</span>
-              </span>
+              {this.props.admin ? (
+                <span className="title">
+                  MODIFICA <span className="yellow"> ORDINI</span>
+                </span>
+              ) : (
+                <span className="title">
+                  CREA IL <span className="yellow"> TUO BURGER</span>
+                </span>
+              )}
             </div>
             <div className="col-auto allign-right-title">
               <div className="row">
@@ -250,74 +256,78 @@ class tableOrders extends Component {
         </div>
         <div className="admin-container">
           <div className="menu-section">
-
-          
-          {this.props.tableOpen ? (
-            <div>
-              <h1 className="yellow">
-                        Tavolo{" "}
-                        {this.props.tableOpen.name}
-                      </h1>
-              {this.state.orders.filter(
-                (order) =>
-                  order.currentState !== "Waiting confirmation" &&
-                  order.currentState !== "Deleted" &&
-                  order.currentState !== "Deleted by Customer"
-              ).length ? (
-                <div>
-                  {this.state.timeTillOrder > 0 ? (
-                    <div className="row justify-content-between">
-                      <p className="yellow">
-                        Hai appena annullato la chiamata. Potrai chiamare ancora
-                        tra {this.state.timeTillOrder} secondi
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="row justify-content-between">
-                      
-                      <div
-                        className={
-                          "col alert-button button-small prevent-hover" +
-                          (this.state.waiterBlink ? " button-blink" : "")
-                        }
-                        onClick={(event) => {
-                          this.handleWaiterCall("waiter");
-                          event.preventDefault();
-                          event.target.blur();
-                        }}
-                      >
-                        {this.state.waiter?.type == "bill" ? (
-                          <i className="fas fa-file-invoice-dollar"></i>
-                        ) : (
-                          <i className="fas fa-user-tie"></i>
-                        )}
-                        {this.state.waiter ? " ANNULLA CHIAMATA" : " CAMERIERE"}
+            {this.props.tableOpen ? (
+              <div>
+                <h1 className="yellow">Tavolo {this.props.tableOpen.name}</h1>
+                {this.state.orders.filter(
+                  (order) =>
+                    order.currentState !== "Waiting confirmation" &&
+                    order.currentState !== "Deleted" &&
+                    order.currentState !== "Deleted by Customer"
+                ).length ? (
+                  <div>
+                    {this.state.timeTillOrder > 0 ? (
+                      <div className="row justify-content-between">
+                        <p className="yellow">
+                          Hai appena annullato la chiamata. Potrai chiamare
+                          ancora tra {this.state.timeTillOrder} secondi
+                        </p>
                       </div>
-
-                      {!this.state.waiter && this.state.bill ? (
+                    ) : (
+                      <div className="row justify-content-between">
                         <div
                           className={
                             "col alert-button button-small prevent-hover" +
                             (this.state.waiterBlink ? " button-blink" : "")
                           }
                           onClick={(event) => {
-                            this.handleWaiterCall("bill");
+                            this.handleWaiterCall("waiter");
                             event.preventDefault();
                             event.target.blur();
                           }}
                         >
-                          <i className="fas fa-file-invoice-dollar"></i>
+                          {this.state.waiter?.type == "bill" ? (
+                            <i className="fas fa-file-invoice-dollar"></i>
+                          ) : (
+                            <i className="fas fa-user-tie"></i>
+                          )}
                           {this.state.waiter
                             ? " ANNULLA CHIAMATA"
-                            : " CHIEDI CONTO"}
+                            : " CAMERIERE"}
                         </div>
-                      ) : null}
-                    </div>
-                  )}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+
+                        {!this.state.waiter && this.state.bill ? (
+                          <div
+                            className={
+                              "col alert-button button-small prevent-hover" +
+                              (this.state.waiterBlink ? " button-blink" : "")
+                            }
+                            onClick={(event) => {
+                              this.handleWaiterCall("bill");
+                              event.preventDefault();
+                              event.target.blur();
+                            }}
+                          >
+                            <i className="fas fa-file-invoice-dollar"></i>
+                            {this.state.waiter
+                              ? " ANNULLA CHIAMATA"
+                              : " CHIEDI CONTO"}
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+            {this.props.admin ? (
+              <div
+                className="fixed-bottom submit-order"
+                onClick={this.props.onDone}
+              >
+                FINITO
+              </div>
+            ) : null}
           </div>
 
           {this.state.orders.filter(

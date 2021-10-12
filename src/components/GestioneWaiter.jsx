@@ -1,21 +1,27 @@
 import React, { Component } from "react";
-import _ from "lodash";
-import Comande from "./Comande";
-import Admin from "./Admin";
-import MrQR from "./MrQR";
+import ModifyOrders from "./common/ModifyOrders";
 import TableOverview from "./TableOverview";
-import axios from "axios";
+import MrQR from "./MrQR";
 
-class Gestione extends Component {
+import _ from "lodash";
+import axios from "axios";
+const baseUrl = "https://custom-orders.smontanari.com/api/";
+
+class Cucina extends Component {
   constructor(props) {
     super(props);
     this.state = {
       page: "cassa",
+      options: [],
       tables: [],
       waitingConfirmation: [],
       confirmed: [],
+      inPreparation: [],
       waiterRequests: [],
       billRequests: [],
+      allIngredients: [],
+      modify: null,
+      expanded: [],
     };
   }
 
@@ -27,7 +33,27 @@ class Gestione extends Component {
     return this.mounted;
   }
 
-  componentDidMount() {
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
+    return {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        baseUrl + `614d9fb7db2d0588b88a006b/menu`,
+        this.getHeaders()
+      );
+      this.setState({ options: response.data });
+    } catch (error) {
+      console.error(error);
+    }
+
     this.mounted = true;
     this.connect();
   }
@@ -76,21 +102,45 @@ class Gestione extends Component {
         //Detecting changes in orders
         let waitingConfirmationNow = [];
         let confirmedNow = [];
+        let inPreparation = [];
         for (let order of body.orders) {
-          if (order.currentState === "Waiting confirmation") {
-            waitingConfirmationNow.push(order._id);
-          }
-          if (order.currentState === "Confirmed") {
-            confirmedNow.push(order._id);
+          if (order.currentState === "In preparation") {
+            inPreparation.push(order);
           }
         }
         // passo gli array cambiati qui dentro
         this.playAudio({ confirmedNow, waitingConfirmationNow });
 
+        let allIngredients = [];
+        let mrFail = 0;
+        for (let i = 0; i < inPreparation.length; i++) {
+          for (let c = 0; c < inPreparation[i].ingredients.length; c++) {
+            if (inPreparation[i].type === "Burger") {
+              for (let d = 0; d < allIngredients.length; d++) {
+                if (
+                  allIngredients[d].ingredient ===
+                  inPreparation[i].ingredients[c]
+                ) {
+                  allIngredients[d].count++;
+                } else {
+                  mrFail++;
+                }
+              }
+              if (mrFail === allIngredients.length) {
+                allIngredients.push({
+                  ingredient: inPreparation[i].ingredients[c],
+                  count: 1,
+                });
+              }
+              mrFail = 0;
+            }
+          }
+        }
+
         this.setState({
           tables,
-          waitingConfirmation: waitingConfirmationNow,
-          confirmed: confirmedNow,
+          inPreparation,
+          allIngredients,
         });
       }
 
@@ -145,11 +195,6 @@ class Gestione extends Component {
     if (this.interval) clearInterval(this.interval);
   }
 
-  handlePageChange = (p) => {
-    let page = p;
-    this.setState({ page });
-  };
-
   playAudio(data) {
     if (this.isFirstTime) {
       this.isFirstTime = false;
@@ -203,38 +248,410 @@ class Gestione extends Component {
     }
   }
 
+  handleIngredients = (order) => {
+    let elements = "";
+    if (order.type !== "Crostone") {
+      elements = order.ingredients.join(", ");
+    } else {
+      elements = order.ingredients;
+    }
+    return elements;
+  };
+
+  handleIcon = (type) => {
+    if (type === "Burger") return "fas fa-hamburger";
+    if (type === "Appetizer") return "fas fa-drumstick-bite";
+    if (type === "Crostone") return "fas fa-bread-slice";
+  };
+
+  handleButtons = async (order) => {
+    let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+    if (order.currentState == "Waiting confirmation") state = "Confirmed";
+    if (order.currentState == "Ready") state = "Done";
+    if (order.currentState == "Confirmed") state = "Waiting confirmation";
+
+    try {
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleAllOrders = async (action, orders) => {
+    if (action === "confirm") {
+      const toConfirm = orders.filter(
+        (o) => o.currentState === "Waiting confirmation"
+      );
+      for (let i = 0; i < toConfirm.length; i++) {
+        try {
+          const response = await axios.post(
+            baseUrl + `orders/${toConfirm[i]._id}`,
+            {
+              currentState: "Confirmed",
+            },
+            this.getHeaders()
+          );
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    if (action === "deliver") {
+      const toConfirm = orders.filter((o) => o.currentState === "Ready");
+      for (let i = 0; i < toConfirm.length; i++) {
+        try {
+          const response = await axios.post(
+            baseUrl + `orders/${toConfirm[i]._id}`,
+            {
+              currentState: "Done",
+            },
+            this.getHeaders()
+          );
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
+
+  handleOrderType = (order) => {
+    let orderMod = order;
+    if (order.type === "Appetizer") {
+      if (order.ingredients[0] === "Crostone 1") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 2") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 3") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 4") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+      if (order.ingredients[0] === "Crostone 5") {
+        orderMod.type = "Crostone";
+        orderMod.ingredients = "";
+        orderMod.ingredients = order.details;
+      }
+    }
+    return orderMod;
+  };
+
+  handleClassColor = (order) => {
+    let newClass = "order-section-element ";
+    if (order.currentState === "In preparation")
+      return newClass + "inPreparation";
+    if (order.currentState === "Ready") return newClass + "ready";
+    if (order.currentState === "Confirmed") return newClass + "confirmed";
+    return newClass;
+  };
+
+  handleTableState = (orders) => {
+    //"Waiting confirmation", "Confirmed", "In preparation", "Ready", "Deleted"
+    let state = "";
+    let confirmed = 0;
+    let inPreparation = 0;
+    let ready = 0;
+    for (let i = 0; i < orders.length; i++) {
+      if (orders[i].currentState === "Waiting confirmation") {
+        return "IN ATTESA DI CONFERMA";
+      }
+      if (orders[i].currentState === "Confirmed") {
+        confirmed++;
+      }
+
+      if (orders[i].currentState === "In preparation") inPreparation++;
+
+      if (orders[i].currentState === "Ready") ready++;
+    }
+
+    console.log(confirmed);
+    if (
+      confirmed ===
+      orders.filter(
+        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
+      ).length
+    ) {
+      return "ORDINE CONFERMATO";
+    }
+    if (
+      inPreparation ===
+      orders.filter(
+        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
+      ).length
+    ) {
+      return "ORDINE IN PREPARAZIONE";
+    }
+    if (
+      ready ===
+      orders.filter(
+        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
+      ).length
+    )
+      return "ORDINE PRONTO";
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ page });
+  };
+
+  handleModifyOrders = (id) => {
+    console.log("TAVOLO: ", id);
+    this.setState({ modify: id, page: "cassa" });
+  };
+
+  handleExpanded = (table) => {
+    let expanded = this.state.expanded;
+    console.log(table);
+    if (expanded.includes(table.id)) {
+      expanded = expanded.filter((id) => id !== table.id);
+    } else {
+      expanded.push(table.id);
+    }
+    this.setState({ expanded });
+  };
+
   render() {
     return (
       <>
-        {this.state.page === "cassa" ? (
-          <Admin
-            onPageChange={this.handlePageChange}
-            tables={this.state.tables}
-            waitingConfirmation={this.state.waitingConfirmation}
-            waiterRequests={this.state.waiterRequests}
-            billRequests={this.state.billRequests}
-            waiter={true}
-          />
-        ) : null}
-        {this.state.page === "cucina"
-          ? this.setState({ page: "tavoli" })
-          : null}
         {this.state.page === "tavoli" ? (
           <TableOverview
             idRistorante={this.props?.match?.params?.idRistorante}
             onPageChange={this.handlePageChange}
             tables={this.state.tables}
+            admin={true}
+            onModifyOrders={this.handleModifyOrders}
           />
         ) : null}
         {this.state.page === "qr" ? (
           <MrQR
             onPageChange={this.handlePageChange}
             idRistorante={this.props?.match?.params?.idRistorante}
+            admin={true}
+            onModifyOrders={this.handleModifyOrders}
           />
+        ) : null}
+        {this.state.page === "cassa" ? (
+          <>
+            {this.state.modify ? (
+              <ModifyOrders
+                idRistorante={this.props?.match?.params?.idRistorante}
+                idTavolo={this.state.modify}
+                onDone={() => this.setState({ modify: null })}
+              />
+            ) : (
+              <>
+                <div className="fixed-top navbar-home">
+                  <div className="row justify-content-between">
+                    <div className="col-auto">
+                      <span className="img">
+                        <img src="/logo-sham-low.svg" alt="logo sham" />
+                      </span>
+                      <span className="title">
+                        BURGER <span className="yellow">ORDERS</span>
+                      </span>
+                    </div>
+                    <div
+                      className="col-auto"
+                      onClick={() => this.setState({ page: "tavoli" })}
+                    >
+                      <div className="allign-right-title cursor-pointer">
+                        <div className="menu-icon">
+                          <i className="fas fa-user-alt  cursor-pointer" />
+                        </div>
+                        <div className="menu-subtitle">CAMERIERE</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="admin-container">
+                  <div className="row justify-content-start">
+                    {this.state.tables.map((table, key) => {
+                      const orders = table.orders.filter((o) =>
+                        [
+                          "Waiting confirmation",
+                          "Confirmed",
+                          "In preparation",
+                          "Ready",
+                        ].includes(o.currentState)
+                      );
+                      if (!orders?.length) return null;
+                      return (
+                        <div
+                          key={key}
+                          className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
+                        >
+                          <div className="table-container-cucina rounded">
+                            <div
+                              className="row justify-content-between"
+                              onClick={() => this.handleExpanded(table)}
+                            >
+                              <div className="col-auto allign-left-title-cucina">
+                                Tavolo {table.number}
+                              </div>
+                              <div className="col-auto">
+                                <div
+                                  onClick={() => {
+                                    this.setState({ modify: table.id });
+                                  }}
+                                  className="col-auto alert-button m-1"
+                                >
+                                  MODIFICA ORDINI
+                                </div>
+                              </div>
+                              <div>{this.handleTableState(table.orders)}</div>
+                            </div>
+                            {this.state.expanded.includes(table.id) ? (
+                              <div>
+                                <div>
+                                  {orders
+                                    .filter((o) => o.type === "Burger")
+                                    .map((order, key2) => (
+                                      <div key={key2}>
+                                        <div
+                                          className={this.handleClassColor(
+                                            order
+                                          )}
+                                          onClick={() =>
+                                            this.handleButtons(order)
+                                          }
+                                        >
+                                          <div className="allign-left-subtitle-cucina">
+                                            <i
+                                              className={this.handleIcon(
+                                                order.type
+                                              )}
+                                            ></i>
+                                            {this.handleOrderType(order).type}
+                                          </div>
+                                          <div className="row">
+                                            <div className="col">
+                                              {order.ingredients
+                                                .slice(
+                                                  0,
+                                                  Math.ceil(
+                                                    order.ingredients.length / 2
+                                                  )
+                                                )
+                                                .map((i, key3) => (
+                                                  <div
+                                                    className="row m-1"
+                                                    key={key3}
+                                                  >
+                                                    <div className="col-auto allign-left-text-cucina">
+                                                      ◆
+                                                    </div>
+                                                    <div className="col allign-left-text-cucina">
+                                                      {" "}
+                                                      {i}
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                            <div className="col">
+                                              {order.ingredients
+                                                .slice(
+                                                  Math.ceil(
+                                                    order.ingredients.length / 2
+                                                  )
+                                                )
+                                                .map((i, key3) => (
+                                                  <div
+                                                    className="row"
+                                                    key={key3}
+                                                  >
+                                                    <div className="col-auto allign-left-text-cucina">
+                                                      ◆
+                                                    </div>
+                                                    <div className="col allign-left-text-cucina">
+                                                      {" "}
+                                                      {i}
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  {orders
+                                    .filter((o) => o.type !== "Burger")
+                                    .map((order, key2) => (
+                                      <div key={key2}>
+                                        <div
+                                          className={this.handleClassColor(
+                                            order
+                                          )}
+                                          onClick={() =>
+                                            this.handleButtons(order)
+                                          }
+                                        >
+                                          <div className="allign-left-subtitle-cucina">
+                                            <i
+                                              className={this.handleIcon(
+                                                this.handleOrderType(order).type
+                                              )}
+                                            ></i>
+                                            {this.handleOrderType(order).type}
+                                          </div>
+                                          <div className="allign-left-text-cucina">
+                                            {this.handleIngredients(order)}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                </div>
+                                <div className="row justify-content-center ">
+                                  <div
+                                    className="col-auto alert-button m-1"
+                                    onClick={() =>
+                                      this.handleAllOrders("confirm", orders)
+                                    }
+                                  >
+                                    CONFERMA TUTTO
+                                  </div>
+                                  <div
+                                    className="col-auto alert-button m-1"
+                                    onClick={() =>
+                                      this.handleAllOrders("deliver", orders)
+                                    }
+                                  >
+                                    CONSEGNA TUTTO
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+          </>
         ) : null}
       </>
     );
   }
 }
 
-export default Gestione;
+export default Cucina;
