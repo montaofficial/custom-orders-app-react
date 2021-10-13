@@ -10,14 +10,14 @@ class Admin extends Component {
     this.state = { bill: false };
   }
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   handleIngredients = (order) => {
@@ -78,12 +78,17 @@ class Admin extends Component {
     if (action == "btn2") {
       if (order.currentState == "Waiting confirmation") state = "Deleted";
       if (order.currentState == "Confirmed") state = "Deleted";
+      if (order.currentState == "In preparation") state = "Deleted";
+      if (order.currentState == "Ready") state = "Deleted";
+      if (order.currentState == "Done") state = "Deleted";
     }
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders()
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
       );
       console.log(response);
     } catch (error) {
@@ -93,10 +98,13 @@ class Admin extends Component {
 
   async handleWaiterCall(type) {
     try {
-      const response = await axios.post(baseUrl + `calls/${type._id}`, {
-        currentState: "served",
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `calls/${type._id}`,
+        {
+          currentState: "served",
+        },
+        this.getHeaders()
+      );
     } catch (e) {
       console.log(e.message);
     }
@@ -176,7 +184,7 @@ class Admin extends Component {
               }
             >
               <div className="col-auto">
-                <h1 className="white">Waiting confirmation</h1>
+                <h1 className="white">IN ATTESA</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
@@ -211,7 +219,7 @@ class Admin extends Component {
               }
             >
               <div className="col-auto">
-                <h1 className="white">Confirmed</h1>
+                <h1 className="white">CONFERMATI</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
@@ -241,7 +249,7 @@ class Admin extends Component {
               }
             >
               <div className="col-auto">
-                <h1 className="white">In preparation</h1>
+                <h1 className="white">IN PREPARAZIONE</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
@@ -274,7 +282,7 @@ class Admin extends Component {
               }
             >
               <div className="col-auto">
-                <h1 className="white">Ready</h1>
+                <h1 className="white">PRONTI</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
@@ -301,7 +309,7 @@ class Admin extends Component {
               }
             >
               <div className="col-auto">
-                <h1 className="white">Deleted</h1>
+                <h1 className="white">ELIMINATI</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">
@@ -326,7 +334,7 @@ class Admin extends Component {
               onClick={() => this.setState({ showDone: !this.state.showDone })}
             >
               <div className="col-auto">
-                <h1 className="white">Done</h1>
+                <h1 className="white">CONSEGNATI</h1>
               </div>
               <div className="col-auto cursor-pointer tuttoassinistra">
                 <div className="white">

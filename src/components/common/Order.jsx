@@ -70,6 +70,18 @@ class Order extends Component {
       cl = "fas fa-times-circle cursor-pointer";
       text = "Elimina";
     }
+    if (state === "In preparation" && page === "cassa") {
+      cl = "fas fa-times-circle cursor-pointer";
+      text = "Elimina";
+    }
+    if (state === "Ready" && page === "cassa") {
+      cl = "fas fa-times-circle cursor-pointer";
+      text = "Elimina";
+    }
+    if (state === "Done" && page === "cassa") {
+      cl = "fas fa-times-circle cursor-pointer";
+      text = "Elimina";
+    }
     if (state === "Waiting confirmation" && page === "tableOrders") {
       cl = "fas fa-times-circle cursor-pointer";
       text = "Annulla";
