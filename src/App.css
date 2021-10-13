@@ -526,6 +526,18 @@ body {
   box-shadow: 0 0 20px #f0dd31 !important;
 }
 
+.order-blink-waiting {
+  color: black;
+  border-color: #f0dd31;
+  box-shadow: 0 0 20px #f0dd31 !important;
+}
+
+.order-blink-ready {
+  color: black;
+  border-color: #35e200;
+  box-shadow: 0 0 20px #35e200 !important;
+}
+
 .min-h-200 {
   min-height: 200px;
 }

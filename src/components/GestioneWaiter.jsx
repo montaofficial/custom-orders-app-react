@@ -22,6 +22,7 @@ class Cucina extends Component {
       allIngredients: [],
       modify: null,
       expanded: [],
+      waitingBlink: false,
     };
   }
 
@@ -53,6 +54,9 @@ class Cucina extends Component {
     } catch (error) {
       console.error(error);
     }
+    this.timer = setInterval(() => {
+      this.setState({ waitingBlink: !this.state.waitingBlink });
+    }, 800);
 
     this.mounted = true;
     this.connect();
@@ -213,6 +217,7 @@ class Cucina extends Component {
     this.ws.close();
 
     if (this.interval) clearInterval(this.interval);
+    if (this.timer) clearInterval(this.timer);
   }
 
   playAudio(data) {
@@ -461,6 +466,24 @@ class Cucina extends Component {
     }
   }
 
+  handleOrderBlink = (table) => {
+    if (this.handleTableState(table.orders) === "IN ATTESA DI CONFERMA") {
+      if (this.state.waitingBlink) {
+        return "table-container-cucina rounded";
+      } else {
+        return "table-container-cucina rounded order-blink-waiting";
+      }
+    }
+    if (this.handleTableState(table.orders) === "ORDINE PRONTO") {
+      if (this.state.waitingBlink) {
+        return "table-container-cucina rounded";
+      } else {
+        return "table-container-cucina rounded order-blink-ready";
+      }
+    }
+    return "table-container-cucina rounded";
+  };
+
   render() {
     return (
       <>
@@ -520,7 +543,7 @@ class Cucina extends Component {
                     <div className="row justify-content-start">
                       {this.state.waiterRequests.map((request, key) => (
                         <div
-                          className="col-3 col-md-2 col-xl-1 alert-button button-small"
+                          className="col-3 col-md-2 col-xl-1 alert-button button-small "
                           onClick={() => {
                             this.handleWaiterCall(request);
                           }}
@@ -534,7 +557,7 @@ class Cucina extends Component {
                     <div className="row justify-content-start">
                       {this.state.billRequests.map((request, key) => (
                         <div
-                          className="col-3 col-md-2 col-xl-1 alert-button-bill button-small"
+                          className="col-3 col-md-2 col-xl-1 alert-button-bill button-small "
                           onClick={() => {
                             this.handleWaiterCall(request);
                           }}
@@ -562,7 +585,7 @@ class Cucina extends Component {
                           key={key}
                           className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                         >
-                          <div className="table-container-cucina rounded">
+                          <div className={this.handleOrderBlink(table)}>
                             <div
                               className="row justify-content-between"
                               onClick={() => this.handleExpanded(table)}
@@ -580,7 +603,9 @@ class Cucina extends Component {
                                   MODIFICA ORDINI
                                 </div>
                               </div>
-                              <div>{this.handleTableState(table.orders)}</div>
+                              <div className="yellow">
+                                {this.handleTableState(table.orders)}
+                              </div>
                             </div>
                             {this.state.expanded.includes(table.id) ? (
                               <div>
