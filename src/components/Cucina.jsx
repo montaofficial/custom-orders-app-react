@@ -115,16 +115,99 @@ class Cucina extends Component {
                   allIngredients[d].ingredient ===
                   inPreparation[i].ingredients[c]
                 ) {
-                  allIngredients[d].count++;
+                  //Pomodori multiplier
+                  if (inPreparation[i].ingredients[c] === "Pomodori") {
+                    allIngredients[d].count = allIngredients[d].count + 2;
+                  }
+                  //Bacon multiplier
+                  else if (inPreparation[i].ingredients[c] === "Bacon") {
+                    if (
+                      inPreparation[i].ingredients[0] === "Scottona 100%" ||
+                      inPreparation[i].ingredients[0] === "Veggie o Beyond Meat"
+                    ) {
+                      allIngredients[d].count = allIngredients[d].count + 2;
+                    } else {
+                      allIngredients[d].count = allIngredients[d].count + 3;
+                    }
+                  }
+                  //Cheese multiplier
+                  else if (
+                    inPreparation[i].ingredients[c] === "Cheddar Rosso" ||
+                    inPreparation[i].ingredients[c] === "Cheddar Bianco" ||
+                    inPreparation[i].ingredients[c] === "Monterey jack" ||
+                    inPreparation[i].ingredients[c] === "Mozzarella" ||
+                    inPreparation[i].ingredients[c] === "Provola affumicata" ||
+                    inPreparation[i].ingredients[c] === "Gorgonzola"
+                  ) {
+                    if (
+                      inPreparation[i].ingredients[0] === "Scottona 100%" ||
+                      inPreparation[i].ingredients[0] === "Veggie o Beyond Meat"
+                    ) {
+                      allIngredients[d].count = allIngredients[d].count + 1;
+                    } else {
+                      allIngredients[d].count = allIngredients[d].count + 2;
+                    }
+                  } else {
+                    allIngredients[d].count++;
+                  }
                 } else {
                   mrFail++;
                 }
               }
+
               if (mrFail === allIngredients.length) {
-                allIngredients.push({
-                  ingredient: inPreparation[i].ingredients[c],
-                  count: 1,
-                });
+                //Pomodori multiplier new
+                if (inPreparation[i].ingredients[c] === "Pomodori") {
+                  allIngredients.push({
+                    ingredient: inPreparation[i].ingredients[c],
+                    count: 2,
+                  });
+                } //Bacon multiplier new
+                else if (inPreparation[i].ingredients[c] === "Bacon") {
+                  if (
+                    inPreparation[i].ingredients[0] === "Scottona 100%" ||
+                    inPreparation[i].ingredients[0] === "Veggie o Beyond Meat"
+                  ) {
+                    allIngredients.push({
+                      ingredient: inPreparation[i].ingredients[c],
+                      count: 2,
+                    });
+                  } else {
+                    allIngredients.push({
+                      ingredient: inPreparation[i].ingredients[c],
+                      count: 3,
+                    });
+                  }
+                }
+                //Cheddar Rosso multiplier new
+                else if (
+                  inPreparation[i].ingredients[c] === "Cheddar Rosso" ||
+                  inPreparation[i].ingredients[c] === "Cheddar Bianco" ||
+                  inPreparation[i].ingredients[c] === "Monterey jack" ||
+                  inPreparation[i].ingredients[c] === "Mozzarella" ||
+                  inPreparation[i].ingredients[c] === "Provola affumicata" ||
+                  inPreparation[i].ingredients[c] === "Gorgonzola"
+                ) {
+                  if (
+                    inPreparation[i].ingredients[0] === "Scottona 100%" ||
+                    inPreparation[i].ingredients[0] === "Veggie o Beyond Meat"
+                  ) {
+                    allIngredients.push({
+                      ingredient: inPreparation[i].ingredients[c],
+                      count: 1,
+                    });
+                  } else {
+                    allIngredients.push({
+                      ingredient: inPreparation[i].ingredients[c],
+                      count: 2,
+                    });
+                  }
+                } else {
+                  allIngredients.push({
+                    ingredient: inPreparation[i].ingredients[c],
+                    count: 1,
+                  });
+                }
               }
               mrFail = 0;
             }
