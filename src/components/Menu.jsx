@@ -82,7 +82,7 @@ class Menu extends Component {
               <div>
                 {this.props.tableOpen ? (
                   <div
-                    className="fixed-bottom submit-order"
+                    className="fixed-bottom submit-order rounded"
                     onClick={() => this.submitOrder()}
                   >
                     ORDINA
@@ -92,7 +92,7 @@ class Menu extends Component {
             )}
             {this.state.popup ? (
               <div className="menu-cliente">
-                <div className="menu-section">
+                <div className="menu-section rounded">
                   <div className="menu-section-title">Attenzione!</div>
                   <div className="menu-section-body">
                     Non hai selezionato carne!
@@ -104,14 +104,14 @@ class Menu extends Component {
                     <br />
                     <br />
                     <div
-                      className="submit-order"
+                      className="submit-order rounded"
                       onClick={() => this.setState({ popup: false })}
                     >
                       INDIETRO
                     </div>
                     {this.state.canConfirm ? (
                       <div
-                        className="submit-order"
+                        className="submit-order rounded"
                         onClick={() => this.postOrder()}
                       >
                         CONFERMA
@@ -148,7 +148,7 @@ class Menu extends Component {
                 ) : null}
 
                 {this.props.options.map((category, key) => (
-                  <div className="menu-section" key={key}>
+                  <div className="menu-section rounded" key={key}>
                     <div
                       className={
                         this.state.category == key
@@ -216,18 +216,18 @@ class Menu extends Component {
         ) : (
           <div>
             <div className="menu-cliente">
-              <div className="menu-section">
+              <div className="menu-section rounded">
                 <div className="menu-section-title">Attenzione!</div>
                 <div className="menu-section-body">
                   <h1 className="white">
-                    La sessione è stata chiusa. Potrai ancora consultare lo
-                    storico ordini e il menù.
+                    La sessione è stata chiusa. Potrai ancora consultare il
+                    menù.
                   </h1>
                   <h1 className="white">
                     Grazie per averci scelto! Alla prossima!
                   </h1>
                   <div
-                    className="submit-order"
+                    className="submit-order rounded"
                     onClick={() => this.props.onTableClosed2()}
                   >
                     INDIETRO

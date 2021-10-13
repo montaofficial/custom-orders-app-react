@@ -163,6 +163,26 @@ class Cucina extends Component {
           billRequests: newBillRequest,
         });
       }
+
+      if (body.shape == "custom-orders.v1.calls") {
+        console.log("Updated calls!");
+
+        let calls = body.calls.filter((c) => c.currentState === "waiting");
+        const newWaiterRequest = calls.filter((c) => c.type === "waiter");
+        const newBillRequest = calls.filter((c) => c.type === "bill");
+
+        if (this.state.waiterRequests.length < newWaiterRequest.length) {
+          this.playAudioRaw();
+        }
+        if (this.state.billRequests.length < newBillRequest.length) {
+          this.playAudioRaw();
+        }
+
+        return this.setState({
+          waiterRequests: newWaiterRequest,
+          billRequests: newBillRequest,
+        });
+      }
     };
 
     this.ws.onclose = (e) => {
@@ -209,7 +229,7 @@ class Cucina extends Component {
         !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
         oldOrders.length >= newOrders.length
       ) {
-        console.log("Nuova comanda in cassa, suono!");
+        console.log("Nuova comanda, suono!");
         try {
           const audioEl = document.getElementById("audio-element");
           audioEl.play();
@@ -383,7 +403,6 @@ class Cucina extends Component {
       if (orders[i].currentState === "Ready") ready++;
     }
 
-    console.log(confirmed);
     if (
       confirmed ===
       orders.filter(
@@ -405,8 +424,9 @@ class Cucina extends Component {
       orders.filter(
         (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
       ).length
-    )
+    ) {
       return "ORDINE PRONTO";
+    }
   };
 
   handlePageChange = (page) => {
@@ -414,13 +434,11 @@ class Cucina extends Component {
   };
 
   handleModifyOrders = (id) => {
-    console.log("TAVOLO: ", id);
     this.setState({ modify: id, page: "cassa" });
   };
 
   handleExpanded = (table) => {
     let expanded = this.state.expanded;
-    console.log(table);
     if (expanded.includes(table.id)) {
       expanded = expanded.filter((id) => id !== table.id);
     } else {
@@ -428,6 +446,20 @@ class Cucina extends Component {
     }
     this.setState({ expanded });
   };
+
+  async handleWaiterCall(type) {
+    try {
+      const response = await axios.post(
+        baseUrl + `calls/${type._id}`,
+        {
+          currentState: "served",
+        },
+        this.getHeaders()
+      );
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 
   render() {
     return (
@@ -483,6 +515,37 @@ class Cucina extends Component {
                   </div>
                 </div>
                 <div className="admin-container">
+                  <div className="menu-section min-h-200 rounded">
+                    <h4>Richieste servizio</h4>
+                    <div className="row justify-content-start">
+                      {this.state.waiterRequests.map((request, key) => (
+                        <div
+                          className="col-3 col-md-2 col-xl-1 alert-button button-small"
+                          onClick={() => {
+                            this.handleWaiterCall(request);
+                          }}
+                          key={key}
+                        >
+                          <i className="fas fa-user-tie"></i>{" "}
+                          {request.tableName}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="row justify-content-start">
+                      {this.state.billRequests.map((request, key) => (
+                        <div
+                          className="col-3 col-md-2 col-xl-1 alert-button-bill button-small"
+                          onClick={() => {
+                            this.handleWaiterCall(request);
+                          }}
+                          key={key}
+                        >
+                          <i className="fas fa-file-invoice-dollar"></i>{" "}
+                          {request.tableName}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                   <div className="row justify-content-start">
                     {this.state.tables.map((table, key) => {
                       const orders = table.orders.filter((o) =>
@@ -542,6 +605,7 @@ class Cucina extends Component {
                                             ></i>
                                             {this.handleOrderType(order).type}
                                           </div>
+                                          <div>{order.customer}</div>
                                           <div className="row">
                                             <div className="col">
                                               {order.ingredients

@@ -121,7 +121,7 @@ class Order extends Component {
     return (
       <div>
         {this.props.tables.map((table, key) => (
-          <div className="menu-section" key={key}>
+          <div className="menu-section rounded" key={key}>
             <div className="orders-section">
               <div className="row justify-content-between">
                 <div className="col-auto order-section-title">

@@ -412,7 +412,7 @@ class Cucina extends Component {
                 key={key}
                 className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
               >
-                <div className="table-container-cucina">
+                <div className="table-container-cucina rounded">
                   <div className="allign-left-title-cucina">
                     Tavolo {table.number}
                   </div>

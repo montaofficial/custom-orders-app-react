@@ -255,7 +255,7 @@ class tableOrders extends Component {
           </div>
         </div>
         <div className="admin-container">
-          <div className="menu-section">
+          <div className="menu-section rounded">
             {this.props.tableOpen ? (
               <div>
                 <h1 className="yellow">Tavolo {this.props.tableOpen.name}</h1>
@@ -322,7 +322,7 @@ class tableOrders extends Component {
             ) : null}
             {this.props.admin ? (
               <div
-                className="fixed-bottom submit-order"
+                className="fixed-bottom submit-order rounded"
                 onClick={this.props.onDone}
               >
                 FINITO
