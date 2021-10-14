@@ -216,6 +216,34 @@ body {
   font-weight: 150;
 }
 
+.table-container-waiter-waiting {
+  background-color: black;
+  color: #f0dd31;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-weight: 150;
+  border: solid 1px #f0dd31;
+  border-radius: 12px;
+}
+
+.table-container-waiter-ready {
+  background-color: black;
+  color: #218b00;
+  padding: 10px;
+  font-weight: 150;
+  border: solid 1px #218b00;
+  border-radius: 12px;
+}
+
+.table-container-waiter-neutral {
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  font-weight: 150;
+  border: solid 1px #ffffff;
+  border-radius: 12px;
+}
+
 .allign-left-title-cucina {
   font-size: 1.5rem;
   color: #ffffff;
@@ -534,10 +562,14 @@ body {
 
 .order-blink-ready {
   color: black;
-  border-color: #35e200;
-  box-shadow: 0 0 20px #35e200 !important;
+  border-color: #218b00;
+  box-shadow: 0 0 20px #218b00 !important;
 }
 
 .min-h-200 {
   min-height: 200px;
+}
+
+.min-h-table-waiter {
+  min-height: 70px;
 }

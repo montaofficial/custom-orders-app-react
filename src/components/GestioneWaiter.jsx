@@ -469,19 +469,19 @@ class Cucina extends Component {
   handleOrderBlink = (table) => {
     if (this.handleTableState(table.orders) === "IN ATTESA DI CONFERMA") {
       if (this.state.waitingBlink) {
-        return "table-container-cucina rounded";
+        return "table-container-waiter-waiting rounded min-h-table-waiter";
       } else {
-        return "table-container-cucina rounded order-blink-waiting";
+        return "table-container-waiter-waiting rounded min-h-table-waiter order-blink-waiting rounded";
       }
     }
     if (this.handleTableState(table.orders) === "ORDINE PRONTO") {
       if (this.state.waitingBlink) {
-        return "table-container-cucina rounded";
+        return "table-container-waiter-ready rounded min-h-table-waiter";
       } else {
-        return "table-container-cucina rounded order-blink-ready";
+        return "table-container-waiter-ready rounded order-blink-ready min-h-table-waiter";
       }
     }
-    return "table-container-cucina rounded";
+    return "table-container-waiter-neutral rounded min-h-table-waiter";
   };
 
   render() {
@@ -593,17 +593,7 @@ class Cucina extends Component {
                               <div className="col-auto allign-left-title-cucina">
                                 Tavolo {table.number}
                               </div>
-                              <div className="col-auto">
-                                <div
-                                  onClick={() => {
-                                    this.setState({ modify: table.id });
-                                  }}
-                                  className="col-auto alert-button m-1"
-                                >
-                                  MODIFICA ORDINI
-                                </div>
-                              </div>
-                              <div className="yellow">
+                              <div className="col-auto yellow">
                                 {this.handleTableState(table.orders)}
                               </div>
                             </div>
@@ -724,6 +714,14 @@ class Cucina extends Component {
                                     }
                                   >
                                     CONSEGNA TUTTO
+                                  </div>
+                                  <div
+                                    onClick={() => {
+                                      this.setState({ modify: table.id });
+                                    }}
+                                    className="col-auto alert-button m-1"
+                                  >
+                                    MODIFICA ORDINI
                                   </div>
                                 </div>
                               </div>
