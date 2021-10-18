@@ -79,6 +79,25 @@ class QrCode extends Component {
                       >
                         MODIFICA/AGGIUNGI ORDINI
                       </div>
+                      {this.props.canEditOrders ? (
+                        <div
+                          className="alert-button button-small"
+                          onClick={() => {
+                            this.props.onClose();
+                            this.editOrders(
+                              this.props.table._id,
+                              this.props.table.state == "active"
+                                ? "closed"
+                                : "active"
+                            );
+                          }}
+                        >
+                          {this.props.table.state == "active"
+                            ? "CHIUDI"
+                            : "RIATTIVA"}{" "}
+                          ORDINI
+                        </div>
+                      ) : null}
                     </div>
                   ) : (
                     <div>

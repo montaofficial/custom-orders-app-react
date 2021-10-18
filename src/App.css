@@ -220,7 +220,7 @@ body {
   background-color: black;
   color: #f0dd31;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-weight: 150;
   border: solid 1px #f0dd31;
   border-radius: 12px;
@@ -230,6 +230,7 @@ body {
   background-color: black;
   color: #218b00;
   padding: 10px;
+  margin-bottom: 15px;
   font-weight: 150;
   border: solid 1px #218b00;
   border-radius: 12px;
@@ -239,6 +240,7 @@ body {
   background-color: black;
   color: #ffffff;
   padding: 10px;
+  margin-bottom: 10px;
   font-weight: 150;
   border: solid 1px #ffffff;
   border-radius: 12px;
@@ -253,11 +255,12 @@ body {
 }
 
 .allign-left-subtitle-cucina {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   color: #f0dd31;
   font-weight: 700;
   text-align: left;
   text-transform: uppercase;
+  padding: 1px;
 }
 
 .allign-left-text-cucina {
@@ -275,6 +278,14 @@ body {
   text-align: right;
 }
 
+.waiting-time {
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: right;
+  padding: 1px;
+}
+
 .ingredients-cucina {
   font-size: 0.8rem;
   color: #ffffff;
@@ -285,6 +296,12 @@ body {
 .yellow {
   color: #f0dd31;
 }
+
+.yellow-g {
+  font-weight: 500;
+  color: #f0dd31;
+}
+
 .white {
   color: #ffffff;
 }
@@ -571,5 +588,5 @@ body {
 }
 
 .min-h-table-waiter {
-  min-height: 70px;
+  min-height: 85px;
 }
