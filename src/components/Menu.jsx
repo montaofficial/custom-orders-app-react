@@ -271,8 +271,14 @@ class Menu extends Component {
       for (let apet of this.props.options[5].options)
         if (this.state.order.includes(apet.name)) foundApetizer = true;
 
-      if (!foundCarne && foundApetizer)
-        return this.setState({ popup: true, canConfirm: true });
+      if (!foundCarne && foundApetizer) {
+        let order = this.state.order.filter((item) =>
+          this.props.options[5].options
+            .map((option) => option.name)
+            .includes(item)
+        );
+        return this.setState({ popup: true, canConfirm: true, order });
+      }
       if (!foundCarne && !foundApetizer)
         return this.setState({ popup: true, canConfirm: false });
 
