@@ -14,6 +14,7 @@ class Cucina extends Component {
       page: "cassa",
       options: [],
       tables: [],
+      tablesWithState: [],
       waitingConfirmation: [],
       confirmed: [],
       inPreparation: [],
@@ -23,6 +24,8 @@ class Cucina extends Component {
       modify: null,
       expanded: [],
       waitingBlink: false,
+      inPreparationBefore: [],
+      change: false,
     };
   }
 
@@ -56,7 +59,7 @@ class Cucina extends Component {
     }
     this.timer = setInterval(() => {
       this.setState({ waitingBlink: !this.state.waitingBlink });
-    }, 800);
+    }, 1000);
 
     this.mounted = true;
     this.connect();
@@ -103,9 +106,8 @@ class Cucina extends Component {
           tables.push(tableObject[tableId]);
         }
 
-        //Detecting changes in orders
-        let waitingConfirmationNow = [];
         let confirmedNow = [];
+        let waitingConfirmationNow = [];
         let inPreparation = [];
         for (let order of body.orders) {
           if (order.currentState === "In preparation") {
@@ -114,6 +116,12 @@ class Cucina extends Component {
         }
         // passo gli array cambiati qui dentro
         this.playAudio({ confirmedNow, waitingConfirmationNow });
+
+        let change = false;
+        //Detecting changes in orders
+        if (this.state.inPreparationBefore !== inPreparation) {
+          change = true;
+        }
 
         let allIngredients = [];
         let mrFail = 0;
@@ -141,8 +149,19 @@ class Cucina extends Component {
           }
         }
 
+        let tablesWithState = [];
+
+        if (change) {
+          for (let i = 0; i < tables.length; i++) {
+            tablesWithState.push({
+              table: tables[i],
+              state: this.handleTableState(tables[i].orders),
+            });
+          }
+        }
+
         this.setState({
-          tables,
+          tablesWithState,
           inPreparation,
           allIngredients,
         });
@@ -408,30 +427,27 @@ class Cucina extends Component {
       if (orders[i].currentState === "Ready") ready++;
     }
 
-    if (
-      confirmed ===
-      orders.filter(
-        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
-      ).length
-    ) {
+    if (confirmed + inPreparation + inPreparation + ready === 0)
+      return "INATTIVO";
+
+    let filteredOrders = orders.filter(
+      (o) =>
+        o.currentState !== "Deleted" &&
+        o.currentState !== "Done" &&
+        o.currentState !== "Deleted by Customer"
+    );
+
+    if (confirmed === filteredOrders.length) {
       return "ORDINE CONFERMATO";
     }
-    if (
-      inPreparation ===
-      orders.filter(
-        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
-      ).length
-    ) {
+    if (inPreparation + confirmed === filteredOrders.length) {
       return "ORDINE IN PREPARAZIONE";
     }
-    if (
-      ready ===
-      orders.filter(
-        (o) => o.currentState !== "Deleted" && o.currentState !== "Done"
-      ).length
-    ) {
+    if (ready === filteredOrders.length) {
       return "ORDINE PRONTO";
     }
+
+    return "PARZIALMENTE PRONTO";
   };
 
   handlePageChange = (page) => {
@@ -466,15 +482,15 @@ class Cucina extends Component {
     }
   }
 
-  handleOrderBlink = (table) => {
-    if (this.handleTableState(table.orders) === "IN ATTESA DI CONFERMA") {
+  handleOrderBlink = (state) => {
+    if (state === "IN ATTESA DI CONFERMA") {
       if (this.state.waitingBlink) {
         return "table-container-waiter-waiting rounded min-h-table-waiter";
       } else {
         return "table-container-waiter-waiting rounded min-h-table-waiter order-blink-waiting rounded";
       }
     }
-    if (this.handleTableState(table.orders) === "ORDINE PRONTO") {
+    if (state === "ORDINE PRONTO") {
       if (this.state.waitingBlink) {
         return "table-container-waiter-ready rounded min-h-table-waiter";
       } else {
@@ -485,6 +501,7 @@ class Cucina extends Component {
   };
 
   render() {
+    console.log("render");
     return (
       <>
         {this.state.page === "tavoli" ? (
@@ -570,166 +587,511 @@ class Cucina extends Component {
                     </div>
                   </div>
                   <div className="row justify-content-start">
-                    {this.state.tables.map((table, key) => {
-                      const orders = table.orders.filter((o) =>
-                        [
-                          "Waiting confirmation",
-                          "Confirmed",
-                          "In preparation",
-                          "Ready",
-                        ].includes(o.currentState)
-                      );
-                      if (!orders?.length) return null;
-                      return (
-                        <div
-                          key={key}
-                          className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
-                        >
-                          <div className={this.handleOrderBlink(table)}>
-                            <div
-                              className="row justify-content-between"
-                              onClick={() => this.handleExpanded(table)}
-                            >
-                              <div className="col-auto allign-left-title-cucina">
-                                Tavolo {table.number}
+                    {this.state.tablesWithState
+                      .filter((t) => t.state === "ORDINE PRONTO")
+                      .map((table, key) => {
+                        const orders = table.table.orders.filter((o) =>
+                          [
+                            "Waiting confirmation",
+                            "Confirmed",
+                            "In preparation",
+                            "Ready",
+                          ].includes(o.currentState)
+                        );
+                        if (!orders?.length) return null;
+                        return (
+                          <div
+                            key={key}
+                            className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
+                          >
+                            <div className={this.handleOrderBlink(table.state)}>
+                              <div
+                                className="row justify-content-between"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
+                                <div className="col-auto allign-left-title-cucina">
+                                  Tavolo {table.table.number}
+                                </div>
+                                <div className="col-auto yellow-g">
+                                  {table.state}
+                                </div>
                               </div>
-                              <div className="col-auto yellow">
-                                {this.handleTableState(table.orders)}
-                              </div>
-                            </div>
-                            {this.state.expanded.includes(table.id) ? (
-                              <div>
+                              {this.state.expanded.includes(table.table.id) ? (
                                 <div>
-                                  {orders
-                                    .filter((o) => o.type === "Burger")
-                                    .map((order, key2) => (
-                                      <div key={key2}>
-                                        <div
-                                          className={this.handleClassColor(
-                                            order
-                                          )}
-                                          onClick={() =>
-                                            this.handleButtons(order)
-                                          }
-                                        >
-                                          <div className="allign-left-subtitle-cucina">
-                                            <i
-                                              className={this.handleIcon(
-                                                order.type
-                                              )}
-                                            ></i>
-                                            {this.handleOrderType(order).type}
-                                          </div>
-                                          <div>{order.customer}</div>
-                                          <div className="row">
-                                            <div className="col">
-                                              {order.ingredients
-                                                .slice(
-                                                  0,
-                                                  Math.ceil(
-                                                    order.ingredients.length / 2
-                                                  )
-                                                )
-                                                .map((i, key3) => (
-                                                  <div
-                                                    className="row m-1"
-                                                    key={key3}
-                                                  >
-                                                    <div className="col-auto allign-left-text-cucina">
-                                                      ◆
-                                                    </div>
-                                                    <div className="col allign-left-text-cucina">
-                                                      {" "}
-                                                      {i}
-                                                    </div>
-                                                  </div>
-                                                ))}
+                                  <div>
+                                    {orders
+                                      .filter((o) => o.type === "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  order.type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
                                             </div>
-                                            <div className="col">
-                                              {order.ingredients
-                                                .slice(
-                                                  Math.ceil(
-                                                    order.ingredients.length / 2
+                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    0,
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
                                                   )
-                                                )
-                                                .map((i, key3) => (
-                                                  <div
-                                                    className="row"
-                                                    key={key3}
-                                                  >
-                                                    <div className="col-auto allign-left-text-cucina">
-                                                      ◆
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row m-1"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
                                                     </div>
-                                                    <div className="col allign-left-text-cucina">
-                                                      {" "}
-                                                      {i}
+                                                  ))}
+                                              </div>
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
+                                                  )
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
                                                     </div>
-                                                  </div>
-                                                ))}
+                                                  ))}
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    ))}
-                                  {orders
-                                    .filter((o) => o.type !== "Burger")
-                                    .map((order, key2) => (
-                                      <div key={key2}>
-                                        <div
-                                          className={this.handleClassColor(
-                                            order
-                                          )}
-                                          onClick={() =>
-                                            this.handleButtons(order)
-                                          }
-                                        >
-                                          <div className="allign-left-subtitle-cucina">
-                                            <i
-                                              className={this.handleIcon(
-                                                this.handleOrderType(order).type
-                                              )}
-                                            ></i>
-                                            {this.handleOrderType(order).type}
-                                          </div>
-                                          <div className="allign-left-text-cucina">
-                                            {this.handleIngredients(order)}
+                                      ))}
+                                    {orders
+                                      .filter((o) => o.type !== "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
+                                            </div>
+                                            <div className="allign-left-text-cucina">
+                                              {this.handleIngredients(order)}
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      ))}
+                                  </div>
+                                  <div className="row justify-content-center ">
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("confirm", orders)
+                                      }
+                                    >
+                                      CONFERMA TUTTO
+                                    </div>
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("deliver", orders)
+                                      }
+                                    >
+                                      CONSEGNA TUTTO
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        this.setState({
+                                          modify: table.table.id,
+                                        });
+                                      }}
+                                      className="col-auto alert-button m-1"
+                                    >
+                                      MODIFICA ORDINI
+                                    </div>
+                                  </div>
                                 </div>
-                                <div className="row justify-content-center ">
-                                  <div
-                                    className="col-auto alert-button m-1"
-                                    onClick={() =>
-                                      this.handleAllOrders("confirm", orders)
-                                    }
-                                  >
-                                    CONFERMA TUTTO
-                                  </div>
-                                  <div
-                                    className="col-auto alert-button m-1"
-                                    onClick={() =>
-                                      this.handleAllOrders("deliver", orders)
-                                    }
-                                  >
-                                    CONSEGNA TUTTO
-                                  </div>
-                                  <div
-                                    onClick={() => {
-                                      this.setState({ modify: table.id });
-                                    }}
-                                    className="col-auto alert-button m-1"
-                                  >
-                                    MODIFICA ORDINI
-                                  </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    {this.state.tablesWithState
+                      .filter((t) => t.state === "IN ATTESA DI CONFERMA")
+                      .map((table, key) => {
+                        const orders = table.table.orders.filter((o) =>
+                          [
+                            "Waiting confirmation",
+                            "Confirmed",
+                            "In preparation",
+                            "Ready",
+                          ].includes(o.currentState)
+                        );
+                        if (!orders?.length) return null;
+                        return (
+                          <div
+                            key={key}
+                            className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
+                          >
+                            <div className={this.handleOrderBlink(table.state)}>
+                              <div
+                                className="row justify-content-between"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
+                                <div className="col-auto allign-left-title-cucina">
+                                  Tavolo {table.table.number}
+                                </div>
+                                <div className="col-auto yellow-g">
+                                  {table.state}
                                 </div>
                               </div>
-                            ) : null}
+                              {this.state.expanded.includes(table.table.id) ? (
+                                <div>
+                                  <div>
+                                    {orders
+                                      .filter((o) => o.type === "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  order.type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
+                                            </div>
+                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    0,
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
+                                                  )
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row m-1"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
+                                                  )
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    {orders
+                                      .filter((o) => o.type !== "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
+                                            </div>
+                                            <div className="allign-left-text-cucina">
+                                              {this.handleIngredients(order)}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                  <div className="row justify-content-center ">
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("confirm", orders)
+                                      }
+                                    >
+                                      CONFERMA TUTTO
+                                    </div>
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("deliver", orders)
+                                      }
+                                    >
+                                      CONSEGNA TUTTO
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        this.setState({
+                                          modify: table.table.id,
+                                        });
+                                      }}
+                                      className="col-auto alert-button m-1"
+                                    >
+                                      MODIFICA ORDINI
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    {this.state.tablesWithState
+                      .filter(
+                        (t) =>
+                          t.state !== "IN ATTESA DI CONFERMA" &&
+                          t.state !== "ORDINE PRONTO"
+                      )
+                      .map((table, key) => {
+                        const orders = table.table.orders.filter((o) =>
+                          [
+                            "Waiting confirmation",
+                            "Confirmed",
+                            "In preparation",
+                            "Ready",
+                          ].includes(o.currentState)
+                        );
+                        if (!orders?.length) return null;
+                        return (
+                          <div
+                            key={key}
+                            className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
+                          >
+                            <div className={this.handleOrderBlink(table.state)}>
+                              <div
+                                className="row justify-content-between"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
+                                <div className="col-auto allign-left-title-cucina">
+                                  Tavolo {table.table.number}
+                                </div>
+                                <div className="col-auto yellow-g">
+                                  {table.state}
+                                </div>
+                              </div>
+                              {this.state.expanded.includes(table.table.id) ? (
+                                <div>
+                                  <div>
+                                    {orders
+                                      .filter((o) => o.type === "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  order.type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
+                                            </div>
+                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    0,
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
+                                                  )
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row m-1"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                              <div className="col">
+                                                {order.ingredients
+                                                  .slice(
+                                                    Math.ceil(
+                                                      order.ingredients.length /
+                                                        2
+                                                    )
+                                                  )
+                                                  .map((i, key3) => (
+                                                    <div
+                                                      className="row"
+                                                      key={key3}
+                                                    >
+                                                      <div className="col-auto allign-left-text-cucina">
+                                                        ◆
+                                                      </div>
+                                                      <div className="col allign-left-text-cucina">
+                                                        {" "}
+                                                        {i}
+                                                      </div>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    {orders
+                                      .filter((o) => o.type !== "Burger")
+                                      .map((order, key2) => (
+                                        <div key={key2}>
+                                          <div
+                                            className={this.handleClassColor(
+                                              order
+                                            )}
+                                            onClick={() =>
+                                              this.handleButtons(order)
+                                            }
+                                          >
+                                            <div className="allign-left-subtitle-cucina">
+                                              <i
+                                                className={this.handleIcon(
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                )}
+                                              ></i>
+                                              {this.handleOrderType(order).type}
+                                            </div>
+                                            <div className="allign-left-text-cucina">
+                                              {this.handleIngredients(order)}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                  <div className="row justify-content-center ">
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("confirm", orders)
+                                      }
+                                    >
+                                      CONFERMA TUTTO
+                                    </div>
+                                    <div
+                                      className="col-auto alert-button m-1"
+                                      onClick={() =>
+                                        this.handleAllOrders("deliver", orders)
+                                      }
+                                    >
+                                      CONSEGNA TUTTO
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        this.setState({
+                                          modify: table.table.id,
+                                        });
+                                      }}
+                                      className="col-auto alert-button m-1"
+                                    >
+                                      MODIFICA ORDINI
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               </>
