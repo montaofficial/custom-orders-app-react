@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import _ from "lodash";
+import _, { cond } from "lodash";
 import axios from "axios";
 const baseUrl = "https://custom-orders.smontanari.com/api/";
 
@@ -47,6 +47,10 @@ class Cucina extends Component {
     } catch (error) {
       console.error(error);
     }
+
+    this.timer = setInterval(() => {
+      this.render();
+    }, 60000);
 
     this.mounted = true;
     this.connect();
@@ -270,6 +274,7 @@ class Cucina extends Component {
     this.ws.close();
 
     if (this.interval) clearInterval(this.interval);
+    if (this.timer) clearInterval(this.timer);
   }
 
   playAudio(data) {
@@ -440,7 +445,29 @@ class Cucina extends Component {
     return newClass;
   };
 
+  handleMinutesWaiting = (order) => {
+    const d = new Date(order.confirmDate);
+    const dNow = new Date();
+
+    const diff = new Date(dNow - d);
+
+    let hours = diff.getHours();
+    hours--;
+    let minutes = diff.getMinutes();
+
+    if (hours === 0) {
+      return <div className="col-auto">+{minutes}m</div>;
+    } else {
+      return (
+        <div className="col-auto">
+          +{hours}h {minutes}m
+        </div>
+      );
+    }
+  };
+
   render() {
+    console.log("render");
     return (
       <div className="admin-container-cucina">
         <div className="white">
@@ -456,7 +483,7 @@ class Cucina extends Component {
             <div className="row">
               {this.state.options.slice(0, 4).map((category, key) => (
                 <div className="col" key={key}>
-                  <div className="table-container-cucina">
+                  <div className="table-container-cucina rounded">
                     <div className="allign-left-title-cucina">
                       {category.name}
                     </div>
@@ -467,6 +494,7 @@ class Cucina extends Component {
                             .map((a) => a.ingredient)
                             .includes(element.name) ? (
                             <div>
+                              ◆{" "}
                               {this.state.allIngredients.map((a) => {
                                 if (a.ingredient === element.name) {
                                   return a.count;
@@ -508,9 +536,14 @@ class Cucina extends Component {
                             className={this.handleClassColor(order)}
                             onClick={() => this.handleButtons(order)}
                           >
-                            <div className="allign-left-subtitle-cucina">
-                              <i className={this.handleIcon(order.type)}></i>
-                              {this.handleOrderType(order).type}
+                            <div className="row justify-content-between">
+                              <div className="col-auto allign-left-subtitle-cucina">
+                                <i className={this.handleIcon(order.type)}></i>
+                                {this.handleOrderType(order).type}
+                              </div>
+                              <div className="col-auto justify-content-end waiting-time">
+                                {this.handleMinutesWaiting(order)}
+                              </div>
                             </div>
                             <div className="row">
                               <div className="col">
@@ -560,16 +593,19 @@ class Cucina extends Component {
                             className={this.handleClassColor(order)}
                             onClick={() => this.handleButtons(order)}
                           >
-                            <div className="allign-left-subtitle-cucina">
-                              <i
-                                className={this.handleIcon(
-                                  this.handleOrderType(order).type
-                                )}
-                              ></i>
-                              {this.handleOrderType(order).type}
+                            <div className="row justify-content-between">
+                              <div className="col-auto allign-left-subtitle-cucina">
+                                <i className={this.handleIcon(order.type)}></i>
+                                {this.handleOrderType(order).type}
+                              </div>
+                              <div className="col-auto justify-content-end waiting-time">
+                                {this.handleMinutesWaiting(order)}
+                              </div>
                             </div>
-                            <div className="allign-left-text-cucina">
-                              {this.handleIngredients(order)}
+                            <div className="row">
+                              <div className="col-auto allign-left-text-cucina">
+                                ◆{this.handleIngredients(order)}
+                              </div>
                             </div>
                           </div>
                         </div>
