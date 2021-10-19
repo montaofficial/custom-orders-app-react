@@ -16,6 +16,7 @@ class Cucina extends Component {
       waiterRequests: [],
       billRequests: [],
       allIngredients: [],
+      update: true
     };
   }
 
@@ -49,8 +50,8 @@ class Cucina extends Component {
     }
 
     this.timer = setInterval(() => {
-      this.render();
-    }, 60000);
+      this.setState({update: !this.state.update});
+    }, 10000);
 
     this.mounted = true;
     this.connect();
