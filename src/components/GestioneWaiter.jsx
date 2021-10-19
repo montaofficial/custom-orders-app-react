@@ -50,7 +50,7 @@ class Cucina extends Component {
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `614d9fb7db2d0588b88a006b/menu`,
+        baseUrl + `${this.props?.match?.params?.idRistorante}/menu`,
         this.getHeaders()
       );
       this.setState({ options: response.data });
@@ -501,7 +501,7 @@ class Cucina extends Component {
   };
 
   render() {
-    console.log("render");
+    // console.log("render");
     return (
       <>
         {this.state.page === "tavoli" ? (
@@ -605,13 +605,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div className="min-h-table-waiter">
-                                <div
-                                  className="row justify-content-between"
-                                  onClick={() =>
+                            <div className="min-h-table-waiter px-2 py-1" onClick={() =>
                                     this.handleExpanded(table.table)
-                                  }
-                                >
+                                  }>
+                                <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
                                   </div>
@@ -621,7 +618,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div>
+                                <div className="px-2 py-1">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")
@@ -800,13 +797,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div className="min-h-table-waiter">
-                                <div
-                                  className="row justify-content-between"
-                                  onClick={() =>
+                              <div className="min-h-table-waiter px-2 py-1" onClick={() =>
                                     this.handleExpanded(table.table)
-                                  }
-                                >
+                                  }>
+                                <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
                                   </div>
@@ -816,7 +810,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div>
+                                <div className="px-2 py-1">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")
@@ -999,13 +993,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div className="min-h-table-waiter">
-                                <div
-                                  className="row justify-content-between"
-                                  onClick={() =>
+                              <div className="min-h-table-waiter px-2 py-1" onClick={() =>
                                     this.handleExpanded(table.table)
-                                  }
-                                >
+                                  }>
+                                <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
                                   </div>
@@ -1015,7 +1006,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div>
+                                <div className="px-2 py-1">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")

@@ -6,7 +6,7 @@ body {
   background-color: #1d1d1d;
   color: #f0dd31;
   padding: 10px 16px;
-  margin: 12px 0;
+  margin: 6px 0;
   position: relative;
 }
 
@@ -219,7 +219,7 @@ body {
 .table-container-waiter-waiting {
   background-color: black;
   color: #f0dd31;
-  padding: 10px;
+  /* padding: 10px; */
   margin-bottom: 15px;
   font-weight: 150;
   border: solid 1px #f0dd31;
@@ -229,7 +229,7 @@ body {
 .table-container-waiter-ready {
   background-color: black;
   color: #218b00;
-  padding: 10px;
+  /* padding: 10px; */
   margin-bottom: 15px;
   font-weight: 150;
   border: solid 1px #218b00;
@@ -239,7 +239,7 @@ body {
 .table-container-waiter-neutral {
   background-color: black;
   color: #ffffff;
-  padding: 10px;
+  /* padding: 10px; */
   margin-bottom: 10px;
   font-weight: 150;
   border: solid 1px #ffffff;
