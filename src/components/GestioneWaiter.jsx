@@ -618,7 +618,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div className="px-2 py-1">
+                                <div className="px-2">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")
@@ -810,7 +810,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div className="px-2 py-1">
+                                <div className="px-2">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")
@@ -1006,7 +1006,7 @@ class Cucina extends Component {
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
-                                <div className="px-2 py-1">
+                                <div className="px-2">
                                   <div>
                                     {orders
                                       .filter((o) => o.type === "Burger")
