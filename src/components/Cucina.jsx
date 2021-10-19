@@ -616,13 +616,13 @@ class Cucina extends Component {
                       className="col alert-button m-1"
                       onClick={() => this.handleAllOrders("prepare", orders)}
                     >
-                      PREPARA
+                      <i className="fas fa-bacon"></i> PREPARA
                     </div>
                     <div
                       className="col alert-button m-1"
                       onClick={() => this.handleAllOrders("done", orders)}
                     >
-                      FINITO
+                      <i className="fas fa-check"></i> FINITO
                     </div>
                   </div>
                 </div>

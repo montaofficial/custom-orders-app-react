@@ -485,19 +485,19 @@ class Cucina extends Component {
   handleOrderBlink = (state) => {
     if (state === "IN ATTESA DI CONFERMA") {
       if (this.state.waitingBlink) {
-        return "table-container-waiter-waiting rounded min-h-table-waiter";
+        return "table-container-waiter-waiting rounded";
       } else {
-        return "table-container-waiter-waiting rounded min-h-table-waiter order-blink-waiting rounded";
+        return "table-container-waiter-waiting rounded order-blink-waiting rounded";
       }
     }
     if (state === "ORDINE PRONTO") {
       if (this.state.waitingBlink) {
-        return "table-container-waiter-ready rounded min-h-table-waiter";
+        return "table-container-waiter-ready rounded";
       } else {
-        return "table-container-waiter-ready rounded order-blink-ready min-h-table-waiter";
+        return "table-container-waiter-ready rounded order-blink-ready";
       }
     }
-    return "table-container-waiter-neutral rounded min-h-table-waiter";
+    return "table-container-waiter-neutral rounded";
   };
 
   render() {
@@ -605,15 +605,19 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div
-                                className="row justify-content-between"
-                                onClick={() => this.handleExpanded(table.table)}
-                              >
-                                <div className="col-auto allign-left-title-cucina">
-                                  Tavolo {table.table.number}
-                                </div>
-                                <div className="col-auto yellow-g">
-                                  {table.state}
+                              <div className="min-h-table-waiter">
+                                <div
+                                  className="row justify-content-between"
+                                  onClick={() =>
+                                    this.handleExpanded(table.table)
+                                  }
+                                >
+                                  <div className="col-auto allign-left-title-cucina">
+                                    Tavolo {table.table.number}
+                                  </div>
+                                  <div className="col-auto yellow-g">
+                                    {table.state}
+                                  </div>
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
@@ -631,15 +635,24 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
-                                                  order.type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
                                             </div>
-                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col-auto allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    order.type
+                                                  )}
+                                                ></i>
+                                                {
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                }
+                                              </div>
+                                            </div>
                                             <div className="row">
                                               <div className="col">
                                                 {order.ingredients
@@ -652,7 +665,7 @@ class Cucina extends Component {
                                                   )
                                                   .map((i, key3) => (
                                                     <div
-                                                      className="row m-1"
+                                                      className="row"
                                                       key={key3}
                                                     >
                                                       <div className="col-auto allign-left-text-cucina">
@@ -704,17 +717,29 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
+                                            <div className="row">
+                                              <div className="allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    this.handleOrderType(order)
+                                                      .type
+                                                  )}
+                                                ></i>
+                                                {
                                                   this.handleOrderType(order)
                                                     .type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                                }
+                                              </div>
                                             </div>
-                                            <div className="allign-left-text-cucina">
-                                              {this.handleIngredients(order)}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                ◆{this.handleIngredients(order)}
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -722,19 +747,21 @@ class Cucina extends Component {
                                   </div>
                                   <div className="row justify-content-center ">
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("confirm", orders)
                                       }
                                     >
+                                      <i className="far fa-calendar-check"></i>{" "}
                                       CONFERMA TUTTO
                                     </div>
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("deliver", orders)
                                       }
                                     >
+                                      <i className="far fa-paper-plane"></i>{" "}
                                       CONSEGNA TUTTO
                                     </div>
                                     <div
@@ -743,9 +770,10 @@ class Cucina extends Component {
                                           modify: table.table.id,
                                         });
                                       }}
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                     >
-                                      MODIFICA ORDINI
+                                      <i className="fas fa-edit"></i> MODIFICA
+                                      ORDINI
                                     </div>
                                   </div>
                                 </div>
@@ -772,15 +800,19 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div
-                                className="row justify-content-between"
-                                onClick={() => this.handleExpanded(table.table)}
-                              >
-                                <div className="col-auto allign-left-title-cucina">
-                                  Tavolo {table.table.number}
-                                </div>
-                                <div className="col-auto yellow-g">
-                                  {table.state}
+                              <div className="min-h-table-waiter">
+                                <div
+                                  className="row justify-content-between"
+                                  onClick={() =>
+                                    this.handleExpanded(table.table)
+                                  }
+                                >
+                                  <div className="col-auto allign-left-title-cucina">
+                                    Tavolo {table.table.number}
+                                  </div>
+                                  <div className="col-auto yellow-g">
+                                    {table.state}
+                                  </div>
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
@@ -798,15 +830,24 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
-                                                  order.type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
                                             </div>
-                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col-auto allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    order.type
+                                                  )}
+                                                ></i>
+                                                {
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                }
+                                              </div>
+                                            </div>
                                             <div className="row">
                                               <div className="col">
                                                 {order.ingredients
@@ -819,7 +860,7 @@ class Cucina extends Component {
                                                   )
                                                   .map((i, key3) => (
                                                     <div
-                                                      className="row m-1"
+                                                      className="row"
                                                       key={key3}
                                                     >
                                                       <div className="col-auto allign-left-text-cucina">
@@ -871,17 +912,29 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
+                                            <div className="row">
+                                              <div className="allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    this.handleOrderType(order)
+                                                      .type
+                                                  )}
+                                                ></i>
+                                                {
                                                   this.handleOrderType(order)
                                                     .type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                                }
+                                              </div>
                                             </div>
-                                            <div className="allign-left-text-cucina">
-                                              {this.handleIngredients(order)}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                ◆{this.handleIngredients(order)}
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -889,19 +942,21 @@ class Cucina extends Component {
                                   </div>
                                   <div className="row justify-content-center ">
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("confirm", orders)
                                       }
                                     >
+                                      <i className="far fa-calendar-check"></i>{" "}
                                       CONFERMA TUTTO
                                     </div>
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("deliver", orders)
                                       }
                                     >
+                                      <i className="far fa-paper-plane"></i>{" "}
                                       CONSEGNA TUTTO
                                     </div>
                                     <div
@@ -910,9 +965,10 @@ class Cucina extends Component {
                                           modify: table.table.id,
                                         });
                                       }}
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                     >
-                                      MODIFICA ORDINI
+                                      <i className="fas fa-edit"></i> MODIFICA
+                                      ORDINI
                                     </div>
                                   </div>
                                 </div>
@@ -943,15 +999,19 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div
-                                className="row justify-content-between"
-                                onClick={() => this.handleExpanded(table.table)}
-                              >
-                                <div className="col-auto allign-left-title-cucina">
-                                  Tavolo {table.table.number}
-                                </div>
-                                <div className="col-auto yellow-g">
-                                  {table.state}
+                              <div className="min-h-table-waiter">
+                                <div
+                                  className="row justify-content-between"
+                                  onClick={() =>
+                                    this.handleExpanded(table.table)
+                                  }
+                                >
+                                  <div className="col-auto allign-left-title-cucina">
+                                    Tavolo {table.table.number}
+                                  </div>
+                                  <div className="col-auto yellow-g">
+                                    {table.state}
+                                  </div>
                                 </div>
                               </div>
                               {this.state.expanded.includes(table.table.id) ? (
@@ -969,15 +1029,24 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
-                                                  order.type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
                                             </div>
-                                            <div>{order.customer}</div>
+                                            <div className="row">
+                                              <div className="col-auto allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    order.type
+                                                  )}
+                                                ></i>
+                                                {
+                                                  this.handleOrderType(order)
+                                                    .type
+                                                }
+                                              </div>
+                                            </div>
                                             <div className="row">
                                               <div className="col">
                                                 {order.ingredients
@@ -990,7 +1059,7 @@ class Cucina extends Component {
                                                   )
                                                   .map((i, key3) => (
                                                     <div
-                                                      className="row m-1"
+                                                      className="row"
                                                       key={key3}
                                                     >
                                                       <div className="col-auto allign-left-text-cucina">
@@ -1042,17 +1111,29 @@ class Cucina extends Component {
                                               this.handleButtons(order)
                                             }
                                           >
-                                            <div className="allign-left-subtitle-cucina">
-                                              <i
-                                                className={this.handleIcon(
+                                            <div className="row">
+                                              <div className="allign-left-text-cucina">
+                                                {order.customer} ha ordinato:
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="allign-left-subtitle-cucina">
+                                                <i
+                                                  className={this.handleIcon(
+                                                    this.handleOrderType(order)
+                                                      .type
+                                                  )}
+                                                ></i>
+                                                {
                                                   this.handleOrderType(order)
                                                     .type
-                                                )}
-                                              ></i>
-                                              {this.handleOrderType(order).type}
+                                                }
+                                              </div>
                                             </div>
-                                            <div className="allign-left-text-cucina">
-                                              {this.handleIngredients(order)}
+                                            <div className="row">
+                                              <div className="col-auto allign-left-text-cucina">
+                                                ◆{this.handleIngredients(order)}
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -1060,19 +1141,21 @@ class Cucina extends Component {
                                   </div>
                                   <div className="row justify-content-center ">
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("confirm", orders)
                                       }
                                     >
+                                      <i className="far fa-calendar-check"></i>{" "}
                                       CONFERMA TUTTO
                                     </div>
                                     <div
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                       onClick={() =>
                                         this.handleAllOrders("deliver", orders)
                                       }
                                     >
+                                      <i className="far fa-paper-plane"></i>{" "}
                                       CONSEGNA TUTTO
                                     </div>
                                     <div
@@ -1081,9 +1164,10 @@ class Cucina extends Component {
                                           modify: table.table.id,
                                         });
                                       }}
-                                      className="col-auto alert-button m-1"
+                                      className="col-auto alert-button-waiter m-1"
                                     >
-                                      MODIFICA ORDINI
+                                      <i className="fas fa-edit"></i> MODIFICA
+                                      ORDINI
                                     </div>
                                   </div>
                                 </div>

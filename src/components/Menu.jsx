@@ -7,12 +7,12 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: [],
+      order: this.props.order,
       category: 0,
       update: false,
       popup: false,
       canConfirm: false,
-      name: "",
+      name: this.props.name,
       table: null,
     };
   }
@@ -279,19 +279,32 @@ class Menu extends Component {
         );
         return this.setState({ popup: true, canConfirm: true, order });
       }
-      if (!foundCarne && !foundApetizer)
+      if (!foundCarne && !foundApetizer) {
         return this.setState({ popup: true, canConfirm: false });
-
+      }
+      if (this.props.admin) {
+        this.props.onResetOrder();
+      }
       return this.postOrder();
     }
   }
 
   async postOrder() {
+    let orderInOrder = [];
+
+    for (let i = 0; i < this.props.options.length; i++) {
+      for (let c = 0; c < this.props.options[i].options.length; c++) {
+        if (this.state.order.includes(this.props.options[i].options[c].name)) {
+          orderInOrder.push(this.props.options[i].options[c].name);
+        }
+      }
+    }
+
     try {
       const response = await axios.post(
         baseUrl + `${this.props.idRistorante}/${this.props.idTavolo}`,
         {
-          ingredients: this.state.order,
+          ingredients: orderInOrder,
           customer: this.state.name,
         }
       );

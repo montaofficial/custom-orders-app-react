@@ -11,16 +11,20 @@ class Table extends Component {
       page: "menu",
       options: [],
       tableOpenPopup: true,
-      table: null
+      table: null,
     };
   }
 
   async componentDidMount() {
     try {
       const response = await axios.get(
-        baseUrl + `${this.props?.match?.params?.idRistorante}/menu/${this.props?.match?.params?.idTavolo}`
+        baseUrl +
+          `${this.props?.match?.params?.idRistorante}/menu/${this.props?.match?.params?.idTavolo}`
       );
-      this.setState({ options: response.data.menu, table: response.data.table });
+      this.setState({
+        options: response.data.menu,
+        table: response.data.table,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -44,6 +48,8 @@ class Table extends Component {
     if (this.state.page === "menu")
       return (
         <Menu
+          order={[]}
+          name={""}
           idRistorante={this.props?.match?.params?.idRistorante}
           idTavolo={this.props?.match?.params?.idTavolo}
           onPageChange={this.handlePageChange}

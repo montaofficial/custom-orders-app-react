@@ -411,6 +411,17 @@ body {
   cursor: pointer;
 }
 
+.alert-button-waiter {
+  text-align: center;
+  background-color: #f0dd31;
+  color: black;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .alert-button-bill {
   text-align: center;
   background-color: #198754;
@@ -588,5 +599,5 @@ body {
 }
 
 .min-h-table-waiter {
-  min-height: 85px;
+  min-height: 50px;
 }

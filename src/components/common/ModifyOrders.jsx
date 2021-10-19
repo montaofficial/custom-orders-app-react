@@ -12,6 +12,8 @@ class Table extends Component {
       options: [],
       tableOpenPopup: true,
       table: null,
+      order: [],
+      name: "",
     };
   }
 
@@ -34,6 +36,14 @@ class Table extends Component {
     this.setState({ page });
   };
 
+  handleBurgerModify = (order) => {
+    this.setState({
+      order: order.ingredients,
+      name: order.customer,
+      page: "menu",
+    });
+  };
+
   render() {
     if (this.state.page === "table")
       return (
@@ -44,11 +54,15 @@ class Table extends Component {
           onPageChange={this.handlePageChange}
           tableOpen={this.state.table}
           onDone={this.props.onDone}
+          onModifyBurger={this.handleBurgerModify}
         />
       );
     if (this.state.page === "menu")
       return (
         <Menu
+          onResetOrder={() => this.setState({ order: [], name: "" })}
+          order={this.state.order}
+          name={this.state.name}
           admin={true}
           idRistorante={this.props.idRistorante}
           idTavolo={this.props.idTavolo}

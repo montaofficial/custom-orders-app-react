@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Order extends Component {
   constructor(props) {
     super(props);
-    this.state = { page: this.props.page };
+    this.state = { page: this.props.page, admin: this.props.admin };
   }
 
   handleIngredients = (order) => {
@@ -19,6 +19,7 @@ class Order extends Component {
   handleConfirmButton = (order) => {
     let state = order.currentState;
     let page = this.state.page;
+    let admin = this.state.admin;
     let cl = "";
     let text = "";
     if (state === "Waiting confirmation" && page === "cassa") {
@@ -52,6 +53,14 @@ class Order extends Component {
     if (state === "Confirmed" && page === "tableOrders") {
       cl = "fas fa-check-circle";
       text = "Accettato";
+    }
+    if (state === "Waiting confirmation" && admin && order.type === "Burger") {
+      cl = "fas fa-edit cursor-pointer";
+      text = "Modifica";
+    }
+    if (state === "Deleted by Customer" && admin) {
+      cl = "fas fa-plus-square cursor-pointer";
+      text = "Recupera";
     }
 
     return [cl, text];

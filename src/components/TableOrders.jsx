@@ -143,6 +143,19 @@ class tableOrders extends Component {
   handleButtons = async (order, action) => {
     let state = ""; // "Waiting confirmation", "Confirmed", "In preparation", "Ready", "Done", "Deleted", "Deleted by Customer"
 
+    if (action == "btn1") {
+      if (order.currentState == "Deleted by Customer")
+        state = "Waiting confirmation";
+      console.log(state);
+    }
+
+    if (action == "btn1") {
+      if (order.currentState == "Waiting confirmation") {
+        state = "Deleted";
+        this.props.onModifyBurger(order);
+      }
+    }
+
     if (action == "btn2") {
       if (order.currentState == "Waiting confirmation")
         state = "Deleted by Customer";
@@ -337,6 +350,7 @@ class tableOrders extends Component {
               order.currentState !== "Done"
           ).length ? (
             <Order
+              admin={this.props.admin}
               page="tableOrders"
               onAction={this.handleButtons}
               tables={[
@@ -356,6 +370,7 @@ class tableOrders extends Component {
             {this.state.orders.filter((order) => order.currentState === "Done")
               .length ? (
               <Order
+                admin={this.props.admin}
                 page="tableOrders"
                 onAction={this.handleButtons}
                 tables={[
@@ -369,6 +384,28 @@ class tableOrders extends Component {
               />
             ) : null}
           </div>
+
+          {this.props.admin ? (
+            <div className="transparent">
+              {this.state.orders.filter(
+                (order) => order.currentState === "Deleted by Customer"
+              ).length ? (
+                <Order
+                  admin={this.props.admin}
+                  page="tableOrders"
+                  onAction={this.handleButtons}
+                  tables={[
+                    {
+                      number: this.props.tableOpen.name + " ELIMINATI",
+                      orders: this.state.orders.filter(
+                        (order) => order.currentState === "Deleted by Customer"
+                      ),
+                    },
+                  ]}
+                />
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </>
     );
