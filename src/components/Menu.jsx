@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DialogBox from "./common/DialogBox";
 import QrCode from "./common/QrCode";
 const axios = require("axios");
 const baseUrl = "https://orders-api.soolutions.net/api/";
@@ -14,6 +15,7 @@ class Menu extends Component {
       canConfirm: false,
       name: this.props.name,
       table: null,
+      dialog: false,
     };
   }
 
@@ -31,6 +33,90 @@ class Menu extends Component {
           table={this.state.table}
           idRistorante={this.props.idRistorante}
         />
+        {this.state.dialog ? (
+          <DialogBox
+            onClose={() => {
+              this.setState({ dialog: null });
+            }}
+            title={"ALLERGENI"}
+            text={
+              <div>
+                <div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Pane Burger al Latte: </span>
+                      <span className="white">latte, uova</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Cheddar rosso e bianco: </span>
+                      <span className="white">latte</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Guacamole: </span>
+                      <span className="white">latte</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Maionese: </span>
+                      <span className="white">uova</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Senape: </span>
+                      <span className="white">senape</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Ranch al pepe nero: </span>
+                      <span className="white">biossido di zolfo</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Chicken Nuggets: </span>
+                      <span className="white">
+                        frumento, orzo, soia, sedano
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Southern Fried Chicken: </span>
+                      <span className="white">frumento, latte</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Granella di cipolle: </span>
+                      <span className="white">frumento</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Pesto: </span>
+                      <span className="white">
+                        anacardi, noci, pinoli e prodotti a base di latte
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="title">
+                      <span className="yellow">Sriracha: </span>
+                      <span className="white">bisolfito di sodio</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          />
+        ) : null}
         <div className="fixed-top navbar-home">
           <div className="row justify-content-between">
             <div className="col-auto">
@@ -146,7 +232,6 @@ class Menu extends Component {
                     </div>
                   </div>
                 ) : null}
-
                 {this.props.options.map((category, key) => (
                   <div className="menu-section rounded" key={key}>
                     <div
@@ -210,6 +295,20 @@ class Menu extends Component {
                     ) : null}
                   </div>
                 ))}
+                <div className="row justify-content-center mt-5">
+                  <div
+                    onClick={() => this.setState({ dialog: true })}
+                    className="col-auto yellow cursor-pointer"
+                  >
+                    CLICCA PER GLI ALLERGENI
+                  </div>
+                </div>
+                <div className="row justify-content-center m-1">
+                  <div className="col-auto white mt-2">
+                    Tutti i burger sono serviti con panino al latte e patatine
+                    fritte
+                  </div>
+                </div>
               </div>
             )}
           </div>

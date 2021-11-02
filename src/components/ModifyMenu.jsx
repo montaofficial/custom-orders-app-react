@@ -101,6 +101,9 @@ class ModifyMenu extends Component {
               this.setState({ dialog: null });
             }}
             onSaveMenu={() => this.handleSaveMenu()}
+            admin={true}
+            title={"Sei sicuro di voler salvare?"}
+            text={"Una volta salvato non sarà più possibile tornare indietro!"}
           />
         ) : null}
 
