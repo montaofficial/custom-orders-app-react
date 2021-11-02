@@ -5,9 +5,9 @@ import MrQR from "./MrQR";
 
 import _ from "lodash";
 import axios from "axios";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
-class Cucina extends Component {
+class GestioneWaiter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +67,7 @@ class Cucina extends Component {
 
   connect() {
     this.ws = new WebSocket(
-      "wss://custom-orders.smontanari.com/api/orders/" +
+      "wss://orders-api.soolutions.net/api/orders/" +
         this.props?.match?.params?.idRistorante
     );
     this.ws.onopen = () => {
@@ -605,9 +605,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                            <div className="min-h-table-waiter px-2 py-1" onClick={() =>
-                                    this.handleExpanded(table.table)
-                                  }>
+                              <div
+                                className="min-h-table-waiter px-2 py-1"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
                                 <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
@@ -797,9 +798,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div className="min-h-table-waiter px-2 py-1" onClick={() =>
-                                    this.handleExpanded(table.table)
-                                  }>
+                              <div
+                                className="min-h-table-waiter px-2 py-1"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
                                 <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
@@ -993,9 +995,10 @@ class Cucina extends Component {
                             className="col-12 col-md-4 col-lg-3 col-xxl-2 mt-2"
                           >
                             <div className={this.handleOrderBlink(table.state)}>
-                              <div className="min-h-table-waiter px-2 py-1" onClick={() =>
-                                    this.handleExpanded(table.table)
-                                  }>
+                              <div
+                                className="min-h-table-waiter px-2 py-1"
+                                onClick={() => this.handleExpanded(table.table)}
+                              >
                                 <div className="row justify-content-between">
                                   <div className="col-auto allign-left-title-cucina">
                                     Tavolo {table.table.number}
@@ -1178,4 +1181,4 @@ class Cucina extends Component {
   }
 }
 
-export default Cucina;
+export default GestioneWaiter;

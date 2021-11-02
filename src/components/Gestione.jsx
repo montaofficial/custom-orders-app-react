@@ -34,7 +34,7 @@ class Gestione extends Component {
 
   connect() {
     this.ws = new WebSocket(
-      "wss://custom-orders.smontanari.com/api/orders/" +
+      "wss://orders-api.soolutions.net/api/orders/" +
         this.props?.match?.params?.idRistorante
     );
     this.ws.onopen = () => {

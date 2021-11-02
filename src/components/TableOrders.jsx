@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Order from "./common/Order";
 import QrCode from "./common/QrCode";
 import axios from "axios";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 const timeToWait = 1 * 60 * 1000;
 
@@ -55,7 +55,7 @@ class tableOrders extends Component {
 
   connect() {
     this.ws = new WebSocket(
-      "wss://custom-orders.smontanari.com/api/orders/" +
+      "wss://orders-api.soolutions.net/api/orders/" +
         this.props.idRistorante +
         "/" +
         this.props.idTavolo

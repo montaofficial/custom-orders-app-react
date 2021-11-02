@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Menu from "./Menu";
 import TableOrders from "./TableOrders";
 const axios = require("axios");
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 class Table extends Component {
   constructor(props) {

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import QrCode from "./common/QrCode";
 const axios = require("axios");
-const baseUrl = "https://custom-orders.smontanari.com/api/";
-const frontBaseUrl = "https://custom-orders.smontanari.com/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
+const frontBaseUrl = "https://orders.soolutions.io/";
 
 class TableOverview extends Component {
   constructor(props) {

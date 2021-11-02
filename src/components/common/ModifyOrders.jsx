@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Menu from "../Menu";
 import TableOrders from "../TableOrders";
 const axios = require("axios");
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
-class Table extends Component {
+class ModifyOrders extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +60,9 @@ class Table extends Component {
     if (this.state.page === "menu")
       return (
         <Menu
-          onResetOrder={() => this.setState({ order: [], name: "" })}
+          onResetOrder={() => {
+            this.setState({ order: [], name: "" });
+          }}
           order={this.state.order}
           name={this.state.name}
           admin={true}
@@ -82,4 +84,4 @@ class Table extends Component {
   }
 }
 
-export default Table;
+export default ModifyOrders;

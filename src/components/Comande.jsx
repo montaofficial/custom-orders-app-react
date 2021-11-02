@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Order from "./common/Order";
 import axios from "axios";
 import _ from "lodash";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 class Comande extends Component {
   constructor(props) {
@@ -53,24 +53,27 @@ class Comande extends Component {
       if (order.currentState == "Confirmed") state = "Deleted";
     }
     try {
-      const response = await axios.post(baseUrl + `orders/${order._id}`, {
-        currentState: state,
-      },
-      this.getHeaders());
+      const response = await axios.post(
+        baseUrl + `orders/${order._id}`,
+        {
+          currentState: state,
+        },
+        this.getHeaders()
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  getHeaders () {
-    const token = localStorage.getItem('custom-orders-token') || "";
+  getHeaders() {
+    const token = localStorage.getItem("custom-orders-token") || "";
     return {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-auth-token': token
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
       },
-    }
+    };
   }
 
   render() {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Order from "./common/Order";
 import axios from "axios";
 import _ from "lodash";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 class Admin extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import QrCode from "./common/QrCode";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 const frontBaseUrl = "https://custom-orders.smontanari.com/";
 
 class MrQR extends Component {

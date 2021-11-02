@@ -7,30 +7,55 @@ class NotFound extends Component {
   }
   render() {
     return (
-      <div className="not-found">
-        <h1>Pagina non trovata!</h1>
-        <p>Assicurati di scansionare correttamente il QR e non fare scherzi!</p>
-        <li class="nav-item">
-          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/gestione">
-            Gestione
+      <>
+        <div className="fixed-top navbar-home">
+          <div className="row justify-content-between">
+            <div className="col-auto">
+              <span className="img">
+                <img src="/logo-sham-low.svg" alt="logo sham" />
+              </span>
+              <span className="title">
+                SHAMROCK <span className="yellow"> GESTIONE</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="admin-container">
+          <h1 className="white">Benvenuto, accedi alla tua pagina!</h1>
+          <a
+            className="table-container-waiter-waiting rounded row justify-content-center py-2 mt-5 me-3 ms-3"
+            href="/614d9fb7db2d0588b88a006b/gestione"
+          >
+            <div className="col-auto">
+              <h1>Amministratore</h1>
+            </div>
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/waiter">
-            Camerieri
+          <a
+            className="table-container-waiter-waiting rounded row justify-content-center py-2 mt-5 me-3 ms-3"
+            href="/614d9fb7db2d0588b88a006b/modifica"
+          >
+            <div className="col-auto">
+              <h1>Modifica Menù</h1>
+            </div>
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/cucina">
-            Cucina
+          <a
+            className="table-container-waiter-waiting rounded row justify-content-center py-2 mt-5 me-3 ms-3"
+            href="/614d9fb7db2d0588b88a006b/waiter"
+          >
+            <div className="col-auto">
+              <h1>Gestione</h1>
+            </div>
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/614d9fb7db2d0588b88a006b/tavolo">
-            Table
+          <a
+            className="table-container-waiter-waiting rounded row justify-content-center py-2 mt-5 me-3 ms-3"
+            href="/614d9fb7db2d0588b88a006b/cucina"
+          >
+            <div className="col-auto">
+              <h1>Cucina</h1>
+            </div>
           </a>
-        </li>
-      </div>
+        </div>
+      </>
     );
   }
 }

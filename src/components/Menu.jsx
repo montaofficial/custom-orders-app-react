@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import QrCode from "./common/QrCode";
 const axios = require("axios");
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 class Menu extends Component {
   constructor(props) {
@@ -282,9 +282,7 @@ class Menu extends Component {
       if (!foundCarne && !foundApetizer) {
         return this.setState({ popup: true, canConfirm: false });
       }
-      if (this.props.admin) {
-        this.props.onResetOrder();
-      }
+
       return this.postOrder();
     }
   }
@@ -315,6 +313,9 @@ class Menu extends Component {
         popup: false,
         category: 0,
       });
+      if (this.props.admin) {
+        this.props.onResetOrder();
+      }
     } catch (error) {
       console.error(error);
       if (error.response.status === 400) {

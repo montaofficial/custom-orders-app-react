@@ -86,7 +86,7 @@ body {
 }
 
 .menu-section-element {
-  margin-bottom: 0.30rem;
+  margin-bottom: 0.3rem;
   padding-top: 0.23rem;
   padding-bottom: 0.3rem;
   position: relative;
@@ -266,7 +266,7 @@ body {
 }
 
 .allign-left-text-cucina {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #ffffff;
   font-weight: 500;
   text-align: left;
@@ -289,7 +289,7 @@ body {
 }
 
 .ingredients-cucina {
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   color: #ffffff;
   font-weight: 500;
   text-align: left;
@@ -297,6 +297,10 @@ body {
 
 .yellow {
   color: #f0dd31;
+}
+
+.red {
+  color: #ff0000;
 }
 
 .yellow-g {
@@ -542,10 +546,18 @@ body {
   padding-left: 0;
 }
 
+.tuttoaddestra-text {
+  text-align: end;
+}
+
 .tuttoassinistra {
   padding-right: 0;
   padding-left: 0;
   margin-top: 6px;
+}
+
+.vegan-toggle {
+  font-size: 1.5rem;
 }
 
 .noselect {
@@ -568,6 +580,10 @@ body {
 
 .transparent {
   opacity: 0.5;
+}
+
+.transparent-more {
+  opacity: 0.3;
 }
 
 .prevent-hover:hover {
@@ -602,4 +618,28 @@ body {
 
 .min-h-table-waiter {
   min-height: 50px;
+}
+
+.modify-background {
+  background-color: #ffffff;
+}
+
+.add-button {
+  text-align: center;
+  background-color: #f0dd31;
+  border-color: #f0dd31;
+  color: black;
+  font-weight: 700;
+  font-size: 0.9rem;
+  max-width: 150px;
+  padding: 12px 26px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  transform: scale(1.03);
+  color: black;
+  border-color: #f0dd31;
+  box-shadow: 0 0 20px #f0dd31;
 }

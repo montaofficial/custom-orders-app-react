@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import _, { cond } from "lodash";
+import { isEqual, sortBy } from "lodash";
 import axios from "axios";
-const baseUrl = "https://custom-orders.smontanari.com/api/";
+const baseUrl = "https://orders-api.soolutions.net/api/";
 
 class Cucina extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Cucina extends Component {
       waiterRequests: [],
       billRequests: [],
       allIngredients: [],
-      update: true
+      update: true,
     };
   }
 
@@ -50,7 +50,7 @@ class Cucina extends Component {
     }
 
     this.timer = setInterval(() => {
-      this.setState({update: !this.state.update});
+      this.setState({ update: !this.state.update });
     }, 10000);
 
     this.mounted = true;
@@ -59,7 +59,7 @@ class Cucina extends Component {
 
   connect() {
     this.ws = new WebSocket(
-      "wss://custom-orders.smontanari.com/api/orders/" +
+      "wss://orders-api.soolutions.net/api/orders/" +
         this.props?.match?.params?.idRistorante
     );
     this.ws.onopen = () => {
@@ -289,7 +289,7 @@ class Cucina extends Component {
       const newOrders = this.tempWaitingConfirmation;
       const oldOrders = data.waitingConfirmationNow;
       if (
-        !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+        !isEqual(sortBy(oldOrders), sortBy(newOrders)) &&
         oldOrders.length >= newOrders.length
       ) {
         console.log("Nuova comanda in cassa, suono!");
@@ -307,7 +307,7 @@ class Cucina extends Component {
       const newOrders = this.tempConfirmed;
       const oldOrders = data.confirmedNow;
       if (
-        !_.isEqual(_.sortBy(oldOrders), _.sortBy(newOrders)) &&
+        !isEqual(sortBy(oldOrders), sortBy(newOrders)) &&
         oldOrders.length >= newOrders.length
       ) {
         console.log("Nuova comanda in cucina, suono!");
@@ -468,18 +468,9 @@ class Cucina extends Component {
   };
 
   render() {
-    // console.log("render");
     return (
       <div className="admin-container-cucina">
         <div className="white">
-          {() =>
-            this.handleTypeFiltration(
-              this.handleInPreparationOrdersIngredients(
-                this.state.inPreparation
-              ),
-              "Carne"
-            )
-          }
           <div className=" min-h-200">
             <div className="row">
               {this.state.options.slice(0, 4).map((category, key) => (
@@ -490,7 +481,7 @@ class Cucina extends Component {
                     </div>
                     <div className="ingredients-cucina">
                       {category.options.map((element, key2) => (
-                        <div>
+                        <div key={key2}>
                           {this.state.allIngredients
                             .map((a) => a.ingredient)
                             .includes(element.name) ? (
