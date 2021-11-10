@@ -295,18 +295,18 @@ class Menu extends Component {
                     ) : null}
                   </div>
                 ))}
-                <div className="row justify-content-center mt-5">
+                <div className="text-center mt-3">
                   <div
                     onClick={() => this.setState({ dialog: true })}
-                    className="col-auto yellow cursor-pointer"
+                    className="yellow underline cursor-pointer"
                   >
                     CLICCA PER GLI ALLERGENI
                   </div>
-                </div>
-                <div className="row justify-content-center m-1">
-                  <div className="col-auto white mt-2">
-                    Tutti i burger sono serviti con panino al latte e patatine
-                    fritte
+                  <div className="white mt-3">
+                    Tutti i burger sono serviti con
+                  </div>
+                  <div className="white mt-1">
+                    panino al latte e patatine fritte
                   </div>
                 </div>
               </div>
@@ -319,11 +319,8 @@ class Menu extends Component {
                 <div className="menu-section-title">Attenzione!</div>
                 <div className="menu-section-body">
                   <h1 className="white">
-                    La sessione è stata chiusa. Potrai ancora consultare il
+                    Questa sessione è scaduta. Potrai continuare a consultare il
                     menù.
-                  </h1>
-                  <h1 className="white">
-                    Grazie per averci scelto! Alla prossima!
                   </h1>
                   <div
                     className="submit-order rounded"
