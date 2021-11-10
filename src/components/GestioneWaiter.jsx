@@ -634,9 +634,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="col-auto allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="col-auto allign-left-subtitle-cucina">
@@ -716,9 +718,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="allign-left-subtitle-cucina">
@@ -827,9 +831,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="col-auto allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="col-auto allign-left-subtitle-cucina">
@@ -909,9 +915,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="allign-left-subtitle-cucina">
@@ -1024,9 +1032,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="col-auto allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="col-auto allign-left-subtitle-cucina">
@@ -1106,9 +1116,11 @@ class GestioneWaiter extends Component {
                                             }
                                           >
                                             <div className="row">
-                                              <div className="allign-left-text-cucina">
-                                                {order.customer} ha ordinato:
-                                              </div>
+                                              {order.customer ? (
+                                                <div className="col-auto allign-left-text-cucina">
+                                                  {order.customer} ha ordinato:
+                                                </div>
+                                              ) : null}
                                             </div>
                                             <div className="row">
                                               <div className="allign-left-subtitle-cucina">
