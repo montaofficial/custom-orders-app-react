@@ -72,6 +72,28 @@ body {
   position: relative;
 }
 
+.menu-section-menu-pick {
+  background-color: #2e2e2e;
+  color: #f0dd31;
+  padding: 10px 16px;
+  margin: 12px 5px;
+  position: relative;
+}
+
+.menu-section-menu-pick-selected {
+  background-color: #493f07;
+  color: #f0dd31;
+  padding: 10px 16px;
+  margin: 12px 5px;
+  position: relative;
+}
+
+.menu-title {
+  background-color: #000000;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .menu-section-title {
   font-size: 1.4rem;
   text-transform: uppercase;
@@ -81,11 +103,20 @@ body {
   font-size: 1.6rem;
 }
 
+.menu-active-badge {
+  background-color: #218b00;
+  text-align: center;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 .menu-section-list {
   margin-top: 0.6rem;
 }
 
 .menu-section-element {
+  background-color: black;
   margin-bottom: 0.3rem;
   padding-top: 0.23rem;
   padding-bottom: 0.3rem;
@@ -97,7 +128,7 @@ body {
   position: absolute;
   content: "";
   height: 1px;
-  bottom: -4px;
+  bottom: -2px;
   margin: 0 auto;
   left: 0;
   right: 0;
@@ -308,6 +339,33 @@ body {
   color: #f0dd31;
 }
 
+.sizes-pills {
+  background-color: #f0dd31;
+  color: #000000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.18rem;
+}
+
+.small-padding {
+  padding: 5px;
+}
+
+.absolutley-no-padding {
+  padding: 0rem;
+}
+
+.mr-ghost {
+  filter: grayscale(100%);
+}
+
+.icon-picker {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 0rem;
+}
+
 .white {
   color: #ffffff;
 }
@@ -318,6 +376,11 @@ body {
 
 .text-center {
   text-align: center;
+}
+
+.big {
+  font-size: 2.3rem;
+  font-weight: 700;
 }
 
 .submit-order {
@@ -412,6 +475,10 @@ body {
 
 .alert-text {
   text-align: center;
+}
+
+.no-padding {
+  padding: 0rem;
 }
 
 .alert-button {
@@ -628,10 +695,6 @@ body {
   min-height: 50px;
 }
 
-.modify-background {
-  background-color: #ffffff;
-}
-
 .add-button {
   text-align: center;
   background-color: #f0dd31;
@@ -650,4 +713,9 @@ body {
   color: black;
   border-color: #f0dd31;
   box-shadow: 0 0 20px #f0dd31;
+}
+
+.nopadding {
+  padding-right: 0 !important;
+  margin: 0 !important;
 }
