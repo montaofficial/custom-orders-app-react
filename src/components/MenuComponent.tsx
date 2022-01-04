@@ -31,5 +31,3 @@ function MenuComponent() {
 }
 
 export default MenuComponent;
-
-const mongoose = require("mongoose");
