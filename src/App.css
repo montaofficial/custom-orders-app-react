@@ -36,3 +36,67 @@
     transform: rotate(360deg);
   }
 }
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-background {
+  background-color: black;
+}
+
+.page-container {
+  padding: 1rem;
+}
+
+.element-container {
+  background-color: rgb(15, 15, 15);
+}
+
+.page-title {
+  color: rgb(255, 255, 255);
+  size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  padding-top: 10px;
+  padding-left: 5px;
+}
+
+.section-title {
+  text-align: start;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  size: 1rem;
+  font-weight: 1500;
+  margin: 0;
+  padding-top: 20px;
+  padding-left: 5px;
+}
+
+.icon-section-title {
+  color: rgb(255, 255, 255);
+}
+
+.ingredient-title {
+  text-align: start;
+  color: rgb(163, 33, 53);
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin: 0;
+  padding-top: 10px;
+  padding-left: 20px;
+}
+
+.option-title {
+  text-align: start;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  margin: 0;
+  padding-top: 10px;
+  padding-left: 25px;
+}

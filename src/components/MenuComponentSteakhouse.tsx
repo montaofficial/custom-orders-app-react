@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import menuType from "../interfaces/menuType";
+import OptionsList from "./commons/OptionsList";
+import Product from "./commons/Product";
 
-function MenuComponent() {
+function MenuComponentSteakhouse() {
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "https://orders-api.soolutions.net/api/614d9fb7db2d0588b88a006b/menu/active"
+          "https://orders-api.soolutions.net/api/614d9fb7db2d0588b88a006b/menus/active"
         );
         setMenu(response.menu);
       } catch (error: any) {
@@ -21,13 +23,12 @@ function MenuComponent() {
   }, []);
 
   return (
-    <div>
-      <h1>HENLOW</h1>
+    <div className="element-containerd">
       {menu.map((section: menuType["menu"][0]) => (
-        <div key={section._id}>{section.name}</div>
+        <Product section={section} key={section._id}></Product>
       ))}
     </div>
   );
 }
 
-export default MenuComponent;
+export default MenuComponentSteakhouse;
