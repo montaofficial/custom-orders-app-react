@@ -105,3 +105,12 @@ body,
   line-height: 100%;
   vertical-align: middle;
 }
+
+.center-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
