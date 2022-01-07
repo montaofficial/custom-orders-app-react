@@ -4,8 +4,10 @@ import Menu from "./pages/Menu";
 
 function App() {
   return (
-    <div className="App app-background">
-      <Menu></Menu>
+    <div className="container">
+      <div className="App app-background">
+        <Menu></Menu>
+      </div>
     </div>
   );
 }

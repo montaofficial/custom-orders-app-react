@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import menuType from "../interfaces/menuType";
-import OptionsList from "./commons/OptionsList";
 import Product from "./commons/Product";
 
 function MenuComponentSteakhouse() {
