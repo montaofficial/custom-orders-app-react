@@ -1,27 +1,27 @@
+import { faSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { IconPickerItem } from "react-fa-icon-picker";
 
 function OptionsList(props: any) {
-  const { options } = props;
+  const { options, order } = props;
   const [menu, setMenu] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-      } catch (error: any) {}
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <div className="element-container">
-      <div>
-        {options.map((option: any) => (
-          <div className="option-title" key={option._id}>
-            {option.name}
-          </div>
-        ))}
-      </div>
+      {options.map((option: any) => (
+        <div
+          onClick={() => props.onOrderEdit(option._id)}
+          className="option-title row"
+          key={option._id}
+        >
+          {order.includes(option._id) ? (
+            <IconPickerItem size={16} color="white" icon="FaCheckSquare" />
+          ) : (
+            <IconPickerItem size={16} color="white" icon="FaSquare" />
+          )}
+          <div className="pl-2">{option.name}</div>
+        </div>
+      ))}
     </div>
   );
 }
