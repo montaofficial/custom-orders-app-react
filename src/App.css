@@ -100,3 +100,8 @@ body,
   padding-top: 10px;
   padding-left: 25px;
 }
+
+.center-text {
+  line-height: 100%;
+  vertical-align: middle;
+}
