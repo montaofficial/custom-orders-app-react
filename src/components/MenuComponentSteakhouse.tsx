@@ -24,7 +24,9 @@ function MenuComponentSteakhouse() {
   return (
     <div className="element-containerd">
       {menu.map((section: menuType["menu"][0]) => (
-        <Product section={section} key={section._id}></Product>
+        <div>
+          <Product section={section} key={section._id}></Product>
+        </div>
       ))}
     </div>
   );

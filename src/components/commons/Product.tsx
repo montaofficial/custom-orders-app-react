@@ -10,7 +10,7 @@ function Product(props: any) {
       <div key={section._id}>
         <div className="row justify-content-start">
           <div className="col-auto">
-            <IconPickerItem color="white" icon={section.icon} />{" "}
+            <IconPickerItem color="white" icon={section.icon} />
           </div>
           <div className="col-auto">
             <h1 className="section-title">{section.name}</h1>
