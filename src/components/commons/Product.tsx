@@ -7,28 +7,6 @@ function Product(props: any) {
 
   return (
     <div className="element-container">
-      <div className="container">
-        <div className="row justify-content-start">
-          <div className="col-4">One of two columns</div>
-          <div className="col-4">One of two columns</div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-4">One of two columns</div>
-          <div className="col-4">One of two columns</div>
-        </div>
-        <div className="row justify-content-end">
-          <div className="col-4">One of two columns</div>
-          <div className="col-4">One of two columns</div>
-        </div>
-        <div className="row justify-content-around">
-          <div className="col-4">One of two columns</div>
-          <div className="col-4">One of two columns</div>
-        </div>
-        <div className="row justify-content-between">
-          <div className="col-4">One of two columns</div>
-          <div className="col-4">One of two columns</div>
-        </div>
-      </div>
       <div key={section._id}>
         <div className="row justify-content-start">
           <div className="col-auto">
