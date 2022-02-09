@@ -1,12 +1,12 @@
 import "./App.css";
 
-import Menu from "./pages/Menu";
+import OrderPoint from "./pages/OrderPoint";
 
 function App() {
   return (
     <div className="App app-background">
       <div className="container">
-        <Menu></Menu>
+        <OrderPoint></OrderPoint>
       </div>
     </div>
   );
