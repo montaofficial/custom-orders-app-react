@@ -47,7 +47,7 @@ body,
 }
 
 .app-background {
-  background-color: black;
+  background-color: #161616;
 }
 
 .page-container {
@@ -71,14 +71,22 @@ body,
   padding: 10px;
 }
 
+.section-container {
+  background-image: url(../public/clear_wood.gif);
+  border: 5px solid rgb(35, 1, 4);
+  border-radius: 15px;
+}
+
 .section-title {
-  text-align: start;
   color: rgb(255, 255, 255);
+  text-shadow: 1px 0 0 rgb(35, 1, 4), -1px 0 0 rgb(35, 1, 4),
+    0 1px 0 rgb(35, 1, 4), 0 -1px 0 rgb(35, 1, 4), 1px 1px rgb(35, 1, 4),
+    -1px -1px 0 rgb(35, 1, 4), 1px -1px 0 rgb(35, 1, 4),
+    -1px 1px 0 rgb(35, 1, 4);
   text-transform: uppercase;
-  size: 1rem;
-  font-weight: 1500;
+  font-size: 2rem;
+  font-weight: 900;
   margin: 0;
-  padding-top: 20px;
   padding-left: 5px;
 }
 
@@ -86,23 +94,20 @@ body,
   color: rgb(255, 255, 255);
 }
 
-.ingredient-title {
-  text-align: start;
-  color: rgb(163, 33, 53);
-  font-size: 1.3rem;
-  font-weight: 900;
-  margin: 0;
-  padding-top: 10px;
-  padding-left: 20px;
+.product-container {
+  padding-right: 0rem;
 }
 
-.option-title {
+.ingredient-title {
   text-align: start;
   color: rgb(255, 255, 255);
-  font-size: 1rem;
-  margin: 0;
-  padding-top: 10px;
-  padding-left: 25px;
+  text-shadow: 1px 0 0 rgb(35, 1, 4), -1px 0 0 rgb(35, 1, 4),
+    0 1px 0 rgb(35, 1, 4), 0 -1px 0 rgb(35, 1, 4), 1px 1px rgb(35, 1, 4),
+    -1px -1px 0 rgb(35, 1, 4), 1px -1px 0 rgb(35, 1, 4),
+    -1px 1px 0 rgb(35, 1, 4);
+  font-size: 1.1rem;
+  font-weight: 900;
+  padding-left: 0.9rem;
 }
 
 .center-text {
@@ -121,4 +126,101 @@ body,
 
 .nopadding {
   padding: 0rem;
+}
+
+.smallpadding {
+  padding: 0.2rem;
+}
+
+.menu-section {
+  background-color: #000000;
+  color: #f0dd31;
+  margin: 12px 0;
+  position: relative;
+}
+
+.menu-section-title {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+.menu-section-list {
+  margin-top: 0.6rem;
+}
+
+.menu-section-element {
+  background-color: black;
+  margin-bottom: 0.3rem;
+  padding-top: 0.23rem;
+  padding-bottom: 0.3rem;
+  position: relative;
+  font-size: 1rem;
+}
+
+.menu-section-element::after {
+  position: absolute;
+  content: "";
+  height: 1px;
+  bottom: -2px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #f0dd31;
+}
+
+.product-name {
+  text-align: start;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 1rem;
+  color: white;
+}
+
+.product-details {
+  text-align: start;
+}
+
+.product-price {
+  text-align: end;
+}
+.select-product-button {
+  color: #000000;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+/* POPUP SECTION */
+
+#dialog_base {
+  background: white;
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+  height: 100%;
+  width: 100%;
+
+  backdrop-filter: blur(2px);
+}
+
+#dialog_content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 14vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 480px; /* Need a specific value to work */
+  overflow: hidden;
+  z-index: 5001;
+}
+
+.alert-box {
+  color: #ffffff;
+  background-color: black;
+  border: solid 1px #f0dd31;
+  padding: 38px 18px;
+  border-radius: 12px;
 }

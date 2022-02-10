@@ -1,6 +1,6 @@
 import "./App.css";
 
-import OrderPoint from "./pages/OrderPoint";
+import OrderPoint from "./components/pages/OrderPoint";
 
 function App() {
   return (

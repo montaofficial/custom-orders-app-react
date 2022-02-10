@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const menuSlice = createSlice({
-  name: "menu",
+  name: "menurk",
   initialState: { value: [] },
   reducers: {
     load: (state, action) => {
