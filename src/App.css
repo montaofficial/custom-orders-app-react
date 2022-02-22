@@ -24,10 +24,6 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -46,12 +42,16 @@ body,
   padding: 0;
 }
 
+.noselect {
+  user-select: none;
+}
+
 .app-background {
   background-color: #161616;
 }
 
 .page-container {
-  padding: 1rem;
+  overscroll-behavior: contain;
 }
 
 .element-container {
@@ -69,19 +69,6 @@ body,
 
 .menu-container {
   padding: 10px;
-}
-
-.section-title {
-  color: rgb(255, 255, 255);
-  text-shadow: 1px 0 0 rgb(35, 1, 4), -1px 0 0 rgb(35, 1, 4),
-    0 1px 0 rgb(35, 1, 4), 0 -1px 0 rgb(35, 1, 4), 1px 1px rgb(35, 1, 4),
-    -1px -1px 0 rgb(35, 1, 4), 1px -1px 0 rgb(35, 1, 4),
-    -1px 1px 0 rgb(35, 1, 4);
-  text-transform: uppercase;
-  font-size: 2rem;
-  font-weight: 900;
-  margin: 0;
-  padding-left: 5px;
 }
 
 .icon-section-title {

@@ -4,10 +4,14 @@ import App from "./App";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import menuReducer from "./features/menu";
+import orderReducer from "./features/order";
+import currentPageReducer from "./features/currentPage";
 
 const store = configureStore({
   reducer: {
     menu: menuReducer,
+    order: orderReducer,
+    currentPage: currentPageReducer,
   },
 });
 

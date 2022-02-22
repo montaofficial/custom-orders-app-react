@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { load } from "../features/menu";
+import CustomConfigurator from "./commons/CustomConfigurator";
+import { loadOrder } from "../features/order";
 import menuType from "../interfaces/menuType";
 import { IconPickerItem } from "react-fa-icon-picker";
 import Counter from "./commons/Counter";
@@ -13,152 +13,194 @@ import {
   SectionTitle,
   Product,
   Details,
+  Price,
 } from "./styles/Menu.styled";
 import { Flex } from "./styles/Flex.style";
-import { Button, AddButton } from "./styles/Button.styled";
+import {
+  Button,
+  AddButton,
+  EditButton,
+  EditButtonOrdered,
+} from "./styles/Button.styled";
 
 function OrderPoint() {
-  const [order, orderSet] = useState<orderType>([
-    { productId: "6195352e78598bb34a6df792", quantity: 1 },
-  ]);
+  //const [order, orderSet] = useState<orderType>([]);
   const [dialog, dialogSet] = useState<
     menuType["menu"]["value"][0]["options"][0] | null
   >(null);
+  const [create, createSet] = useState<menuType["menu"]["value"][0] | null>(
+    null
+  );
 
+  //Redux
+  const menu = useSelector((state: menuType) => state.menu.value);
+  const order = useSelector((state: orderType) => state.order.value);
   const dispatch = useDispatch();
 
-  //Getting menu
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: response } = await axios.get(
-          "https://orders-api.soolutions.net/api/614d9fb7db2d0588b88a006b/menus/active"
-        );
-        dispatch(load(response.menu));
-      } catch (error: any) {
-        console.error(error.message);
+  const handleOrderUpdate = (
+    id: string,
+    variation: number,
+    sizable: boolean,
+    sizeId: string = ""
+  ) => {
+    let newOrder: orderType["order"]["value"] = JSON.parse(
+      JSON.stringify(order)
+    );
+
+    //Updating quantity unsizeable product
+    const product = newOrder.filter((p) => p.productId === id)[0];
+    if (product) {
+      if (!sizable) {
+        product.quantity += variation;
+      } else {
+        product.quantity += variation;
+        const size = product.sizes.filter((s) => s.sizeId === sizeId)[0];
+        if (size) {
+          size.quantity += variation;
+        } else {
+          product.sizes.push({ sizeId: sizeId, quantity: variation });
+        }
       }
-    };
-
-    fetchData();
-  }, []);
-
-  const menu = useSelector((state: menuType) => state.menu.value);
-  console.log(menu);
-
-  const handleOrderUpdate = (id: string | undefined, variation: number) => {
-    if (order.filter((p) => p.productId === id).length > 0) {
-      const productIndex = order.findIndex((p) => p.productId === id);
     }
+    //Adding new product
+    else {
+      if (!sizable) {
+        newOrder.push({
+          productId: id,
+          quantity: variation,
+          sizes: [{ sizeId: "unsizeable", quantity: 0 }],
+        });
+      } else {
+        newOrder.push({
+          productId: id,
+          quantity: 1,
+          sizes: [{ sizeId: sizeId, quantity: variation }],
+        });
+      }
+    }
+    //Updating quantity sizeable product
+
+    dispatch(loadOrder(newOrder));
   };
 
   const getButtonValue = (id: string) => {
-    const quantity = order.filter((p) => p.productId === id).length;
-    if (quantity > 0) return quantity;
+    const quantity = order.filter((p) => p.productId === id)[0]?.quantity;
+    if (quantity > 0) return quantity.toString();
     else return "+";
+  };
+
+  const getPrice = (oprion: menuType["menu"]["value"][0]["options"][0]) => {
+    if (oprion.price > 0) return oprion.price + " €";
+    if (oprion.sizes.length > 0) return "";
+    if (oprion.price === 0) return "Free";
   };
 
   return (
     <>
-      {dialog ? (
-        <Counter
-          product={dialog}
-          order={order}
-          onClose={() => dialogSet(null)}
-          onOrderUpdate={(id: string | undefined, variation: number) =>
-            handleOrderUpdate(id, variation)
-          }
-        ></Counter>
-      ) : null}
+      {create ? (
+        <CustomConfigurator product={create}></CustomConfigurator>
+      ) : (
+        <>
+          {dialog ? (
+            <Counter
+              product={dialog}
+              order={order}
+              onClose={() => dialogSet(null)}
+              onOrderUpdate={(
+                id: string,
+                variation: number,
+                sizable: boolean,
+                sizeId: string = ""
+              ) => handleOrderUpdate(id, variation, sizable, sizeId)}
+            ></Counter>
+          ) : null}
 
-      <div className="page-container">
-        <Menu>
-          {menu.map((element) => (
-            <Section key={element._id}>
-              {element.editable ? (
-                <>
-                  <SectionTitle>
-                    <Flex>
-                      <div className="section-title row justify-content-start mt-2">
-                        <div className="center-vertical ml-2 nopadding">
-                          <IconPickerItem
-                            icon={element.icon}
-                            size={35}
-                            color={"white"}
-                          />
-                        </div>
-                        <div className="col-auto">{element.name}</div>
+          <div className="page-container">
+            <Menu>
+              {menu.map((element) => (
+                <Section key={element._id}>
+                  {element.editable ? (
+                    <>
+                      <SectionTitle>
+                        <Flex>
+                          <div className="section-title row justify-content-start mt-2">
+                            <div className="center-vertical ml-2 nopadding">
+                              <IconPickerItem
+                                icon={element.icon}
+                                size={35}
+                                color={"white"}
+                              />
+                            </div>
+                            <div className="col-auto">{element.name}</div>
+                          </div>
+                          <Button onClick={() => createSet(element)}>
+                            CREA
+                          </Button>
+                        </Flex>
+                      </SectionTitle>
+                      <div>
+                        {element.options.map((option) => (
+                          <Element key={option._id}>
+                            <Flex>
+                              <div>
+                                <Flex>
+                                  <Product>{option.name}</Product>
+                                  <Price>
+                                    {option.price && !option.sizes.length
+                                      ? option.price + " €"
+                                      : "Free"}
+                                  </Price>
+                                </Flex>
+                                <Details>{option.details}</Details>
+                              </div>
+                              <EditButton onClick={() => dialogSet(option)}>
+                                {getButtonValue(option._id)}
+                              </EditButton>
+                            </Flex>
+                          </Element>
+                        ))}
                       </div>
-                      <Button>CREA</Button>
-                    </Flex>
-                  </SectionTitle>
-                  <div>
-                    {element.options?.map((option) => (
-                      <Element>
-                        <div key={option._id}>
-                          <div className="row justify-content-between mt-2">
-                            <div className="pl-4 col">
-                              <div className="row justify-content-between">
-                                <Product>{option.name}</Product>
-                                <div className="col-auto">{option.price} €</div>
-                              </div>
-                              <div className="product-details">
-                                {option.details}
-                              </div>
-                            </div>
-
-                            <div className="col-auto mr-4">
-                              <AddButton onClick={() => dialogSet(option)}>
-                                {getButtonValue(option._id)}
-                              </AddButton>
-                            </div>
+                    </>
+                  ) : (
+                    <>
+                      <SectionTitle>
+                        <div className="section-title row justify-content-start mt-2">
+                          <div className="center-vertical ml-2 nopadding">
+                            <IconPickerItem
+                              icon={element.icon}
+                              size={35}
+                              color={"white"}
+                            />
                           </div>
+                          <div className="col-auto">{element.name}</div>
                         </div>
-                      </Element>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="section-title row justify-content-start mt-2">
-                    <div className="center-vertical ml-2 nopadding">
-                      <IconPickerItem
-                        icon={element.icon}
-                        size={35}
-                        color={"white"}
-                      />
-                    </div>
-                    <div className="col-auto">{element.name}</div>
-                  </div>
-                  <div>
-                    {element.options.map((option) => (
-                      <Element>
-                        <div key={option._id}>
-                          <div className="row justify-content-between mt-2">
-                            <div className="pl-4 col">
-                              <div className="row justify-content-between">
-                                <Product>{option.name}</Product>
-                                <div className="col-auto">{option.price} €</div>
+                      </SectionTitle>
+                      <div>
+                        {element.options.map((option) => (
+                          <Element key={option._id}>
+                            <Flex>
+                              <div>
+                                <Flex>
+                                  <Product>{option.name}</Product>
+                                  <Price>{getPrice(option)}</Price>
+                                </Flex>
+                                <Details>{option.details}</Details>
                               </div>
-                              <Details>{option.details}</Details>
-                            </div>
-
-                            <div className="col-auto mr-4">
-                              <AddButton onClick={() => dialogSet(option)}>
+                              <EditButton onClick={() => dialogSet(option)}>
                                 {getButtonValue(option._id)}
-                              </AddButton>
-                            </div>
-                          </div>
-                        </div>
-                      </Element>
-                    ))}
-                  </div>
-                </>
-              )}
-            </Section>
-          ))}
-        </Menu>
-      </div>
+                              </EditButton>
+                            </Flex>
+                          </Element>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </Section>
+              ))}
+            </Menu>
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,5 +1,31 @@
 import { IconList } from "react-fa-icon-picker";
 
+interface option {
+  _id: string;
+  name: string;
+  price: number;
+  details: string;
+  allergens: [string];
+  sizable: boolean;
+  sizes: [
+    {
+      _id: string;
+      name: string;
+      measure: string;
+      price: number;
+    }
+  ];
+}
+
+interface ingredient {
+  _id: string;
+  name: string;
+  single: boolean;
+  mandatory: boolean;
+  max: number;
+  options: Array<option>;
+}
+
 export default interface menuType {
   menu: {
     value: [
@@ -9,46 +35,8 @@ export default interface menuType {
         t: string;
         icon: IconList;
         editable: boolean;
-        ingredients: [
-          {
-            _id: string;
-            name: string;
-            single: boolean;
-            mandatory: boolean;
-            options: [
-              {
-                _id: string;
-                name: string;
-                price: number;
-                details: string;
-                sizes: [
-                  {
-                    _id: string;
-                    name: string;
-                    measure: string;
-                    price: number;
-                  }
-                ];
-              }
-            ];
-          }
-        ];
-        options: [
-          {
-            _id: string;
-            name: string;
-            price: number;
-            details: string;
-            sizes: [
-              {
-                _id: string;
-                name: string;
-                measure: string;
-                price: number;
-              }
-            ];
-          }
-        ];
+        ingredients: Array<ingredient>;
+        options: Array<option>;
       }
     ];
   };

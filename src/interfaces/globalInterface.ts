@@ -1,3 +1,15 @@
 export default interface GlobalStyle {
-  theme: { colors: { header: string; body: string; footer: string } };
+  theme: {
+    colors: {
+      navbar: string;
+      background: string;
+      backgroundSecondary: string;
+      container: string;
+      fill: string;
+      textPrimary: string;
+      textSecondary: string;
+      shadow: string;
+    };
+    mobile: string;
+  };
 }

@@ -22,11 +22,11 @@ export const Logo = styled.img`
   } ;
 `;
 
-export const Title = styled.text`
+export const Title = styled.div`
   width: 100%;
   padding: 10px;
   text-align: start;
-  color: ${({ theme }) => theme.colors.textClear};
+  color: ${({ theme }) => theme.colors.textPrimary};
   font-size: 2rem;
   text-transform: uppercase;
   font-weight: 900;

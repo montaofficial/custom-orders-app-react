@@ -7,8 +7,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    background: ${(props: GlobalStyle) => props.theme.colors.body};
-    color: hsl(192, 100%, 9%);
+    background: ${(props: GlobalStyle) => props.theme.colors.background};
+    color: ${({ theme }) => theme.colors.textPrimary};
     font-family: 'Poppins', sans-serif;
     font-size: 1.15em;
     margin: 0;

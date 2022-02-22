@@ -1,6 +1,14 @@
-export interface orderElementType {
-  productId: string;
+interface orderSize {
+  sizeId: string;
   quantity: number;
 }
 
-export interface orderType extends Array<orderElementType> {}
+export interface orderType {
+  order: {
+    value: Array<{
+      productId: string;
+      quantity: number;
+      sizes: Array<orderSize>;
+    }>;
+  };
+}
